@@ -1,0 +1,14 @@
+array (
+  0 => 'Shift Updated',
+  1 => 'Name: ED',
+  2 => 'Date: 2022-11-12',
+  3 => 'Store: Papa',
+  4 => 'Change: removed from shift',
+)
+mysqli_result::__set_state(array(
+   'current_field' => NULL,
+   'field_count' => NULL,
+   'lengths' => NULL,
+   'num_rows' => NULL,
+   'type' => NULL,
+))
