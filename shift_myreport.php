@@ -1,9 +1,9 @@
 <?
 /*
-Shift repot by date range for team (all employees)
+Shift repot by date range for current user
 */ 
 include_once "sessioncheck.php";
-if (f_shouldDie("L")) {
+if (f_shouldDie("E")) {
 	header("Location:login.php");
 	exit();
   }
@@ -13,7 +13,6 @@ if (f_shouldDie("L")) {
 <head>
 	<? include "header.php"; ?>
 	<title>BackOffice</title>
-	<script src="js/admin_shift_report.js"></script>
 </head>
 <body>
 	<?
@@ -38,7 +37,7 @@ if (f_shouldDie("L")) {
 	?>
 
 	<div class="container">
-		<h1 id="section_home" class="text-center mb-3">Shift Report</h1>
+		<h1 id="section_home" class="text-center mb-3">My Shift Report</h1>
 		<!--date form-->
 		<form class="row g-0 mb-4 border bg-light" method="post" action="<?php echo $_SERVER["PHP_SELF"];?>">
 			<?
@@ -179,7 +178,7 @@ if (f_shouldDie("L")) {
 			$arrayPeople = array(array(),array(),array());
 
 			include "connect_db.php";
-			$sql = "SELECT `c_name`,`c_id` FROM `t_user` WHERE (NOT ((`c_store`='NONE') OR (`c_employee`='D')))";
+			$sql = "SELECT `c_name`,`c_id` FROM `t_user` WHERE `c_id`='".$_SESSION["id"]."'";
 			$result = $conn->query($sql);
 			$idx = 0;
 			while($row = $result->fetch_assoc()) {
@@ -199,24 +198,26 @@ if (f_shouldDie("L")) {
 			}else{
 				$fieldTotal = "sum(`c_totalmins`)";
 			}
-			$sql = "SELECT ".$fieldTotal.",`c_id`,`c_store`,`c_type` FROM `t_calendar` WHERE `c_date`>='".date_format($fromDate,"Y-m-d")."' AND `c_date`<='".date_format($toDate,"Y-m-d")."' GROUP BY `c_id`,`c_store`, `c_type`;";
+			$sql = "SELECT ".$fieldTotal.",`c_id`,`c_store`,`c_type` FROM `t_calendar` WHERE `c_id`='".$_SESSION["id"]."'  AND `c_date`>='".date_format($fromDate,"Y-m-d")."' AND `c_date`<='".date_format($toDate,"Y-m-d")."' GROUP BY `c_id`,`c_store`, `c_type`;";
 			$result = $conn->query($sql);
-			$idx = 0;
-			while($row = $result->fetch_assoc()) {
-				$c_id = $row['c_id'];
-				$c_name = $arrayUserName[$c_id];
-				$c_count = $row[$fieldTotal];
-				$c_store = $row['c_store'];
-				$c_type = $row['c_type'];
-				if ($isReportByDay){
-					$arrayPeople[$c_id][$c_store][$c_type] = $c_count; //count the days
-				}else{
-					$arrayPeople[$c_id][$c_store][$c_type] = round($c_count/60,1); //count the hours
-				}
-				$idx++;
-			}
-			$conn->close();
-		}
+			if ($result) {
+                $idx = 0;
+                while($row = $result->fetch_assoc()) {
+                    $c_id = $row['c_id'];
+                    $c_name = $arrayUserName[$c_id];
+                    $c_count = $row[$fieldTotal];
+                    $c_store = $row['c_store'];
+                    $c_type = $row['c_type'];
+                    if ($isReportByDay){
+                        $arrayPeople[$c_id][$c_store][$c_type] = $c_count; //count the days
+                    }else{
+                        $arrayPeople[$c_id][$c_store][$c_type] = round($c_count/60,1); //count the hours
+                    }
+                    $idx++;
+                }
+                $conn->close();
+            }
+        }
 		?>
 
 		<!--Result Row-->

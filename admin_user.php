@@ -149,24 +149,28 @@ if (f_shouldDie("A")) {
 			<input disabled type="checkbox" class="form-check-input" name="btn_access" id="as7" value="M">
 			</div>
 		</div>
-		<div class="col"></div>
+		<div class="col">
+			<div class="form-check">
+			<input disabled type="checkbox" class="form-check-input" name="btn_access" id="as8" value="L">
+			</div>
+		</div>
 	</div>
     <div class="row mx-auto mb-3">
     	<span class="col text-primary">Shift</span>
-		<span class="col text-primary">Report</span>
+		<span class="col text-primary">My Report</span>
       	<span class="col text-primary">Template</span>
-		<span class="col text-primary">&nbsp;</span>
+		<span class="col text-primary">Team Report</span>
     </div>
 	<div class="col-12 bg-light text-center mb-1">Profile/Admin</div>
 	<div class="row mx-auto mb-1">
 		<div class="col">
 			<div class="form-check">
-				<input disabled type="checkbox" class="form-check-input" name="btn_access" id="as8" value="O">
+				<input disabled type="checkbox" class="form-check-input" name="btn_access" id="as9" value="O">
 			</div>
 		</div>
 		<div class="col">
 			<div class="form-check">
-				<input disabled type="checkbox" class="form-check-input" name="btn_access" id="as9" value="A">
+				<input disabled type="checkbox" class="form-check-input" name="btn_access" id="as10" value="A">
 			</div>
 		</div>
 		<div class="col"></div>

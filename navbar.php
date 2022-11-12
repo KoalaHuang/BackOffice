@@ -14,12 +14,17 @@
           }
           if (strstr($_SESSION["access"],"E")) {
             echo "<li class=\"nav-item\">";
-            echo "<a class=\"nav-link\" href=\"shift_report.php\">Shift Report</a>";
+            echo "<a class=\"nav-link\" href=\"shift_myreport.php\">My Shift Report</a>";
             echo "</li>";
           }
           if (strstr($_SESSION["access"],"M")) {
             echo "<li class=\"nav-item\">";
             echo "<a class=\"nav-link\" href=\"shift_template.php\">Shift Template</a>";
+            echo "</li>";
+          }
+          if (strstr($_SESSION["access"],"L")) {
+            echo "<li class=\"nav-item\">";
+            echo "<a class=\"nav-link\" href=\"shift_report.php\">Team Shift Report</a>";
             echo "</li>";
           }
           if  (strstr($access,"R") || (strstr($access,"F")) || (strstr($access,"S")) || (strstr($access,"T"))) {

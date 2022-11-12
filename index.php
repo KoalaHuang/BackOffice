@@ -18,7 +18,7 @@ $access = $_SESSION["access"];
 	<div class="container">
 		<h1 class="text-center text-secondary mb-2">Welcome, <strong><?echo $user;?></strong></h1>
     <?
-      if ((strstr($access,"C") || (strstr($access,"E")) || (strstr($access,"M")))) {//shift
+      if ((strstr($access,"C") || (strstr($access,"E")) || (strstr($access,"M")) || (strstr($access,"L")))) {//shift
     ?>
     <div class="d-grid gap-2 col-6 border border-secondary mx-auto p-2 mb-3">
     <h5 class="text-center text-muted">Shift</h5>
@@ -27,10 +27,13 @@ $access = $_SESSION["access"];
         echo "<a href=\"shift.php\" class=\"btn btn-primary mb-1\" role=\"button\">Shift</a>";
       }
       if (strstr($access,"E")) {
-        echo "<a href=\"shift_report.php\" class=\"btn btn-primary mb-1\" role=\"button\">Report</a>";
+        echo "<a href=\"shift_myreport.php\" class=\"btn btn-primary mb-1\" role=\"button\">My Report</a>";
       }
       if (strstr($access,"M")) {
         echo "<a href=\"shift_template.php\" class=\"btn btn-primary mb-1\" role=\"button\">Template</a>";
+      }
+      if (strstr($access,"L")) {
+        echo "<a href=\"shift_report.php\" class=\"btn btn-primary mb-1\" role=\"button\">Team Report</a>";
       }
       ?>
     </div>

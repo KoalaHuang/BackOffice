@@ -8,7 +8,7 @@ $_SESSION["access"] = "";
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	$c_name = $_POST["user"];
 	include "connect_db.php";
-	$sql = "SELECT `c_pwd`,`c_access` FROM `t_user` WHERE `c_name`= '".$c_name."'";
+	$sql = "SELECT `c_pwd`,`c_access`, `c_id` FROM `t_user` WHERE `c_name`= '".$c_name."'";
 	$result = $conn->query($sql);
 	if ($result->num_rows == 0) {
 		$subject = "No such user!";
@@ -22,6 +22,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 			$subject = "Welcome <br>".$c_name;
 			$_SESSION["user"] = $c_name;
 			$_SESSION["access"] = $access;
+			$_SESSION["id"] = $row["c_id"];
 			$conn->close();
 			header("Location:index.php"); //login successful. redirect to index.php
 		  exit();
