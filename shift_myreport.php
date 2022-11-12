@@ -232,8 +232,8 @@ if (f_shouldDie("E")) {
 			$c_id = $arrayUserID[$idxPpl];
 			$c_name = $arrayUserName[$c_id];
 
-			echo "<a class=\"btn btn-outline-dark mb-1\" data-bs-toggle=\"collapse\" href=\"#rpt".$c_name."\" role=\"button\">".$c_name."</a>";
-			echo "<div class=\"collapse\" id=\"rpt".$c_name."\">";
+			echo "<a class=\"btn btn-outline-dark mb-1\" data-bs-toggle=\"collapse\" href=\"#rpt".$c_id."\" role=\"button\">".$c_name."</a>";
+			echo "<div class=\"collapse\" id=\"rpt".$c_id."\">";
 			echo "<div class=\"card card-body\"><table class=\"table\"><thead>";
 			echo "<tr>";
 			echo "<th scope=\"col\">Type</th>";
