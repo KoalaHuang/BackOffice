@@ -4,7 +4,7 @@ Shift changed by admin
 Called from shift screen when user is admin
 */ 
 include_once "sessioncheck.php";
-if (f_shouldDie("A")) {
+if (f_shouldDie("M")) {
 	header("Location:login.php");
 	exit();
   }

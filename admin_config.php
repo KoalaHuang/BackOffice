@@ -17,34 +17,66 @@ if (f_shouldDie("A")) {
 </head>
 <body>
 	<div class="container">
-		<h1 id="section_home" class="text-center mb-3">Admin - Configuration</h1>
+		<h1 id="section_home" class="text-center mb-3">Admin - Preference</h1>
         <div class="card mb-3">
-            <h5 class="card-header">Max people required by store</h5>
+            <h5 class="card-header bg-info">Notice when shift is changed</h5>
             <div class="card-body">
+                <div class="card-title">WhatsApp Notice</div>
+                <div class="input-group mb-1">
+                    <input type="text" class="col-9 form-control" placeholder="+65PHONE-NUM.PIN" id = "iptBox_shiftwa">
+                    <button class="col-3 btn btn-primary" type="button" onclick="f_add_notice('shiftwa')">Add</button>                    
+                </div>
+                <ul class="list-group" id="ul_shiftwa">
             <?
                 include "connect_db.php";
-                $sql = "SELECT `c_subsetup`, `c_value` FROM `t_config` WHERE `c_setup`='max_ppl'";
+                $sql = "SELECT `c_value` FROM `t_config` WHERE `c_setup`='notice_shift' AND `c_subsetup`='WA'";
     			$result = $conn->query($sql);
                 $idx = 0;
     			if ($result->num_rows > 0) {
                     while($row = $result->fetch_assoc()) {
-						$store = $row["c_subsetup"];
                         $c_value = $row["c_value"];
 			?>
-                <div class="input-group mb-1">
-                    <span class="input-group-text col-3" id="max_ppl_store<?echo $idx?>" name="max_ppl_store"><?echo $store?></span>
-                    <input type="text" class="form-control" value="<?echo $c_value?>" id="max_ppl_value<?echo $idx?>">
-                </div>
+                    <div class="row" id="row_shiftwa_<?echo $idx?>">
+                        <li class="list-group-item list-group-item-secondary mx-auto mb-1 col-10" id="li_shiftwa_<?echo $idx?>"><?echo $c_value?></li>
+                        <button type="button" class="mx-auto mb-1 btn btn-danger col-1" id="btn_shiftwa_<?echo $idx?>"  onclick="f_remove_notice('shiftwa','<?echo $idx?>')">X</button>
+                    </div>
             <?
                         $idx++;
                     }
                 }
             ?>            
+                </ul>
+                <div class="card-title mt-3">Email Notice</div>
+                <div class="input-group mb-1">
+                    <input type="text" class="col-9 form-control" placeholder="Email address" id = "iptBox_shiftmail">
+                    <button class="col-3 btn btn-primary" type="button" onclick="f_add_notice('shiftmail')">Add</button>                    
+                </div>
+                <ul class="list-group" id="ul_shiftmail">
+            <?
+                include "connect_db.php";
+                $sql = "SELECT `c_value` FROM `t_config` WHERE `c_setup`='notice_shift' AND `c_subsetup`='mail'";
+    			$result = $conn->query($sql);
+                $idx = 0;
+    			if ($result->num_rows > 0) {
+                    while($row = $result->fetch_assoc()) {
+                        $c_value = $row["c_value"];
+			?>
+                    <div class="row" id="row_shiftmail_<?echo $idx?>">
+                        <li class="list-group-item list-group-item-secondary mx-auto mb-1 col-10" id="li_shiftmail_<?echo $idx?>"><?echo $c_value?></li>
+                        <button type="button" class="mx-auto mb-1 btn btn-danger col-1" id="btn_shiftmail_<?echo $idx?>"  onclick="f_remove_notice('shiftmail','<?echo $idx?>')">X</button>
+                    </div>
+            <?
+                        $idx++;
+                    }
+                }
+                $conn->close();
+            ?>            
+                </ul>
             </div>
         </div>
 
         <div class="card mb-3">
-            <h5 class="card-header">Notice when stocking data changed</h5>
+            <h5 class="card-header bg-info">Notice when stocking data changed</h5>
             <div class="card-body">
                 <div class="card-title">WhatsApp Notice</div>
                 <div class="input-group mb-1">

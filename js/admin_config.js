@@ -11,11 +11,13 @@ window.addEventListener("DOMContentLoaded", function() {
 }, false);
   
 //add new notice item
-//para: nType - 'wa' for WhatsApp, 'mail' for Email
+//para: nType
+//'wa': stocking change WhatsApp notice, 'mail': stocking change mail notice
+//'shiftwa': shift change WhatsApp notice, 'shiftmail': shift change mail notice
 function f_add_notice(nType) {
     iptBox = document.getElementById("iptBox_"+nType);
     inputValue = iptBox.value;
-    if (nType == 'wa') {
+    if ((nType == 'wa') || (nType == 'shiftwa')) {
         pattern = /\x2b65\d{8}\x2e\d{6}$/; //start with +65 with 8 mobile number, and '.' followed by 6 digits pin code
     }else{
         pattern = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/; //email regex 
@@ -41,7 +43,7 @@ function f_add_notice(nType) {
         noticeList.appendChild(newRow);
         iptBox.value = "";
     }else{
-        if (nType == 'wa') {
+        if ((nType == 'wa') || (nType == 'shiftwa')) {
             alert("Wrong WhatsApp format. Use +65<8 digits phone num>.<6 digits code>");
         }else{
             alert("Wrong Email format!")
@@ -72,15 +74,29 @@ function f_toConfirm() {
         }
     }
     idxArray = 0;
-    listCount = document.getElementsByName("max_ppl_store").length;
-    c_setup = "max_ppl";
-    for (idxList = 0; idxList < listCount; idxList++){
-        strIdx = idxList.toString();
-        c_subsetup = document.getElementById("max_ppl_store"+strIdx).innerText;
-        c_value = document.getElementById("max_ppl_value"+strIdx).value;
+
+    listGroup = document.getElementById("ul_shiftwa");
+    c_setup = "notice_shift";
+    c_subsetup = "WA";
+    listChild = listGroup.firstElementChild; //must be ElementChild. FirstChild may be text, not list item
+    while (listChild != null) {
+        c_value = listChild.firstElementChild.innerText; //Each list item is a row with one list value and one X button. list value is first child of the row
         arrayObj[idxArray] = new ClassToSubmit(c_setup,c_subsetup,c_value);
         idxArray++;
+        listChild = listChild.nextElementSibling;
     }
+
+    listGroup = document.getElementById("ul_shiftmail");
+    c_subsetup = "mail";
+    listChild = listGroup.firstElementChild; //must be ElementChild. FirstChild may be text, not list item
+    while (listChild != null) {
+        c_value = listChild.firstElementChild.innerText; //Each list item is a row with one list value and one X button. list value is first child of the row
+        arrayObj[idxArray] = new ClassToSubmit(c_setup,c_subsetup,c_value);
+        idxArray++;
+        listChild = listChild.nextElementSibling;
+    }
+
+    console.log(arrayObj);
 
     listGroup = document.getElementById("ul_wa");
     c_setup = "notice_stocking";

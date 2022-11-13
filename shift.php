@@ -36,7 +36,7 @@ if (f_shouldDie("C")) {
 		$UserWorkday = $row["c_workday"];
 		$UserStore = $row["c_store"];
 		$UserStatus = $row["c_employee"];
-		$UserIsAdmin = strpos($row["c_access"],"A");
+		$UserIsAdmin = strpos($row["c_access"],"M");
 	}else{
 		echo "User data error!";
 		die;
