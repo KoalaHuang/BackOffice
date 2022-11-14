@@ -1,10 +1,19 @@
 const objGlobal = {
   "n": "", //name
   "p": "", //p
+  "w": "", //old working day
+  "nw": "" // new working day
 };
 
 window.addEventListener("DOMContentLoaded", function() {
   modal_Popup = new bootstrap.Modal(document.getElementById("modal_box"));
+  objGlobal.w = "";
+  elmBtn = document.getElementsByName("btn_workday");
+  for (idx = 0, length = elmBtn.length; idx < length; idx++) {
+    if (elmBtn[idx].checked) {
+      objGlobal.w = objGlobal.w + elmBtn[idx].value;
+    }
+  }//workday value
 }, false);
 
 //cancel button
@@ -21,17 +30,36 @@ function f_pwdChanged() {
 function f_toConfirm() {
   objGlobal.n = document.getElementById("iptName").value;
   objGlobal.p = document.getElementById("iptPwd").value;
-  var strBody = strTitle = "";
+  const strTitle = "Confirm to update your info?";
+  var strBody = "Name: " + objGlobal.n;
   var needToCancel = true;
-  strTitle = "Confirm to update user?";
-  strBody = "Name: " + objGlobal.n;
+
+  //get working day
+  strWorkDay = "";
+  elmBtn = document.getElementsByName("btn_workday");
+  for (idx = 0, length = elmBtn.length; idx < length; idx++) {
+    if (elmBtn[idx].checked) {
+      strWorkDay = strWorkDay + elmBtn[idx].value;
+    }
+  }
+  if (strWorkDay != objGlobal.w){
+    strBody = strBody + "<br>Working day</span>: " + strWorkDay;
+    objGlobal.nw = strWorkDay;
+    needToCancel = false;
+  }else{
+    objGlobal.nw = "";//indicating no change on working day
+  }
+
   if (objGlobal.p != '') {
     strBody = strBody + "<br><span class=\"text-danger\">Password</span>: " + objGlobal.p;
     needToCancel = false;
   }else{
-    strBody = strBody + "Nothing is changed."
-    needToCancel = true;
+    if (objGlobal.nw == ""){
+      strBody = strBody + "<br>Nothing is changed."
+      needToCancel = true;
+    }
   }
+
   document.getElementById("btn_ok").disabled = needToCancel;
   document.getElementById("lbl_modal").innerHTML = strTitle;
   document.getElementById("body_modal").innerHTML = strBody;

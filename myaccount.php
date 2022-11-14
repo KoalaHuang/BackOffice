@@ -28,7 +28,6 @@ if (f_shouldDie("O")) {
 			$c_access = $row["c_access"];
 			$c_id = $row["c_id"];
 			$c_workday = $row["c_workday"];
-			$c_store = $row["c_store"];
 		}else{
 			echo "Data error!";
 			die;
@@ -50,25 +49,25 @@ if (f_shouldDie("O")) {
 		<div class="col-12 bg-light text-center mb-1"><strong>Working Day</strong></div>
 		<div class="row mx-auto"> <!--working day-->
 		<div class="col"><div class="form-check">
-			<input disabled type="checkbox" class="form-check-input" name="btn_workday" id="wd1" <?if (strstr($c_workday,"1")) echo "checked"?>>
+			<input type="checkbox" class="form-check-input" name="btn_workday" id="wd1" value="1" <?if (strstr($c_workday,"1")) echo "checked"?>>
 		</div></div>
 		<div class="col"><div class="form-check">
-			<input disabled type="checkbox" class="form-check-input" name="btn_workday" id="wd2" <?if (strstr($c_workday,"2")) echo "checked"?>>
+			<input type="checkbox" class="form-check-input" name="btn_workday" id="wd2" value="2" <?if (strstr($c_workday,"2")) echo "checked"?>>
 		</div></div>
 		<div class="col"><div class="form-check">
-			<input disabled type="checkbox" class="form-check-input" name="btn_workday" id="wd3" <?if (strstr($c_workday,"3")) echo "checked"?>>
+			<input type="checkbox" class="form-check-input" name="btn_workday" id="wd3" value="3" <?if (strstr($c_workday,"3")) echo "checked"?>>
 		</div></div>
 		<div class="col"><div class="form-check">
-			<input disabled type="checkbox" class="form-check-input" name="btn_workday" id="wd4" <?if (strstr($c_workday,"4")) echo "checked"?>>
+			<input type="checkbox" class="form-check-input" name="btn_workday" id="wd4" value="4" <?if (strstr($c_workday,"4")) echo "checked"?>>
 		</div></div>
 		<div class="col"><div class="form-check">
-			<input disabled type="checkbox" class="form-check-input" name="btn_workday" id="wd5" <?if (strstr($c_workday,"5")) echo "checked"?>>
+			<input type="checkbox" class="form-check-input" name="btn_workday" id="wd5" value="5" <?if (strstr($c_workday,"5")) echo "checked"?>>
 		</div></div>
 		<div class="col"><div class="form-check">
-			<input disabled type="checkbox" class="form-check-input" name="btn_workday" id="wd6" <?if (strstr($c_workday,"6")) echo "checked"?>>
+			<input type="checkbox" class="form-check-input" name="btn_workday" id="wd6" value="6" <?if (strstr($c_workday,"6")) echo "checked"?>>
 		</div></div>
 		<div class="col"><div class="form-check">
-			<input disabled type="checkbox" class="form-check-input" name="btn_workday" id="wd7" <?if (strstr($c_workday,"7")) echo "checked"?>">
+			<input type="checkbox" class="form-check-input" name="btn_workday" id="wd7" value="7" <?if (strstr($c_workday,"7")) echo "checked"?>>
 		</div></div>
 		</div>
 		<div class="row mx-auto mb-3">
@@ -80,40 +79,8 @@ if (f_shouldDie("O")) {
 		<span class="col text-primary">Sat</span>
 		<span class="col text-primary">Sun</span>
 		</div>
-		<div class="col-12 bg-light text-center mb-1"><strong>Store</strong></div>
-		<div class="row mx-auto">
-		<?
-		$sql = "SELECT `c_name` FROM `t_store`";
-		$result = $conn->query($sql);
-		$idx = 0;
-		while($row = $result->fetch_assoc()) {
-			$arrayStore[$idx] = $row["c_name"];
-		?>
-		<div class="col"><div class="form-check">
-						<input type="radio" class="form-check-input" name="btn_store" <?if ($c_store == $arrayStore[$idx]) echo "checked"; ?> disabled>
-		</div></div>
-		<?
-		$idx++;
-		}
-		$conn->close();
-		?>
-			<div class="col"><div class="form-check">
-							<input type="radio" class="form-check-input" name="btn_store" <?if ($c_store == "ALL") echo "checked"; ?> disabled>
-			</div></div>
-			<div class="col"><div class="form-check">
-							<input type="radio" class="form-check-input" name="btn_store" <?if ($c_store == "NONE") echo "checked"; ?> disabled>
-			</div></div>
-		</div>
-		<div class="row mx-auto mb-3">
-		<?
-		for ($idx=0;$idx<count($arrayStore);$idx++) {
-				echo "<span class=\"col text-primary\">".$arrayStore[$idx]."</span>";
-		}
-		?>
-			<span class="col text-primary">ALL</span>
-			<span class="col text-primary">NONE</span>
-		</div>
-		<div class="row">
+		<div class="text-danger fst-italic">Working day change will be applied from next month. Use 'Shift' to change this month working day.</div>
+		<div class="row mt-5">
 			<span><button type="button" id="btn_toConfirm" class="btn btn-primary col-3 me-5" onclick="f_toConfirm()">OK</button>
 			<button type="button" class="btn btn-secondary col-3" onclick="f_refresh()">Cancel</button></span>
 		</div>
