@@ -79,7 +79,7 @@ if (f_shouldDie("O")) {
 		<span class="col text-primary">Sat</span>
 		<span class="col text-primary">Sun</span>
 		</div>
-		<div class="text-danger fst-italic">Working day change will be applied from next month. Use 'Shift' to change this month working day.</div>
+		<div class="text-muted text-center fst-italic">Your working shift will be arranged on selected days.</div>
 		<div class="row mt-5">
 			<span><button type="button" id="btn_toConfirm" class="btn btn-primary col-3 me-5" onclick="f_toConfirm()">OK</button>
 			<button type="button" class="btn btn-secondary col-3" onclick="f_refresh()">Cancel</button></span>

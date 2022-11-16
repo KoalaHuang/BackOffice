@@ -174,7 +174,7 @@ if (f_shouldDie("E")) {
 			$arrayUserName = array();
 			$arrayUserID = array();
 			$arrayStore = array();
-			$arrayWorkType = ["WW","OW","HW"];
+			$arrayWorkType = ["WW","HW"];
 			$arrayPeople = array(array(),array(),array());
 
 			include "connect_db.php";
@@ -217,6 +217,23 @@ if (f_shouldDie("E")) {
                 }
                 $conn->close();
             }
+			//OFF Day working count
+			//count working days in given period
+			$stampFromDate = $fromDate->getTimestamp();
+			date_add($toDate,date_interval_create_from_date_string("1 day"));//move out 1 day to include toDate in counting
+			$stampToDate = $toDate->getTimestamp();
+			$days_difference = floor(($stampToDate - $stampFromDate)/86400);
+			$weeks_difference = floor($days_difference / 7); // Complete weeks
+			$first_day = date("w", $stampFromDate);
+			$days_remainder = floor($days_difference % 7);
+			$odd_days = $first_day + $days_remainder; // Do we have a Saturday or Sunday in the remainder?
+			if ($odd_days > 7) { // Sunday
+				$days_remainder--;
+			}
+			if ($odd_days > 6) { // Saturday
+				$days_remainder--;
+			}
+			$intWorkingDays = ($weeks_difference * 5) + $days_remainder;			
         }
 		?>
 
@@ -228,19 +245,21 @@ if (f_shouldDie("E")) {
 		}else{
 		    die;
 		}
+		$ySum = array(); //store sum of working days for each store
+		$xSum = array(); //store sum of working days for each type
 		for ($idxPpl = 0; $idxPpl<$countUserID; $idxPpl++) {
 			$c_id = $arrayUserID[$idxPpl];
 			$c_name = $arrayUserName[$c_id];
+			array_fill(0,count($ySum),0);
+			array_fill(0,count($xSum),0);
 
 			echo "<a class=\"btn btn-outline-dark mb-1\" data-bs-toggle=\"collapse\" href=\"#rpt".$c_id."\" role=\"button\">".$c_name."</a>";
 			echo "<div class=\"collapse\" id=\"rpt".$c_id."\">";
 			echo "<div class=\"card card-body\"><table class=\"table\"><thead>";
 			echo "<tr>";
 			echo "<th scope=\"col\">Type</th>";
-			$ySum = array(); //store sum of working days for each store
 			for ($idxStore = 0; $idxStore<count($arrayStore); $idxStore++) {
 				echo "<th scope=\"col\">".$arrayStore[$idxStore]."</th>";
-				$ySum[$idxStore] = 0;
 			}
 			echo "<th class=\"table-secondary\" scope=\"col\">SUM</th>"; //work type sum
 			echo "</tr></thead><tbody>";
@@ -248,7 +267,7 @@ if (f_shouldDie("E")) {
 				$c_type = $arrayWorkType[$idxType];
 				echo "<tr>";
 				echo "<th scope=\"col\">".$c_type."</th>";
-				for ($idxStore = 0, $xSum = 0; $idxStore<count($arrayStore); $idxStore++) {
+				for ($idxStore = 0; $idxStore<count($arrayStore); $idxStore++) {
 					$c_store = $arrayStore[$idxStore];
 					if (is_null($arrayPeople[$c_id][$c_store][$c_type])) {
 						$c_count = 0;
@@ -256,20 +275,36 @@ if (f_shouldDie("E")) {
 						$c_count = $arrayPeople[$c_id][$c_store][$c_type];
 					} //if count is null
 					echo "<td scope=\"col\">".$c_count."</th>";
-					$xSum = $xSum + $c_count;
+					$xSum[$c_type] = $xSum[$c_type] + $c_count;
 					$ySum[$idxStore] = $ySum[$idxStore] + $c_count;
 				} //for loop store
-				echo "<td class=\"table-secondary\" scope=\"col\">".$xSum."</th>"; //sum of this work type from all stores.
+				echo "<td class=\"table-secondary\" scope=\"col\">".$xSum[$c_type]."</th>"; //sum of this work type from all stores.
 				echo "</tr>";
 			} // for loop type
+
+			//Store SUM
 			echo "<tr>";
-			echo "<th class=\"table-secondary\" scope=\"col\">SUM</th>"; //store sum
+			echo "<th class=\"table-secondary\" scope=\"col\">SUM</th>";
 			for ($idxStore = 0, $totalWork=0; $idxStore<count($arrayStore); $idxStore++) {
 				$totalWork = $totalWork + $ySum[$idxStore];
 				echo "<td class=\"table-secondary\" scope=\"col\">".$ySum[$idxStore]."</th>";
 			}
 			echo "<td class=\"table-dark text-white\" scope=\"col\">".$totalWork."</th>"; //store sum
-			echo "</tr></tbody></table>";
+			echo "</tr>";
+			//OFF day working count
+			echo "<tr>";
+			echo "<th class=\"table-secondary\" scope=\"row\">OW</th>";
+			echo "<td class=\"table-secondary\" scope=\"col\" colspan=\"".count($arrayStore)."\"> Working ".$xSum["WW"]." - Weekday ".$intWorkingDays."</th>";
+			echo "<td class=\"table-secondary\" scope=\"col\">";
+			if ($intWorkingDays >= $xSum["WW"]){
+				echo "0";
+			}else{
+				echo ($xSum["WW"] - $intWorkingDays);
+			}
+			echo "</th>";
+			echo "</tr>";
+
+			echo "</tbody></table>";
 			echo "</div>";
 			echo "</div>";
 		} // for loop ppl
