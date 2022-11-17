@@ -292,17 +292,12 @@ if (f_shouldDie("E")) {
 			echo "<td class=\"table-dark text-white\" scope=\"col\">".$totalWork."</th>"; //store sum
 			echo "</tr>";
 			//OFF day working count
-			echo "<tr>";
-			echo "<th class=\"table-secondary\" scope=\"row\">OW</th>";
-			echo "<td class=\"table-secondary\" scope=\"col\" colspan=\"".count($arrayStore)."\"> Working ".$xSum["WW"]." - Weekday ".$intWorkingDays."</th>";
-			echo "<td class=\"table-secondary\" scope=\"col\">";
-			if ($intWorkingDays >= $xSum["WW"]){
-				echo "0";
-			}else{
-				echo ($xSum["WW"] - $intWorkingDays);
+			if (($xSum["WW"] - $intWorkingDays) > 0){
+				echo "<tr>";
+				echo "<td class=\"table-secondary\" scope=\"col\" colspan=\"".(count($arrayStore)+1)."\">Besides ".$intWorkingDays." weekday, OFF time works</td>";
+				echo "<td class=\"table-secondary\" scope=\"col\">".($xSum["WW"] - $intWorkingDays)."</td>";
+				echo "</tr>";
 			}
-			echo "</th>";
-			echo "</tr>";
 
 			echo "</tbody></table>";
 			echo "</div>";
