@@ -13,6 +13,7 @@ if (f_shouldDie("L")) {
 <head>
 	<? include "header.php"; ?>
 	<title>BackOffice</title>
+	<script src="js/shift_report.js"></script>
 </head>
 <body>
 	<?
@@ -52,7 +53,7 @@ if (f_shouldDie("L")) {
 			}
 			?>
 			<div class="input-group ps-1 pe-1">
-				<select class="form-select" name="sltFromYear">
+				<select class="form-select" name="sltFromYear" id="sltFromYear">
 				<?
 					if ($hideResult){
 						$selectedTime = $thisYear; 
@@ -68,7 +69,7 @@ if (f_shouldDie("L")) {
 					}
 				?>
 				</select>
-				<select class="form-select" name="sltFromMon">
+				<select class="form-select" name="sltFromMon" id="sltFromMon">
 				<?
 					if ($hideResult){
 						$selectedTime = $thisMonth; 
@@ -84,10 +85,10 @@ if (f_shouldDie("L")) {
 					}
 				?>
 				</select>
-				<select class="form-select" name="sltFromDay">
+				<select class="form-select" name="sltFromDay" id="sltFromDay">
 				<?
 					if ($hideResult){
-						$selectedTime = $thisDate; 
+						$selectedTime = 1; 
 					}else{
 						$selectedTime = date_format($fromDate,"j");
 					}
@@ -103,7 +104,7 @@ if (f_shouldDie("L")) {
 			</div>
 			<div class="text-center">&darr;</div>
 			<div class="input-group mb-3  ps-1 pe-1">
-				<select class="form-select" name="sltToYear">
+				<select class="form-select" name="sltToYear" id="sltToYear">
 				<?
 					if ($hideResult){
 						$selectedTime = $thisYear; 
@@ -119,7 +120,7 @@ if (f_shouldDie("L")) {
 					}
 				?>
 				</select>
-				<select class="form-select" name="sltToMon">
+				<select class="form-select" name="sltToMon" id="sltToMon">
 				<?
 					if ($hideResult){
 						$selectedTime = $thisMonth; 
@@ -135,10 +136,10 @@ if (f_shouldDie("L")) {
 					}
 				?>
 				</select>
-				<select class="form-select" name="sltToDay">
+				<select class="form-select" name="sltToDay" id="sltToDay">
 				<?
 					if ($hideResult){
-						$selectedTime = $thisDate; 
+						$selectedTime = cal_days_in_month(CAL_GREGORIAN, $thisMonth, $thisYear); 
 					}else{
 						$selectedTime = date_format($toDate,"j");
 					}
@@ -163,11 +164,12 @@ if (f_shouldDie("L")) {
 				</div>
 			</div>
 			<div class="mb-3 ps-1">
-				<button type="submit" class="btn btn-primary me-5">Submit</button>
+				<button type="button" class="btn btn-outline-primary me-2" onclick="f_changeMonth(-1)"> << </button>
+				<button type="button" class="btn btn-outline-primary me-5" onclick="f_changeMonth(1)"> >> </button>
+				<button type="submit" class="btn btn-primary me-2">Submit</button>
 				<button type="reset" class="btn btn-secondary">Reset</button>
 			</div><!-- Apply -->
 		</form>
-
 		<?
 		//retrive date into Arrays
 		if (!($inputError || $hideResult)){
