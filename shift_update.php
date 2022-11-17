@@ -33,7 +33,7 @@
       array_push($noticeMsg,"Change: removed from shift");
       break;
     case 1: //add working assignment
-      //get user workday
+      /*get user workday
       $sql = "SELECT `c_workday` FROM `t_user` WHERE (`c_id`='".$obj->id."')";
     	$wdResult = $conn->query($sql);
       if ($row = $wdResult->fetch_assoc()) {
@@ -41,7 +41,7 @@
       }else{
         echo json_encode("Employee weekday data error!");
         die;
-      }
+      }*/
       array_push($noticeMsg,"Change: added to shift");
       //check if it's holiday
       $sql = "SELECT `c_holiday` FROM `t_holiday` WHERE `c_date`='".date_format($currentDate,'Y-m-d')."'";
@@ -51,11 +51,11 @@
       if ($isHoliday) {
         $c_type = "HW";
       }else{
-        if (strstr($userWD,(string)$obj->wd)) {
+        //if (strstr($userWD,(string)$obj->wd)) {
           $c_type = "WW";
-        }else{
-          $c_type = "OW";
-        }
+        //}else{
+          //$c_type = "OW";
+        //}
       }// if HW
       $stmt = $conn->prepare("INSERT INTO `t_calendar`(`c_date`, `c_id`, `c_store`, `c_type`, `c_timestart`, `c_timeend`, `c_fullday`, `c_totalmins`) VALUES (?,?,?,?,?,?,?,?)");
       $stmt->bind_param("ssssssii",$c_date,$c_id,$c_store,$c_type,$c_timestart,$c_timeend,$c_fullday,$c_totalmins);
@@ -71,7 +71,6 @@
       $stmt->close();
       break;
     case 2:  //update existing assignment's working time
-      array_push($noticeMsg,"Change: change shift timing as ".$c_timestart." to ".$c_timeend);
       $stmt = $conn->prepare("UPDATE `t_calendar` SET `c_timestart`=?,`c_timeend`=?,`c_fullday`=?,`c_totalmins`=? WHERE `c_date`=? AND `c_id`=? AND `c_store`=?");
       $stmt->bind_param("ssiisss",$c_timestart,$c_timeend,$c_fullday,$c_totalmins,$c_date,$c_id,$c_store);
       $result = true;
@@ -82,6 +81,7 @@
       $c_timeend = $obj->timeend;
       $c_fullday = $obj->fullday;
       $c_totalmins = $obj->totalmins;
+      array_push($noticeMsg,"Change: shift time ".$c_timestart." to ".$c_timeend);
       $result = $stmt->execute();
       $stmt->close();
       break;

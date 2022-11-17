@@ -265,12 +265,12 @@ if (f_shouldDie("M")) {
 	</div> <!-- container -->
 
 	<!-- Toast -->
-	<div style="position: relative; left: 50%; transform: translate(-50%, 0px);">
+	<div class="toast-container position-fixed top-0 p-3">
 		<div class="toast fade bg-light" role="alert" id="myToast">
 			<div class="toast-body text-center">
-				<h1 class="text-warning">&#9888</h1>Change the weekday not saved yet! <br>Drop changes and move to another day?
+				<h1 class="text-warning">&#9888</h1>Change the weekday not posted yet!<br>Drop changes and move to another day?
 				<div class="mt-2 pt-2 border-top">
-					<button type="button" class="btn btn-primary  me-3" data-bs-dismiss="toast" onclick="f_DropChanges()">Yes</button>
+					<button type="button" class="btn btn-primary me-3" data-bs-dismiss="toast" onclick="f_DropChanges()">Yes</button>
 					<button type="button" class="btn btn-secondary" data-bs-dismiss="toast">No</button>
 				</div>
 			</div>

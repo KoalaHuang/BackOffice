@@ -104,7 +104,7 @@ if (f_shouldDie("C")) {
 		$objDay = clone $objStartDay;//create new date object for loop
 		for ($idxWeek = 1; $idxWeek < 6; $idxWeek++) { //display 5 weeks for current month
 			$objWeek1stDay = clone $objDay; //create new date to store starting day of current week row
-			echo "<div class=\"row row-cols-7 g-0 mb-1\">"; // row of days in the week
+			echo "<div style=\"background:var(--bs-gray-400)\" class=\"row row-cols-7 g-0 mb-1\">"; // row of days in the week
 			for ($idxWD = 1; $idxWD < 8; $idxWD++){
 				//check if it's holiday
 				$sql = "SELECT `c_holiday` FROM `t_holiday` WHERE `c_date`='".date_format($objDay,'Y-m-d')."'";
@@ -114,14 +114,14 @@ if (f_shouldDie("C")) {
 				if (((integer)($today->diff($objDay)->format("%R%a"))) == 0) {
 					$bgToday = "bg-warning";
 				}else{
-					$bgToday = "bg-light";
+					$bgToday = "";
 				}
 				if (is_null($holiday)) {
 						$strClassHol = $mday;
 					}else{
 						$strClassHol = "<span class=\"text-danger\">".$mday."</span>";
 				}
-				$strDiv3B = "<div class=\"col ".$bgToday." text-center border-top border-start border-bottom border-dark border-2 fs-8\">".$strClassHol."<span class=\"text-muted\">";
+				$strDiv3B = "<div class=\"col ".$bgToday." text-center border-dark border-top border-start border-bottom fs-8\">".$strClassHol."<span class=\"text-muted\">";
 				$strDivEnd = "</span></div>";
 				switch ($idxWD) {
 					case 1:
@@ -143,7 +143,7 @@ if (f_shouldDie("C")) {
 						echo $strDiv3B." S".$strDivEnd;
 						break;
 					case 7:
-						echo "<div class=\"col ".$bgToday." text-center border border-dark border-2 fs-8\">".$strClassHol."<span class=\"text-muted\"> S".$strDivEnd;
+						echo "<div class=\"col ".$bgToday." text-center border border-dark fs-8\">".$strClassHol."<span class=\"text-muted\"> S".$strDivEnd;
 				}
 				date_add($objDay,date_interval_create_from_date_string("1 day"));
 			}
@@ -153,7 +153,7 @@ if (f_shouldDie("C")) {
 			for ($idxStore = 0; $idxStore < $totalStore; $idxStore++) {
 				$rowStore = $arrayStore[$idxStore];
 				//Use divStore# to name both store title and store lines to control hide/show of individual store
-				echo "<div class=\"row mb-1\"><span class=\"bg-light text-center\" name=\"divStore".$idxStore."\"><strong>".$rowStore."</strong></span></div>";
+				echo "<div style=\"background:var(--bs-gray-200)\" class=\"row mb-1\"><span class=\"text-center\" name=\"divStore".$idxStore."\"><strong>".$rowStore."</strong></span></div>";
 				echo "<div class=\"row row-cols-7 g-0 mb-1\" name=\"divStore".$idxStore."\">";
 				$objDay = clone $objWeek1stDay; //counting day for store/ppl rows
 				for ($idxWD = 1; $idxWD < 8; $idxWD++) {

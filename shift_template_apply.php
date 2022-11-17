@@ -31,12 +31,11 @@
     //get user data
     $arrayUserID = array();
     $arrayUserWorkday = array();
-    $sql = "SELECT `c_name`,`c_id`,`c_workday`,`c_employee` FROM `t_user` WHERE (NOT `c_store`='NONE')";
+    $sql = "SELECT `c_name`,`c_id`,`c_employee` FROM `t_user` WHERE (NOT `c_store`='NONE')";
   	$userResult = $conn->query($sql);
   	$idx = 0;
   	while($row = $userResult->fetch_assoc()) {
   		$arrayUserID[$idx] = $row["c_id"];
-  		$arrayUserWorkday[$arrayUserID[$idx]] = $row["c_workday"];
       $arrayUserEmployee[$idx] = $row["c_employee"];//full time or part time employee
   		$idx++;
   	}
@@ -74,26 +73,10 @@
         if ($isHoliday) {
           $c_type = "HW";
         }else{
-          if (strstr($arrayUserWorkday[$c_id],(string)$currentWD)) {
-            $c_type = "WW";
-          }else{
-            $c_type = "OW";
-          }
+          $c_type = "WW";
         }// if HW
         $result = ($result && $stmt->execute());
       }//while loop shiftTemp result
-
-      //apply user off day to t_leave
-      for ($idx = 0; $idx<$totalUser; $idx++){
-        $c_id = $arrayUserID[$idx];
-        myLOG($c_id." ".$arrayUserEmployee[$idx]." ".$arrayUserWorkday[$c_id]);
-        if ($arrayUserEmployee[$idx] == "F"){ //only full time requires leave data
-          if (!(strstr($arrayUserWorkday[$c_id],(string)$currentWD))){
-            $c_date = date_format($currentDate,'Y-m-d');
-            $result = ($result && $stmt_leave->execute());
-          }
-        }
-      }
 
       date_add($currentDate,date_interval_create_from_date_string("1 day"));
     }//while loop dates

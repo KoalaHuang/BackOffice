@@ -29,8 +29,8 @@
       $c_id = $obj[$idx]->id;
       if ($c_id != ""){ //if id is "", it means remove all assignmens
         $c_store= $obj[$idx]->store;
-        $c_weekday = $obj[$idx]->weekday;
-        //get user workday
+        //$c_weekday = $obj[$idx]->weekday;
+        /*get user workday
         $sql = "SELECT `c_workday` FROM `t_user` WHERE (`c_id`='".$c_id."')";
         $wdResult = $conn->query($sql);
         if ($row = $wdResult->fetch_assoc()) {
@@ -38,7 +38,7 @@
         }else{
           echo json_encode("weekday data error!".$sql);
           die;
-        }
+        }*/
         //check if it's holiday
         $sql = "SELECT `c_holiday` FROM `t_holiday` WHERE `c_date`='".date_format($currentDate,'Y-m-d')."'";
         $holidayResult = $conn->query($sql);
@@ -47,11 +47,11 @@
         if ($isHoliday) {
           $c_type = "HW";
         }else{
-          if (strstr($userWD,$c_weekday)) {
+          //if (strstr($userWD,$c_weekday)) {
             $c_type = "WW";
-          }else{
-            $c_type = "OW";
-          }
+          //}else{
+            //$c_type = "OW";
+          //}
         }// if HW
         $stmt = $conn->prepare("INSERT INTO `t_calendar`(`c_date`, `c_id`, `c_store`, `c_type`, `c_timestart`, `c_timeend`, `c_fullday`, `c_totalmins`) VALUES (?,?,?,?,?,?,?,?)");
         $stmt->bind_param("ssssssii",$c_date,$c_id,$c_store,$c_type,$c_timestart,$c_timeend,$c_fullday,$c_totalmins);
