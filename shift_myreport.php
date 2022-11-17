@@ -236,7 +236,11 @@ if (f_shouldDie("E")) {
 			if ($odd_days > 6) { // Saturday
 				$days_remainder--;
 			}
-			$intWorkingDays = ($weeks_difference * 5) + $days_remainder;			
+			if ($isReportByDay){
+				$intWorkingDays = ($weeks_difference * 5) + $days_remainder;			
+			}else{
+				$intWorkingDays = (($weeks_difference * 5) + $days_remainder) * 9;		
+			}
         }
 		?>
 

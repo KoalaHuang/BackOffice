@@ -33,7 +33,11 @@ if (f_shouldDie("L")) {
 				$hideResult = false;
 			}
 		}
-		$isReportByDay = ($_POST["reportBy"] == "day");
+		if ($isReportByDay){
+			$intWorkingDays = ($weeks_difference * 5) + $days_remainder;			
+		}else{
+			$intWorkingDays = (($weeks_difference * 5) + $days_remainder) * 9;		
+		}
 	}
 	?>
 
