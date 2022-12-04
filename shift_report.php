@@ -33,7 +33,11 @@ if (f_shouldDie("L")) {
 				$hideResult = false;
 			}
 		}
-		$isReportByDay = ($_POST["reportBy"] == "day");
+		if ($isReportByDay){
+			$intWorkingDays = ($weeks_difference * 5) + $days_remainder;			
+		}else{
+			$intWorkingDays = (($weeks_difference * 5) + $days_remainder) * 9;		
+		}
 	}
 	?>
 
@@ -53,7 +57,7 @@ if (f_shouldDie("L")) {
 			}
 			?>
 			<div class="input-group ps-1 pe-1">
-				<select class="form-select" name="sltFromYear" id="sltFromYear">
+				<select class="form-select" name="sltFromYear">
 				<?
 					if ($hideResult){
 						$selectedTime = $thisYear; 
@@ -69,7 +73,7 @@ if (f_shouldDie("L")) {
 					}
 				?>
 				</select>
-				<select class="form-select" name="sltFromMon" id="sltFromMon">
+				<select class="form-select" name="sltFromMon">
 				<?
 					if ($hideResult){
 						$selectedTime = $thisMonth; 
@@ -85,10 +89,10 @@ if (f_shouldDie("L")) {
 					}
 				?>
 				</select>
-				<select class="form-select" name="sltFromDay" id="sltFromDay">
+				<select class="form-select" name="sltFromDay">
 				<?
 					if ($hideResult){
-						$selectedTime = 1; 
+						$selectedTime = $thisDate; 
 					}else{
 						$selectedTime = date_format($fromDate,"j");
 					}
@@ -104,7 +108,7 @@ if (f_shouldDie("L")) {
 			</div>
 			<div class="text-center">&darr;</div>
 			<div class="input-group mb-3  ps-1 pe-1">
-				<select class="form-select" name="sltToYear" id="sltToYear">
+				<select class="form-select" name="sltToYear">
 				<?
 					if ($hideResult){
 						$selectedTime = $thisYear; 
@@ -120,7 +124,7 @@ if (f_shouldDie("L")) {
 					}
 				?>
 				</select>
-				<select class="form-select" name="sltToMon" id="sltToMon">
+				<select class="form-select" name="sltToMon">
 				<?
 					if ($hideResult){
 						$selectedTime = $thisMonth; 
@@ -136,10 +140,10 @@ if (f_shouldDie("L")) {
 					}
 				?>
 				</select>
-				<select class="form-select" name="sltToDay" id="sltToDay">
+				<select class="form-select" name="sltToDay">
 				<?
 					if ($hideResult){
-						$selectedTime = cal_days_in_month(CAL_GREGORIAN, $thisMonth, $thisYear); 
+						$selectedTime = $thisDate; 
 					}else{
 						$selectedTime = date_format($toDate,"j");
 					}
@@ -164,19 +168,18 @@ if (f_shouldDie("L")) {
 				</div>
 			</div>
 			<div class="mb-3 ps-1">
-				<button type="button" class="btn btn-outline-primary me-2" onclick="f_changeMonth(-1)"> << </button>
-				<button type="button" class="btn btn-outline-primary me-5" onclick="f_changeMonth(1)"> >> </button>
-				<button type="submit" class="btn btn-primary me-2">Submit</button>
+				<button type="submit" class="btn btn-primary me-5">Submit</button>
 				<button type="reset" class="btn btn-secondary">Reset</button>
 			</div><!-- Apply -->
 		</form>
+
 		<?
 		//retrive date into Arrays
 		if (!($inputError || $hideResult)){
 			$arrayUserName = array();
 			$arrayUserID = array();
 			$arrayStore = array();
-			$arrayWorkType = ["WW","HW"];
+			$arrayWorkType = ["WW","OW","HW"];
 			$arrayPeople = array(array(),array(),array());
 
 			include "connect_db.php";
@@ -217,27 +220,6 @@ if (f_shouldDie("L")) {
 				$idx++;
 			}
 			$conn->close();
-			//OFF Day working count
-			//count working days in given period
-			$stampFromDate = $fromDate->getTimestamp();
-			date_add($toDate,date_interval_create_from_date_string("1 day"));//move out 1 day to include toDate in counting
-			$stampToDate = $toDate->getTimestamp();
-			$days_difference = floor(($stampToDate - $stampFromDate)/86400);
-			$weeks_difference = floor($days_difference / 7); // Complete weeks
-			$first_day = date("w", $stampFromDate);
-			$days_remainder = floor($days_difference % 7);
-			$odd_days = $first_day + $days_remainder; // Do we have a Saturday or Sunday in the remainder?
-			if ($odd_days > 7) { // Sunday
-				$days_remainder--;
-			}
-			if ($odd_days > 6) { // Saturday
-				$days_remainder--;
-			}
-			if ($isReportByDay){
-				$intWorkingDays = ($weeks_difference * 5) + $days_remainder;			
-			}else{
-				$intWorkingDays = (($weeks_difference * 5) + $days_remainder) * 9;		
-			}
 		}
 		?>
 
@@ -249,19 +231,16 @@ if (f_shouldDie("L")) {
 		}else{
 		    die;
 		}
-		$xSum = array(); //store sum of working days for each type
-		$ySum = array(); //store sum of working days for each store
 		for ($idxPpl = 0; $idxPpl<$countUserID; $idxPpl++) {
 			$c_id = $arrayUserID[$idxPpl];
 			$c_name = $arrayUserName[$c_id];
-			$ySum = array_fill(0,count($ySum),0);
-			$xSum = array_fill(0,count($xSum),0);
 
 			echo "<a class=\"btn btn-outline-dark mb-1\" data-bs-toggle=\"collapse\" href=\"#rpt".$c_id."\" role=\"button\">".$c_name."</a>";
 			echo "<div class=\"collapse\" id=\"rpt".$c_id."\">";
 			echo "<div class=\"card card-body\"><table class=\"table\"><thead>";
 			echo "<tr>";
 			echo "<th scope=\"col\">Type</th>";
+			$ySum = array(); //store sum of working days for each store
 			for ($idxStore = 0; $idxStore<count($arrayStore); $idxStore++) {
 				echo "<th scope=\"col\">".$arrayStore[$idxStore]."</th>";
 				$ySum[$idxStore] = 0;
@@ -272,7 +251,7 @@ if (f_shouldDie("L")) {
 				$c_type = $arrayWorkType[$idxType];
 				echo "<tr>";
 				echo "<th scope=\"col\">".$c_type."</th>";
-				for ($idxStore = 0; $idxStore<count($arrayStore); $idxStore++) {
+				for ($idxStore = 0, $xSum = 0; $idxStore<count($arrayStore); $idxStore++) {
 					$c_store = $arrayStore[$idxStore];
 					if (is_null($arrayPeople[$c_id][$c_store][$c_type])) {
 						$c_count = 0;
@@ -280,30 +259,20 @@ if (f_shouldDie("L")) {
 						$c_count = $arrayPeople[$c_id][$c_store][$c_type];
 					} //if count is null
 					echo "<td scope=\"col\">".$c_count."</th>";
-					$xSum[$c_type] = $xSum[$c_type] + $c_count;
+					$xSum = $xSum + $c_count;
 					$ySum[$idxStore] = $ySum[$idxStore] + $c_count;
 				} //for loop store
-				echo "<td class=\"table-secondary\" scope=\"col\">".$xSum[$c_type]."</th>"; //sum of this work type from all stores.
+				echo "<td class=\"table-secondary\" scope=\"col\">".$xSum."</th>"; //sum of this work type from all stores.
 				echo "</tr>";
 			} // for loop type
-			//Store SUM
 			echo "<tr>";
-			echo "<th class=\"table-secondary\" scope=\"col\">SUM</th>";
+			echo "<th class=\"table-secondary\" scope=\"col\">SUM</th>"; //store sum
 			for ($idxStore = 0, $totalWork=0; $idxStore<count($arrayStore); $idxStore++) {
 				$totalWork = $totalWork + $ySum[$idxStore];
 				echo "<td class=\"table-secondary\" scope=\"col\">".$ySum[$idxStore]."</th>";
 			}
 			echo "<td class=\"table-dark text-white\" scope=\"col\">".$totalWork."</th>"; //store sum
-			echo "</tr>";
-			//OFF day working count
-			if (($xSum["WW"] - $intWorkingDays) > 0){
-				echo "<tr>";
-				echo "<td class=\"table-secondary fst-italic\" scope=\"col\" colspan=\"".(count($arrayStore)+1)."\">Besides ".$intWorkingDays." weekday, OFF time working</td>";
-				echo "<td class=\"table-secondary\" scope=\"col\">".($xSum["WW"] - $intWorkingDays)."</td>";
-				echo "</tr>";
-			}
-
-			echo "</tbody></table>";
+			echo "</tr></tbody></table>";
 			echo "</div>";
 			echo "</div>";
 		} // for loop ppl
