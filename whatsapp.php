@@ -3,7 +3,6 @@
   //$type: "S", send notice for stocking data change
   //$type: "H", shift change notice
   //$msg: array of string. each element is one line. First string is mail subject
-  include "mylog.php";
 
   function send_mailNote($to,$subject,$msg){
     // Always set content-type when sending HTML email
@@ -32,7 +31,6 @@
     default:
       exit;
     }
-    myLOG($msg);
     //send mail notice
     $sqlNotice = "SELECT `c_value` FROM `t_config` WHERE `c_setup`= '".$c_setup."' AND `c_subsetup`='mail'";
     $result = $conn->query($sqlNotice);
@@ -61,7 +59,6 @@
     //send WhatsApp notice
     $sqlNotice = "SELECT `c_value` FROM `t_config` WHERE `c_setup`= '".$c_setup."' AND `c_subsetup`='WA'";
     $result = $conn->query($sqlNotice);
-    myLOG($result);
     if ($result->num_rows > 0) {
       while($row = $result->fetch_assoc()) {
         $token = strtok($row["c_value"],".");

@@ -164,9 +164,9 @@ if (f_shouldDie("M")) {
 							}
 						?>
 						</select>
-						<span class="input-group-text">Total mins:</span><input type="text" class="form-control text-" id="ipTotalMins<?echo $idxTab?>"
+						<span class="input-group-text">Total mins:</span><input type="text" class="form-control" id="ipTotalMins<?echo $idxTab?>"
 						<?
-							if ($idxTab <= $intAssigned){
+							if ($idxTab < $intAssigned){
 								echo "value=".$arrayTotalmins[$idxTab];
 							}
 							echo " disabled";
@@ -176,7 +176,7 @@ if (f_shouldDie("M")) {
 						<div class="form-check form-switch form-check-inline me-2 align-self-center">
 							<input class="form-check-input" type="checkbox" role="switch" id="checkFullDay<?echo $idxTab?>" onchange="f_ShiftChanged(<?echo $idxTab?>,1)"
 							<?
-							if ($idxTab <= $intAssigned){
+							if ($idxTab < $intAssigned){
 								if ($arrayFullday[$idxTab]==1){
 									echo "checked";									
 								}
@@ -188,7 +188,7 @@ if (f_shouldDie("M")) {
 						</div>
 						<select class="form-select" id="sltTimeStart<?echo $idxTab?>" onchange="f_ShiftChanged(<?echo $idxTab?>,1)"
 						<?
-							if (($idxTab > $intAssigned) ||($arrayFullday[$idxTab]==1)){
+							if (($idxTab >= $intAssigned) ||($arrayFullday[$idxTab]==1)){
 								echo "disabled";
 								$timeRec = "0:00";
 							}else{
@@ -207,7 +207,7 @@ if (f_shouldDie("M")) {
 						<span class="input-group-text">&rarr;</span>
 						<select class="form-select" id="sltTimeEnd<?echo $idxTab?>" onchange="f_ShiftChanged(<?echo $idxTab?>,1)"
 						<?
-							if (($idxTab > $intAssigned) ||($arrayFullday[$idxTab]==1)){
+							if (($idxTab >= $intAssigned) ||($arrayFullday[$idxTab]==1)){
 								echo "disabled";
 								$timeRec = "0:00";
 							}else{

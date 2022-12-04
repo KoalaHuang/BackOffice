@@ -95,7 +95,7 @@ function f_storeSelected(idxStore) {
 }
 
 //highlight selected cell and update user selection
-function f_cellSelected(strStore, intWD, intCellYear, intCellMon, intmDay) {
+function f_cellSelected(strStore, intWD, intCellYear, intCellMon, intmDay, isRead) {
   objGlobal.year = intCellYear;
   objGlobal.pmon = objGlobal.mon;
   objGlobal.mon = intCellMon;
@@ -137,7 +137,7 @@ function f_cellSelected(strStore, intWD, intCellYear, intCellMon, intmDay) {
         break;
       }//fouund
     }//for loop ppl
-    document.getElementById("lbl_modal").innerHTML = "Change Shift";
+    document.getElementById("lbl_modal").innerHTML = "Shift on";
     document.getElementById("lbl_msg").innerHTML = "<strong>" + objGlobal.year + "/" + objGlobal.mon + "/" + objGlobal.mday + "  " + f_weekday(objGlobal.wd) + "</strong>  at  <strong>" + objGlobal.store + "</strong>";
     if (objGlobal.status == 0){ //currently not assigned
       document.getElementById("lbl_Working").innerHTML = "Not working";
@@ -158,6 +158,12 @@ function f_cellSelected(strStore, intWD, intCellYear, intCellMon, intmDay) {
     modal_Popup.show();
   }else{
     alert ("You are not working in " + objGlobal.store + ".");
+  }
+  //disable changes if it's readonly
+  if (isRead){
+     btn_ok.hidden = sltTimeStart.disabled = sltTimeEnd.disabled = checkFullDay.disabled = checkWorking.disabled = true;
+  }else{
+    btn_ok.hidden = checkWorking.disabled = false;
   }
 }
 
