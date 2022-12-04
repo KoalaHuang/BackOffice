@@ -297,8 +297,9 @@ if (f_shouldDie("L")) {
 			echo "</tr>";
 			//OFF day working count
 			if (($xSum["WW"] - $intWorkingDays) > 0){
+				if ($isReportByDay){$strWorking = "days";}else{$strWorking = "hours";}
 				echo "<tr>";
-				echo "<td class=\"table-secondary fst-italic\" scope=\"col\" colspan=\"".(count($arrayStore)+1)."\">Besides ".$intWorkingDays." weekday, OFF time working</td>";
+				echo "<td class=\"table-secondary fst-italic\" scope=\"col\" colspan=\"".(count($arrayStore)+1)."\">Besides ".$intWorkingDays." week ".$strWorking.", OFF time working</td>";
 				echo "<td class=\"table-secondary\" scope=\"col\">".($xSum["WW"] - $intWorkingDays)."</td>";
 				echo "</tr>";
 			}
