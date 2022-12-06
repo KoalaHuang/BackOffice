@@ -175,18 +175,20 @@ if (f_shouldDie("E")) {
 		//retrive date into Arrays
 		if (!($inputError || $hideResult)){
 			$arrayUserName = array();
+			$arrayUserType = array();
 			$arrayUserID = array();
 			$arrayStore = array();
 			$arrayWorkType = ["WW","HW"];
 			$arrayPeople = array(array(),array(),array());
 
 			include "connect_db.php";
-			$sql = "SELECT `c_name`,`c_id` FROM `t_user` WHERE `c_id`='".$_SESSION["id"]."'";
+			$sql = "SELECT `c_name`,`c_id`,`c_employee` FROM `t_user` WHERE `c_id`='".$_SESSION["id"]."'";
 			$result = $conn->query($sql);
 			$idx = 0;
 			while($row = $result->fetch_assoc()) {
 				$arrayUserID[$idx] = $row["c_id"];
 				$arrayUserName[$arrayUserID[$idx]] = $row["c_name"];
+				$arrayUserType[$arrayUserID[$idx]] = $row["c_employee"];
 				$idx++;
 			}
 			$sql = "SELECT `c_name` FROM `t_store`";
@@ -299,7 +301,7 @@ if (f_shouldDie("E")) {
 			echo "<td class=\"table-dark text-white\" scope=\"col\">".$totalWork."</th>"; //store sum
 			echo "</tr>";
 			//OFF day working count
-			if (($xSum["WW"] - $intWorkingDays) > 0){
+			if (($arrayUserType[$c_id]=="F") AND ($xSum["WW"] - $intWorkingDays) > 0){
 				echo "<tr>";
 				echo "<td class=\"table-secondary fst-italic\" scope=\"col\" colspan=\"".(count($arrayStore)+1)."\">Besides ".$intWorkingDays." weekday, OFF time working</td>";
 				echo "<td class=\"table-secondary\" scope=\"col\">".($xSum["WW"] - $intWorkingDays)."</td>";

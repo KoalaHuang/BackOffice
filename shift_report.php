@@ -174,18 +174,20 @@ if (f_shouldDie("L")) {
 		//retrive date into Arrays
 		if (!($inputError || $hideResult)){
 			$arrayUserName = array();
+			$arrayUserType = array();
 			$arrayUserID = array();
 			$arrayStore = array();
 			$arrayWorkType = ["WW","HW"];
 			$arrayPeople = array(array(),array(),array());
 
 			include "connect_db.php";
-			$sql = "SELECT `c_name`,`c_id` FROM `t_user` WHERE (NOT ((`c_store`='NONE') OR (`c_employee`='D')))";
+			$sql = "SELECT `c_name`,`c_id`,`c_employee` FROM `t_user` WHERE (NOT ((`c_store`='NONE') OR (`c_employee`='D')))";
 			$result = $conn->query($sql);
 			$idx = 0;
 			while($row = $result->fetch_assoc()) {
 				$arrayUserID[$idx] = $row["c_id"];
 				$arrayUserName[$arrayUserID[$idx]] = $row["c_name"];
+				$arrayUserType[$arrayUserID[$idx]] = $row["c_employee"];
 				$idx++;
 			}
 			$sql = "SELECT `c_name` FROM `t_store`";
@@ -236,7 +238,7 @@ if (f_shouldDie("L")) {
 			if ($isReportByDay){
 				$intWorkingDays = ($weeks_difference * 5) + $days_remainder;			
 			}else{
-				$intWorkingDays = (($weeks_difference * 5) + $days_remainder) * 9;		
+				$intWorkingDays = (($weeks_difference * 5) + $days_remainder) * 10;		
 			}
 		}
 		?>
@@ -295,8 +297,8 @@ if (f_shouldDie("L")) {
 			}
 			echo "<td class=\"table-dark text-white\" scope=\"col\">".$totalWork."</th>"; //store sum
 			echo "</tr>";
-			//OFF day working count
-			if (($xSum["WW"] - $intWorkingDays) > 0){
+			//OFF day working count for FULL TIME employee
+			if (($arrayUserType[$c_id]=="F") AND ($xSum["WW"] - $intWorkingDays) > 0){
 				if ($isReportByDay){$strWorking = "days";}else{$strWorking = "hours";}
 				echo "<tr>";
 				echo "<td class=\"table-secondary fst-italic\" scope=\"col\" colspan=\"".(count($arrayStore)+1)."\">Besides ".$intWorkingDays." week ".$strWorking.", OFF time working</td>";
