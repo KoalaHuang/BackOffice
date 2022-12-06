@@ -238,9 +238,9 @@ function f_submit() {
       objGlobal.fullday = 1;
       objGlobal.timestart = objGlobal.timeend = "0:00";
       if (employeeStatus == "P") {
-        objGlobal.totalmins = 480; //P employee counts 8 hours
+        objGlobal.totalmins = 540; //P employee counts 9 hours
       }else{
-        objGlobal.totalmins = 540  //F and S employee counts 9 hours 
+        objGlobal.totalmins = 600;  //F and S employee counts 10 hours 
       }
     }else{ //part time. 
       objGlobal.fullday = 0;
@@ -250,7 +250,7 @@ function f_submit() {
       const endTime = sltTimeEnd.value.split(":");
       objGlobal.totalmins = (endTime[0] - startTime[0]) * 60 + (endTime[1] - startTime[1]);
       if (objGlobal.totalmins < 0){
-        alert("Please choose right time slot.");
+        alert("End time need to be later than start time.");
         objGlobal.totalmins = 0;
         isGoodToSubmit = false;
       }

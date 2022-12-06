@@ -62,8 +62,11 @@ function f_ShiftChanged(idxTab, intTimeChanged){
         const startTime = sltTimeStart.value.split(":");
         const endTime = sltTimeEnd.value.split(":");
         intTotalMins = (endTime[0] - startTime[0]) * 60 + (endTime[1] - startTime[1]);
+        if (intTotalMins <= 0){
+          alert("End time need to be later than start time.");
+        }
         sltTimeStart.disabled = sltTimeEnd.disabled = checkFullDay.disabled = false;
-      }
+        }
     }else{ //employee change. default set to full day
       sltTimeStart.value = "0:00";
       sltTimeEnd.value = "0:00";
@@ -75,9 +78,9 @@ function f_ShiftChanged(idxTab, intTimeChanged){
       }else{
         checkFullDay.disabled = (employeeStatus == "F");
         if (employeeStatus == "P") {
-          intTotalMins = 480; //P employee counts 8 hours
+          intTotalMins = 540; //P employee counts 9 hours
         }else{
-          intTotalMins = 540  //F and S employee counts 9 hours 
+          intTotalMins = 600  //F and S employee counts 10 hours 
         }
       }
       f_refreshTabUser(); //only enable selected user in one tab
