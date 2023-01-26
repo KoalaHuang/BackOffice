@@ -56,7 +56,9 @@ if (f_shouldDie("M")) {
     $thisDay = $_GET['day'];
     $thisWeekDay = $_GET['WD'];
     $thisStore = $_GET['store'];
-	$calendarMon = $_GET['cmon'];  //return to month of calendar displayed
+	//year and month calendar displayed may not be same as date to be editted
+	$calendarMon = $_GET['cmon'];  //month of calendar
+	$calendarYear = $_GET['cyear']; //year of calendar
     $objDay = date_create_from_format("Y/n/j",$thisYear."/".$thisMon."/".$thisDay);
 	$thisDate = date_format($objDay,'Y-m-d');
 	$sql = "SELECT `c_holiday` FROM `t_holiday` WHERE `c_date`='".$thisDate."'";
@@ -74,7 +76,7 @@ if (f_shouldDie("M")) {
 	?>
 
 	<div class="container">
-    <div class="mb-3" id="thisCell" data-stocking-year="<?echo $thisYear?>" data-stocking-mon="<?echo $thisMon?>" data-stocking-day="<?echo $thisDay?>" data-stocking-store="<?echo $thisStore?>" data-stocking-maxppl="<?echo $MaxPpl?>" data-stocking-minppl="<?echo $MinPpl?>" data-stocking-weekday="<?echo $thisWeekDay?>" data-stocking-isholiday="<?if (is_null($holiday)) {echo "0";}else{echo "1";}?>" data-stocking-calendarmon="<?echo $calendarMon?>">
+    <div class="mb-3" id="thisCell" data-stocking-year="<?echo $thisYear?>" data-stocking-mon="<?echo $thisMon?>" data-stocking-day="<?echo $thisDay?>" data-stocking-store="<?echo $thisStore?>" data-stocking-maxppl="<?echo $MaxPpl?>" data-stocking-minppl="<?echo $MinPpl?>" data-stocking-weekday="<?echo $thisWeekDay?>" data-stocking-isholiday="<?if (is_null($holiday)) {echo "0";}else{echo "1";}?>" data-stocking-calendarmon="<?echo $calendarMon?>" data-stocking-calendaryear="<?echo $calendarYear?>">
 		<span class="bg-light" >Date:&nbsp;</span>
 		<span class="bg-white fw-bold"><?echo date_format($objDay,"M j Y  D")?></span>
 		<span class="bg-light ms-3" >Store:&nbsp;</span>

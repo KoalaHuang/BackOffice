@@ -167,9 +167,45 @@ function f_cellSelected(strStore, intWD, intCellYear, intCellMon, intmDay, isRea
   }
 }
 
+//Toggle between only Me or All calendar
+function f_OnlyMe(){
+  const isOnlyMe = document.getElementById("btnOnlyMe").checked;
+  const elmStores = document.getElementsByName("btnStores");
+  const totalStores = elmStores.length;
+  for (idxStore = 0; idxStore < totalStores; idxStore++){
+    if (document.getElementById("btnST"+idxStore).checked){
+      for (idxWeek = 1; idxWeek < 6; idxWeek++){//calendar has 5 weeks
+        var isRowBlank = true;//if whole week has no assignment displayed, last assignment cell will be shown as placeholder
+        elmAssignments = document.getElementsByName("Store"+idxStore+"_"+idxWeek); // all assignment in the week have same name
+        totalAssignments = elmAssignments.length;
+        for (idxAssign = 0; idxAssign < totalAssignments; idxAssign++){
+          var strClass = elmAssignments[idxAssign].getAttribute("class");
+          if (isOnlyMe){
+            strUserID = elmAssignments[idxAssign].innerText;
+            if (strUserID != objGlobal.id){
+              if ((isRowBlank) && (idxAssign == (totalAssignments - 1))){
+                strClass = strClass + " invisible";
+                isRowBlank = false;
+              }else{
+                strClass = strClass + " d-none";
+              }
+            }else{
+              isRowBlank = false;
+            }
+          }else{
+            strClass = strClass.replace("d-none","");
+            strClass = strClass.replace("invisible","");
+          }
+          elmAssignments[idxAssign].setAttribute("class",strClass);
+        }
+      }
+    }
+  }
+}
+
 //Shift edit for all
 function f_editForAll(strStore, intWD, intCellYear, intCellMon, intmDay){
-  strURL = "shift_admin.php?year=" + intCellYear + "&mon=" + intCellMon + "&day=" + intmDay + "&WD=" + intWD + "&store=" + strStore + "&cmon=" + document.getElementById("iptDate").getAttribute("data-stocking-mon");
+  strURL = "shift_admin.php?year=" + intCellYear + "&mon=" + intCellMon + "&day=" + intmDay + "&WD=" + intWD + "&store=" + strStore + "&cmon=" + document.getElementById("iptDate").getAttribute("data-stocking-mon") + "&cyear=" + document.getElementById("iptDate").getAttribute("data-stocking-year");
   window.location.href = strURL;
 }
 

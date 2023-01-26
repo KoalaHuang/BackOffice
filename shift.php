@@ -77,7 +77,15 @@ if (f_shouldDie("C")) {
 	$today = new DateTime("today");
 	?>
 
-	<div id="txtUserName" class="text-center mb-2 text-secondary col-12 fw-bold fs-6" data-stocking-userid="<?echo $UserID?>" data-stocking-userstore="<?echo $UserStore?>" data-stocking-userworkday="<?echo $UserWorkday?>" data-stocking-employee="<?echo $UserStatus?>"><?echo $UserName?></div>
+	<div class="container">
+		<div class="row">
+			<div id="txtUserName" class="text-end mb-1 col-6 fw-bold fs-6" data-stocking-userid="<?echo $UserID?>" data-stocking-userstore="<?echo $UserStore?>" data-stocking-userworkday="<?echo $UserWorkday?>" data-stocking-employee="<?echo $UserStatus?>"><?echo $UserName?></div>
+			<div class="col-5 form-check form-check-inline">
+				<input checked type="checkbox" class="ms-2 form-check-input" name="btnOnlyMe" id="btnOnlyMe" onclick="f_OnlyMe()">
+				<label class="ms-1 form-check-label" for="btnOnlyMe">Only Me</label>
+			</div>
+		</div>
+	</div>
 
 	<div class="container">
 		<div class="mb-2"><!--month switch-->
@@ -152,11 +160,14 @@ if (f_shouldDie("C")) {
 			$rowStore = "";
 			for ($idxStore = 0; $idxStore < $totalStore; $idxStore++) {
 				$rowStore = $arrayStore[$idxStore];
+				//use store#_week# to name assignments in the week, to hide/show the assignments when toggling Only Me calendar
+				$strStoreWeek = "Store".$idxStore."_".$idxWeek;
 				//Use divStore# to name both store title and store lines to control hide/show of individual store
 				echo "<div style=\"background:var(--bs-gray-200)\" class=\"row mb-1\"><span class=\"text-center\" name=\"divStore".$idxStore."\"><strong>".$rowStore."</strong></span></div>";
 				echo "<div class=\"row row-cols-7 g-0 mb-1\" name=\"divStore".$idxStore."\">";
 				$objDay = clone $objWeek1stDay; //counting day for store/ppl rows
 				for ($idxWD = 1; $idxWD < 8; $idxWD++) {
+					$isRowBlank = true;  //indicating no assigment is shown for current row.
 					$mday = date('j',date_timestamp_get($objDay));
 					$cellYear = date("Y",date_timestamp_get($objDay));
 					$cellMon = date("n",date_timestamp_get($objDay));
@@ -188,9 +199,19 @@ if (f_shouldDie("C")) {
 					$sql = "SELECT `c_id`, `c_type`, `c_timestart`, `c_timeend`, `c_fullday`, `c_totalmins` FROM `t_calendar` WHERE `c_store`='".$rowStore."' AND `c_date`='".$cellYear."-".$cellMon."-".$mday."'";
 					$result = $conn->query($sql);
 					for ($idxPpl = 1; $idxPpl <= $MaxPpl; $idxPpl++) {
-						$strDivClass = "<div class=\"text-center fs-6";
+						$strDivClass = "<div name=\"".$strStoreWeek."\" class=\"text-center fs-6"; //name all assignme by store&week to toggle Only Me and all calendar
 						$row = $result->fetch_assoc();
 						if ($row){
+							if (($row['c_id']) != $UserID){
+								if ((!($isRowBlank)) || ($idxPpl < $MaxPpl) || ($idxWD < 7)) {
+									$strDivClass = $strDivClass . " d-none"; //hide the row if it's not you
+								}else{
+									$strDivClass = $strDivClass . " invisible"; //if whole row/week is blank, display a placehholder so that user can click to add assignment
+									$isRowBlank = false;
+								}
+							}else{
+								$isRowBlank = false; //this row/week has current user assignment
+							}
 							$c_type = $row['c_type'];
 							$data_fullday = $row['c_fullday'];
 							$data_timestart =  $row['c_timestart'];
@@ -209,6 +230,12 @@ if (f_shouldDie("C")) {
 									break;
 							}
 						}else{
+							if ((!($isRowBlank)) || ($idxPpl < $MaxPpl) || ($idxWD < 7)) {
+								$strDivClass = $strDivClass . " d-none"; //hide the row if it's not you
+							}else{
+								$strDivClass = $strDivClass . " invisible"; //if whole row/week is blank, display a placehholder so that user can click to add assignment
+								$isRowBlank = false;
+							}
 							$strDivData = "\" data-stocking-fullday=\"\" data-stocking-timestart=\"\"  data-stocking-timeend=\"\" data-stocking-totalmins=\"\" id=\"".$cellID."_".$idxPpl."\">";
 							if ($idxPpl <= $MinPpl) {
 								echo $strDivClass." text-danger".$strDivData."*</div>";

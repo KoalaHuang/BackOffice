@@ -44,8 +44,8 @@
     $stmt = $conn->prepare("INSERT INTO `t_calendar`(`c_date`, `c_id`, `c_store`, `c_type`, `c_timestart`, `c_timeend`, `c_fullday`, `c_totalmins`) VALUES (?,?,?,?,?,?,?,?)");
     $stmt->bind_param("ssssssii",$c_date,$c_id,$c_store,$c_type,$c_timestart,$c_timeend,$c_fullday,$c_totalmins);
     //prepare t_leave INSERT
-    $stmt_leave = $conn->prepare("INSERT INTO `t_leave`(`c_date`, `c_id`, `c_type`) VALUES (?,?,'LO')");
-    $stmt_leave->bind_param("ss",$c_date,$c_id);
+    //$stmt_leave = $conn->prepare("INSERT INTO `t_leave`(`c_date`, `c_id`, `c_type`) VALUES (?,?,'LO')");
+    //$stmt_leave->bind_param("ss",$c_date,$c_id);
 
     $result = true;
     //update t_calendar day by day

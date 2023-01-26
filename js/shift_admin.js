@@ -8,7 +8,8 @@ const objGlobal = {
     mon: "",
     day: "",
     isholiday: false,
-    cmon: "", //calendar month
+    cmon: "", //calendar month. calendar dispaly mon&year may be different from editting date
+    cyear: "" //clendar year
 };
 
 arrayToSubmit = []; //arrany pass to admin_shift_save.php
@@ -24,12 +25,13 @@ window.addEventListener("DOMContentLoaded", function() {
     objGlobal.day = elmCell.getAttribute("data-stocking-day");    
     objGlobal.w = elmCell.getAttribute("data-stocking-weekday");    
     objGlobal.cmon = elmCell.getAttribute("data-stocking-calendarmon"); 
+    objGlobal.cyear = elmCell.getAttribute("data-stocking-calendaryear"); 
     objGlobal.isholiday = (elmCell.getAttribute("data-stocking-isholiday") == "1"); 
 }, false);
   
 //return button to return to month calendar displayed
 function f_return() {
-    strURL = "shift.php?year=" + objGlobal.year + "&mon=" + objGlobal.cmon;
+    strURL = "shift.php?year=" + objGlobal.cyear + "&mon=" + objGlobal.cmon;
     window.location.href = strURL;
 }
   
@@ -204,7 +206,6 @@ function f_toConfirm() {
             idxArray++;
         }
     }
-    console.log(arrayToSubmit);
     if (idxArray == 0) { //no assignment. return "" id to remove all assignments
         arrayToSubmit[idxArray] = new ClassToSubmit(strStore,objGlobal.w, "", objGlobal.year, objGlobal.mon, objGlobal.day, "", "", 0, 0);
     }
