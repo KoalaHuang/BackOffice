@@ -81,7 +81,7 @@ if (f_shouldDie("C")) {
 		<div class="row">
 			<div id="txtUserName" class="text-end mb-1 col-6 fw-bold fs-6" data-stocking-userid="<?echo $UserID?>" data-stocking-userstore="<?echo $UserStore?>" data-stocking-userworkday="<?echo $UserWorkday?>" data-stocking-employee="<?echo $UserStatus?>"><?echo $UserName?></div>
 			<div class="col-5 form-check form-check-inline">
-				<input checked type="checkbox" class="ms-2 form-check-input" name="btnOnlyMe" id="btnOnlyMe" onclick="f_OnlyMe()">
+				<input <?/*display Only Me shift for non-admin user*/if (!($UserIsAdmin)){echo "checked";}?> type="checkbox" class="ms-2 form-check-input" name="btnOnlyMe" id="btnOnlyMe" onclick="f_OnlyMe()">
 				<label class="ms-1 form-check-label" for="btnOnlyMe">Only Me</label>
 			</div>
 		</div>
@@ -202,15 +202,17 @@ if (f_shouldDie("C")) {
 						$strDivClass = "<div name=\"".$strStoreWeek."\" class=\"text-center fs-6"; //name all assignme by store&week to toggle Only Me and all calendar
 						$row = $result->fetch_assoc();
 						if ($row){
-							if (($row['c_id']) != $UserID){
-								if ((!($isRowBlank)) || ($idxPpl < $MaxPpl) || ($idxWD < 7)) {
-									$strDivClass = $strDivClass . " d-none"; //hide the row if it's not you
+							if (!($UserIsAdmin)){//for non-admin user, display Only Me shift
+								if (($row['c_id']) != $UserID){
+									if ((!($isRowBlank)) || ($idxPpl < $MaxPpl) || ($idxWD < 7)) {
+										$strDivClass = $strDivClass . " d-none"; //hide the row if it's not you
+									}else{
+										$strDivClass = $strDivClass . " invisible"; //if whole row/week is blank, display a placehholder so that user can click to add assignment
+										$isRowBlank = false;
+									}
 								}else{
-									$strDivClass = $strDivClass . " invisible"; //if whole row/week is blank, display a placehholder so that user can click to add assignment
-									$isRowBlank = false;
+									$isRowBlank = false; //this row/week has current user assignment
 								}
-							}else{
-								$isRowBlank = false; //this row/week has current user assignment
 							}
 							$c_type = $row['c_type'];
 							$data_fullday = $row['c_fullday'];
@@ -230,11 +232,13 @@ if (f_shouldDie("C")) {
 									break;
 							}
 						}else{
-							if ((!($isRowBlank)) || ($idxPpl < $MaxPpl) || ($idxWD < 7)) {
-								$strDivClass = $strDivClass . " d-none"; //hide the row if it's not you
-							}else{
-								$strDivClass = $strDivClass . " invisible"; //if whole row/week is blank, display a placehholder so that user can click to add assignment
-								$isRowBlank = false;
+							if (!($UserIsAdmin)){
+								if ((!($isRowBlank)) || ($idxPpl < $MaxPpl) || ($idxWD < 7)) {
+									$strDivClass = $strDivClass . " d-none"; //hide the row if it's not you
+								}else{
+									$strDivClass = $strDivClass . " invisible"; //if whole row/week is blank, display a placehholder so that user can click to add assignment
+									$isRowBlank = false;
+								}
 							}
 							$strDivData = "\" data-stocking-fullday=\"\" data-stocking-timestart=\"\"  data-stocking-timeend=\"\" data-stocking-totalmins=\"\" id=\"".$cellID."_".$idxPpl."\">";
 							if ($idxPpl <= $MinPpl) {
