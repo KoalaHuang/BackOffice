@@ -60,6 +60,18 @@ $access = $_SESSION["access"];
     </div>
     <?}?>
     <?
+      if (strstr($access,"V")) {//Leave
+    ?>
+    <div class="d-grid gap-2 col-6 border border-secondary mx-auto p-2 mb-3">
+    <h5 class="text-center text-muted">Leave</h5>
+    <?
+      if (strstr($access,"V")) {
+        echo "<a href=\"leave.php\" class=\"btn btn-primary\" role=\"button\">Leave</a>";
+      }
+    ?>
+    </div>
+    <?}?>
+    <?
       if (strstr($access,"O")) {//profile
     ?>
     <div class="d-grid gap-2 col-6 border border-secondary mx-auto p-2 mb-3">

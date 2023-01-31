@@ -45,6 +45,11 @@
             }
             echo "</ul>";
           }
+          if (strstr($_SESSION["access"],"V")) {
+            echo "<li class=\"nav-item\">";
+            echo "<a class=\"nav-link\" href=\"leave.php\">Leave</a>";
+            echo "</li>";
+          }
           if (strstr($_SESSION["access"],"O")) {
             echo "<li class=\"nav-item\">";
             echo "<a class=\"nav-link\" href=\"myaccount.php\">Profile</a>";

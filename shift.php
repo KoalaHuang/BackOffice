@@ -77,14 +77,23 @@ if (f_shouldDie("C")) {
 	$today = new DateTime("today");
 	?>
 
-	<div class="container">
-		<div class="row">
-			<div id="txtUserName" class="text-end mb-1 col-6 fw-bold fs-6" data-stocking-userid="<?echo $UserID?>" data-stocking-userstore="<?echo $UserStore?>" data-stocking-userworkday="<?echo $UserWorkday?>" data-stocking-employee="<?echo $UserStatus?>"><?echo $UserName?></div>
-			<div class="col-5 form-check form-check-inline">
-				<input <?/*display Only Me shift for non-admin user*/if (!($UserIsAdmin)){echo "checked";}?> type="checkbox" class="ms-2 form-check-input" name="btnOnlyMe" id="btnOnlyMe" onclick="f_OnlyMe()">
-				<label class="ms-1 form-check-label" for="btnOnlyMe">Only Me</label>
-			</div>
-		</div>
+	<div class="container mb-3">
+		<div id="txtUserName" class="d-none" data-stocking-userid="<?echo $UserID?>" data-stocking-userstore="<?echo $UserStore?>" data-stocking-userworkday="<?echo $UserWorkday?>" data-stocking-employee="<?echo $UserStatus?>"><?echo $UserName?></div>
+			<select class="form-select form-select text-center fw-bold text-white bg-primary" id="sltName" onchange="f_NameChange()">
+			<option value="All" <?echo $UserIsAdmin?"selected":"";?>>All</option>";
+			<?
+			$sql = "SELECT `c_id`, `c_name` FROM `t_user`";
+			$result = $conn->query($sql);
+			while($row = $result->fetch_assoc()) {
+				if ($UserIsAdmin || ($row['c_id'] != $UserID)){
+					$strSelected = "";
+				}else{
+					$strSelected = "selected";
+				}
+				echo "<option value=\"".$row['c_id']."\" ".$strSelected.">".$row['c_name']."</option>";
+			}
+			echo "</select>";
+			?>
 	</div>
 
 	<div class="container">

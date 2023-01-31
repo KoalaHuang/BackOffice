@@ -167,9 +167,10 @@ function f_cellSelected(strStore, intWD, intCellYear, intCellMon, intmDay, isRea
   }
 }
 
-//Toggle between only Me or All calendar
-function f_OnlyMe(){
-  const isOnlyMe = document.getElementById("btnOnlyMe").checked;
+//Name filter changed
+function f_NameChange(){
+  const strNameSelected = document.getElementById("sltName").value;
+  console.log("NAME CHANGED!!!"+strNameSelected);
   const elmStores = document.getElementsByName("btnStores");
   const totalStores = elmStores.length;
   for (idxStore = 0; idxStore < totalStores; idxStore++){
@@ -180,9 +181,11 @@ function f_OnlyMe(){
         totalAssignments = elmAssignments.length;
         for (idxAssign = 0; idxAssign < totalAssignments; idxAssign++){
           var strClass = elmAssignments[idxAssign].getAttribute("class");
-          if (isOnlyMe){
+          strClass = strClass.replace("d-none","");
+          strClass = strClass.replace("invisible","");
+          if (strNameSelected != "All"){
             strUserID = elmAssignments[idxAssign].innerText;
-            if (strUserID != objGlobal.id){
+            if (strUserID != strNameSelected){
               if ((isRowBlank) && (idxAssign == (totalAssignments - 1))){
                 strClass = strClass + " invisible";
                 isRowBlank = false;
@@ -192,10 +195,8 @@ function f_OnlyMe(){
             }else{
               isRowBlank = false;
             }
-          }else{
-            strClass = strClass.replace("d-none","");
-            strClass = strClass.replace("invisible","");
           }
+          console.log(strClass);
           elmAssignments[idxAssign].setAttribute("class",strClass);
         }
       }
