@@ -94,6 +94,60 @@ function f_storeSelected(idxStore) {
   }
 }
 
+//Name filter changed
+function f_NameChange(){
+  const elmSelectName = document.getElementById("sltName");
+  const strNameSelected = elmSelectName.value;
+  const strUserStore = elmSelectName.options[elmSelectName.selectedIndex].getAttribute("data-stocking-userstore");
+  //Filter store radio buttons
+  const elmBtnStore = document.getElementsByName("btnStores");
+  const totalStores = elmBtnStore.length;
+  for (idxWeek = 1; idxWeek < 6; idxWeek++){//calendar has 5 weeks
+    for (idxStore = 0; idxStore < totalStores; idxStore++){
+      var elmStores = document.getElementsByName("divStore"+idxStore); //stroe div in every week
+      var elmDivBtnStore = document.getElementById("divBtnStore"+idxStore); //store button div
+      strBtnClass = elmDivBtnStore.getAttribute("class");
+      strBtnClass = strBtnClass.replace(" d-none","");
+      strDivStoreTitleClass = elmStores[(idxWeek-1)*2].getAttribute("class");//First divStore# in the week is title
+      strDivStoreTitleClass = strDivStoreTitleClass.replace(" d-none","");
+      strDivStoreShiftClass = elmStores[(idxWeek-1)*2+1].getAttribute("class");//2nd divStore# in the week is Shift row
+      strDivStoreShiftClass = strDivStoreShiftClass.replace(" d-none","");
+      if ((strNameSelected == "All") || (strUserStore == "ALL")|| (strUserStore == elmBtnStore[idxStore].value)){
+        elmBtnStore[idxStore].checked = true;
+        var isRowBlank = true;//if whole week has no assignment displayed, last assignment cell will be shown as placeholder
+        elmAssignments = document.getElementsByName("Store"+idxStore+"_"+idxWeek); // all assignment in the week have same name
+        totalAssignments = elmAssignments.length;
+        for (idxAssign = 0; idxAssign < totalAssignments; idxAssign++){
+          var strClass = elmAssignments[idxAssign].getAttribute("class");
+          strClass = strClass.replace(" d-none","");
+          strClass = strClass.replace(" invisible","");
+          if (strNameSelected != "All"){
+            strUserID = elmAssignments[idxAssign].innerText;
+            if (strUserID != strNameSelected){
+              if ((isRowBlank) && (idxAssign == (totalAssignments - 1))){
+                strClass = strClass + " invisible";
+                isRowBlank = false;
+              }else{
+                strClass = strClass + " d-none";
+              }
+            }else{
+              isRowBlank = false;
+            }
+          }
+          elmAssignments[idxAssign].setAttribute("class",strClass);
+        }
+      }else{//hide store since user is not assigned to
+        strBtnClass = strBtnClass + " d-none";
+        strDivStoreTitleClass = strDivStoreTitleClass + " d-none";
+        strDivStoreShiftClass = strDivStoreShiftClass + " d-none";
+      }
+      elmStores[(idxWeek-1)*2].setAttribute("class",strDivStoreTitleClass);
+      elmStores[(idxWeek-1)*2+1].setAttribute("class",strDivStoreShiftClass);
+      elmDivBtnStore.setAttribute("class",strBtnClass);
+    }
+  }
+}
+
 //highlight selected cell and update user selection
 function f_cellSelected(strStore, intWD, intCellYear, intCellMon, intmDay, isRead) {
   objGlobal.year = intCellYear;
@@ -164,43 +218,6 @@ function f_cellSelected(strStore, intWD, intCellYear, intCellMon, intmDay, isRea
      btn_ok.hidden = sltTimeStart.disabled = sltTimeEnd.disabled = checkFullDay.disabled = checkWorking.disabled = true;
   }else{
     btn_ok.hidden = checkWorking.disabled = false;
-  }
-}
-
-//Name filter changed
-function f_NameChange(){
-  const strNameSelected = document.getElementById("sltName").value;
-  console.log("NAME CHANGED!!!"+strNameSelected);
-  const elmStores = document.getElementsByName("btnStores");
-  const totalStores = elmStores.length;
-  for (idxStore = 0; idxStore < totalStores; idxStore++){
-    if (document.getElementById("btnST"+idxStore).checked){
-      for (idxWeek = 1; idxWeek < 6; idxWeek++){//calendar has 5 weeks
-        var isRowBlank = true;//if whole week has no assignment displayed, last assignment cell will be shown as placeholder
-        elmAssignments = document.getElementsByName("Store"+idxStore+"_"+idxWeek); // all assignment in the week have same name
-        totalAssignments = elmAssignments.length;
-        for (idxAssign = 0; idxAssign < totalAssignments; idxAssign++){
-          var strClass = elmAssignments[idxAssign].getAttribute("class");
-          strClass = strClass.replace("d-none","");
-          strClass = strClass.replace("invisible","");
-          if (strNameSelected != "All"){
-            strUserID = elmAssignments[idxAssign].innerText;
-            if (strUserID != strNameSelected){
-              if ((isRowBlank) && (idxAssign == (totalAssignments - 1))){
-                strClass = strClass + " invisible";
-                isRowBlank = false;
-              }else{
-                strClass = strClass + " d-none";
-              }
-            }else{
-              isRowBlank = false;
-            }
-          }
-          console.log(strClass);
-          elmAssignments[idxAssign].setAttribute("class",strClass);
-        }
-      }
-    }
   }
 }
 

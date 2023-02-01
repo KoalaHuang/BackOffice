@@ -46,10 +46,8 @@ if (f_shouldDie("C")) {
 	$idx = 0;
 	while($row = $result->fetch_assoc()) {
 		$rowStore = $row['c_name'];
-		if (($UserStore == "ALL") || ($rowStore == $UserStore) || ($UserIsAdmin)) {
-			$arrayStore[$idx] = $rowStore;
-			$idx++;
-		} //For employee, display only working store. for admin, display all
+		$arrayStore[$idx] = $rowStore;
+		$idx++;
 	}
 	//get starting date for calendar: date of Monday of the week of first day of the month
 	function f_getStartDay($theYear, $theMonth) {
@@ -77,33 +75,44 @@ if (f_shouldDie("C")) {
 	$today = new DateTime("today");
 	?>
 
-	<div class="container mb-3">
+	<!--Filter using names-->
+	<div class="container">
 		<div id="txtUserName" class="d-none" data-stocking-userid="<?echo $UserID?>" data-stocking-userstore="<?echo $UserStore?>" data-stocking-userworkday="<?echo $UserWorkday?>" data-stocking-employee="<?echo $UserStatus?>"><?echo $UserName?></div>
-			<select class="form-select form-select text-center fw-bold text-white bg-primary" id="sltName" onchange="f_NameChange()">
-			<option value="All" <?echo $UserIsAdmin?"selected":"";?>>All</option>";
-			<?
-			$sql = "SELECT `c_id`, `c_name` FROM `t_user`";
-			$result = $conn->query($sql);
-			while($row = $result->fetch_assoc()) {
-				if ($UserIsAdmin || ($row['c_id'] != $UserID)){
-					$strSelected = "";
-				}else{
-					$strSelected = "selected";
-				}
-				echo "<option value=\"".$row['c_id']."\" ".$strSelected.">".$row['c_name']."</option>";
+		<div class="row mb-3">
+			<div class="col-4"></div>
+			<div class="col-4">
+		<select class="form-select form-select text-center fw-bold text-white bg-primary" id="sltName" onchange="f_NameChange()">
+		<option value="All" <?echo $UserIsAdmin?"selected":"";?> data-stocking-userstore="All">All</option>";
+		<?
+		$sql = "SELECT `c_id`, `c_name`, `c_store` FROM `t_user`";
+		$result = $conn->query($sql);
+		while($row = $result->fetch_assoc()) {
+			if ($UserIsAdmin || ($row['c_id'] != $UserID)){
+				$strSelected = "";
+			}else{
+				$strSelected = "selected";//default shows only login user calendar if it's non-admin
 			}
-			echo "</select>";
-			?>
+			echo "<option value=\"".$row['c_id']."\" ".$strSelected." data-stocking-userstore=\"".$row['c_store']."\">".$row['c_name']."</option>";
+		}
+		echo "</select>";
+		?>
+		</div>
+		<div class="col-4"></div>
 	</div>
 
 	<div class="container">
-		<div class="mb-2"><!--month switch-->
+		<div class="mb-2"><!--store switch-->
 				<?
 				$totalStore = count($arrayStore);
 				for ($idxStore=0; $idxStore<$totalStore; $idxStore++){
+					if (($UserStore == "ALL") || ($arrayStore[$idxStore] == $UserStore) || ($UserIsAdmin)) {
+						$strStoreDisplay = "";
+					}else{
+						$strStoreDisplay = " d-none";//hide the stores user is not assigned to
+					}
 				?>
-				<div class="form-check form-switch form-check-inline me-5">
-					<input checked type="checkbox" class="form-check-input" name="btnStores" id="<? echo "btnST".$idxStore ?>" onclick="f_storeSelected(<?echo $idxStore?>)">
+				<div class="form-check form-switch form-check-inline me-5<?echo $strStoreDisplay?>" id="<? echo "divBtnStore".$idxStore ?>">
+					<input checked type="checkbox" class="form-check-input" name="btnStores" value="<? echo $arrayStore[$idxStore] ?>" id="<? echo "btnST".$idxStore ?>" onclick="f_storeSelected(<?echo $idxStore?>)">
 					<label class="form-check-label fw-bold" for="<? echo "btnST".$idxStore ?>"><? echo $arrayStore[$idxStore] ?></label>
 				</div>
 				<?
@@ -169,11 +178,16 @@ if (f_shouldDie("C")) {
 			$rowStore = "";
 			for ($idxStore = 0; $idxStore < $totalStore; $idxStore++) {
 				$rowStore = $arrayStore[$idxStore];
+				if (($UserStore == "ALL") || ($rowStore == $UserStore) || ($UserIsAdmin)) {
+					$strStoreDisplay = "";
+				}else{
+					$strStoreDisplay = " d-none";//hide the stores user is not assigned to
+				}
 				//use store#_week# to name assignments in the week, to hide/show the assignments when toggling Only Me calendar
 				$strStoreWeek = "Store".$idxStore."_".$idxWeek;
 				//Use divStore# to name both store title and store lines to control hide/show of individual store
-				echo "<div style=\"background:var(--bs-gray-200)\" class=\"row mb-1\"><span class=\"text-center\" name=\"divStore".$idxStore."\"><strong>".$rowStore."</strong></span></div>";
-				echo "<div class=\"row row-cols-7 g-0 mb-1\" name=\"divStore".$idxStore."\">";
+				echo "<div style=\"background:var(--bs-gray-200)\" class=\"row mb-1\"><span class=\"text-center".$strStoreDisplay."\" name=\"divStore".$idxStore."\"><strong>".$rowStore."</strong></span></div>";
+				echo "<div class=\"row row-cols-7 g-0 mb-1".$strStoreDisplay."\" name=\"divStore".$idxStore."\">";
 				$objDay = clone $objWeek1stDay; //counting day for store/ppl rows
 				for ($idxWD = 1; $idxWD < 8; $idxWD++) {
 					$isRowBlank = true;  //indicating no assigment is shown for current row.
