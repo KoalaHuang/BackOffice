@@ -191,7 +191,7 @@ function f_cellSelected(strStore, intWD, intCellYear, intCellMon, intmDay, isRea
         break;
       }//fouund
     }//for loop ppl
-    document.getElementById("lbl_modal").innerHTML = "Shift on";
+    document.getElementById("lbl_modal").innerHTML = objGlobal.name;
     document.getElementById("lbl_msg").innerHTML = "<strong>" + objGlobal.year + "/" + objGlobal.mon + "/" + objGlobal.mday + "  " + f_weekday(objGlobal.wd) + "</strong>  at  <strong>" + objGlobal.store + "</strong>";
     if (objGlobal.status == 0){ //currently not assigned
       document.getElementById("lbl_Working").innerHTML = "Not working";
@@ -211,7 +211,7 @@ function f_cellSelected(strStore, intWD, intCellYear, intCellMon, intmDay, isRea
     document.getElementById("lbl_status").innerHTML = "";
     modal_Popup.show();
   }else{
-    alert ("You are not working in " + objGlobal.store + ".");
+    alert ("You are not working for " + objGlobal.store + " store.");
   }
   //disable changes if it's readonly
   if (isRead){
