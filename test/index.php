@@ -16,6 +16,7 @@
                             <div class="row">
                                 <div class="col-md-5">
                                     <p id="result-2">&nbsp;</p>
+                                    <input type="text" id="demo-1" class="form-control form-control-sm" readonly>
                                     <input type="text" id="demo-2" class="form-control form-control-sm" readonly>
                                 </div>
                             </div>

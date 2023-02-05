@@ -4,7 +4,6 @@ session_start();
 
 $_SESSION["user"] = "";
 $_SESSION["access"] = "";
-
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	$c_name = $_POST["user"];
 	include "connect_db.php";

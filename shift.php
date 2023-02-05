@@ -81,7 +81,7 @@ if (f_shouldDie("C")) {
 		<div class="row mb-3">
 			<div class="col-4"></div>
 			<div class="col-4">
-		<select class="form-select form-select text-center fw-bold text-white bg-primary" id="sltName" onchange="f_NameChange()">
+		<select class="form-select text-center fw-bold text-white bg-primary" id="sltName" onchange="f_NameChange()">
 		<option value="All" <?echo $UserIsAdmin?"selected":"";?> data-stocking-userstore="All">All</option>";
 		<?
 		$sql = "SELECT `c_id`, `c_name`, `c_store` FROM `t_user`";
@@ -130,7 +130,7 @@ if (f_shouldDie("C")) {
 		$objDay = clone $objStartDay;//create new date object for loop
 		for ($idxWeek = 1; $idxWeek < 6; $idxWeek++) { //display 5 weeks for current month
 			$objWeek1stDay = clone $objDay; //create new date to store starting day of current week row
-			echo "<div style=\"background:var(--bs-gray-400)\" class=\"row row-cols-7 g-0 mb-1\">"; // row of days in the week
+			echo "<div style=\"background:var(--bs-gray-400)\" class=\"mt-3 row row-cols-7 g-0 mb-1\">"; // row of days in the week
 			for ($idxWD = 1; $idxWD < 8; $idxWD++){
 				//check if it's holiday
 				$sql = "SELECT `c_holiday` FROM `t_holiday` WHERE `c_date`='".date_format($objDay,'Y-m-d')."'";
@@ -186,7 +186,7 @@ if (f_shouldDie("C")) {
 				//use store#_week# to name assignments in the week, to hide/show the assignments when toggling Only Me calendar
 				$strStoreWeek = "Store".$idxStore."_".$idxWeek;
 				//Use divStore# to name both store title and store lines to control hide/show of individual store
-				echo "<div style=\"background:var(--bs-gray-200)\" class=\"row mb-1\"><span class=\"text-center".$strStoreDisplay."\" name=\"divStore".$idxStore."\"><strong>".$rowStore."</strong></span></div>";
+				echo "<div style=\"background:var(--bs-gray-200)\" class=\"row \"><span class=\"text-center".$strStoreDisplay."\" name=\"divStore".$idxStore."\"><strong>".$rowStore."</strong></span></div>";
 				echo "<div class=\"row row-cols-7 g-0 mb-1".$strStoreDisplay."\" name=\"divStore".$idxStore."\">";
 				$objDay = clone $objWeek1stDay; //counting day for store/ppl rows
 				for ($idxWD = 1; $idxWD < 8; $idxWD++) {

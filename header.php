@@ -6,4 +6,3 @@
 <link rel="stylesheet" href="css/styles.css">
 <script src="js/nav.js"></script>
 <? include "navbar.php" ?>
-<? include "mylog.php" ?>
