@@ -169,11 +169,11 @@ while($row = $result->fetch_assoc()) {
 					<h5 class="modal-title" id="modal_title">Confirm to submit below request?</h5>
 				</div>
 				<div class="modal-body fs-6" id="modal_body"></div>
-				<div class="modal-footer">
-                    <div class="col-6 text-start" id="modal_status"></div>
-                    <div class="col-6 mb-3 ms-2">
-                    <button type="button" class="btn btn-primary" id="btn_ok" onclick="f_submit()">&nbsp;&nbsp;OK&nbsp;&nbsp;</button>
-                        <button type="button" class="btn btn-secondary me-2" id="btn_cancel" data-bs-dismiss="modal">Cancel</button>
+				<div class="row modal-footer">
+                    <div class="row mb-3">
+                        <div class="col-4 text-start text-secondary me-2" id="modal_status"></div>
+                        <button type="button" class="col-3 btn btn-primary me-2" id="btn_ok" onclick="f_submit()">&nbsp;&nbsp;OK&nbsp;&nbsp;</button>
+                        <button type="button" class="col-3 btn btn-secondary" id="btn_cancel" data-bs-dismiss="modal">Cancel</button>
                     </div>
 				</div>
 			</div>
