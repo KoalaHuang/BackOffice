@@ -15,11 +15,11 @@ $UserName = $_SESSION["user"];
 $arrLeaveType = array();
 $arrLeaveQuota = array();
 include "connect_db.php";
-$sql = "SELECT `c_name`,`c_quota` FROM `t_leavetype`";
+$sql = "SELECT `c_leavetype`,`c_quota` FROM `t_leavequota` WHERE `c_id`='".$UserID."'";
 $result = $conn->query($sql);
 $idxType = 0;
 while($row = $result->fetch_assoc()) {
-    $arrLeaveType[$idxType] = $row['c_name'];
+    $arrLeaveType[$idxType] = $row['c_leavetype'];
     $arrLeaveQuota[$idxType] = $row['c_quota'];
     $idxType++;
 }
@@ -39,7 +39,7 @@ while($row = $result->fetch_assoc()) {
 <body>
 	<div class="container">
 		<h1 id="section_home" class="text-center mb-3">Leave</h1>
-		<div id="txtUserName" class="d-none" data-stocking-userid="<?echo $UserID?>"><?echo $UserName?></div>
+		<h5 id="txtUserName" class="text-center" data-stocking-userid="<?echo $UserID?>"><?echo $UserName?></h5>
         <div class="card mb-3">
             <h5 class="card-header bg-secondary text-white">Leave summary</h5>
             <div class="card-body">
