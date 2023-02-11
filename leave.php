@@ -7,7 +7,6 @@ if (f_shouldDie("V")) {
 	header("Location:login.php");
 	exit();
 }
-include_once "mylog.php";
 
 $UserID = $_SESSION["id"];
 $UserName = $_SESSION["user"];

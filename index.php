@@ -60,6 +60,27 @@ $access = $_SESSION["access"];
     </div>
     <?}?>
     <?
+      if (strstr($access,"P") || (strstr($access,"D")) || (strstr($access,"I")) || (strstr($access,"G"))) {//stock
+    ?>
+    <div class="d-grid gap-2 col-6 border border-primary mx-auto p-2 mb-3">
+      <h5 class="text-center text-muted">Recipe</h5>
+      <?
+      if (strstr($access,"P")) {
+        echo "<a href=\"r_recipe.php\" class=\"btn btn-primary mb-1\" role=\"button\">Recipe</a>";
+      }
+      if (strstr($access,"D")) {
+        echo "<a href=\"r_product.php\" class=\"btn btn-primary mb-1\" role=\"button\">Product</a>";
+      }
+      if (strstr($access,"I")) {
+        echo "<a href=\"r_material.php\" class=\"btn btn-primary mb-1\" role=\"button\">Material</a>";
+      }
+      if (strstr($access,"G")) {
+        echo "<a href=\"r_edit.php\" class=\"btn btn-primary mb-1\" role=\"button\">Edit Recipe</a>";
+      }
+      ?>
+    </div>
+    <?}?>
+    <?
       if (strstr($access,"V")) {//Leave
     ?>
     <div class="d-grid gap-2 col-6 border border-secondary mx-auto p-2 mb-3">

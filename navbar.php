@@ -7,22 +7,23 @@
     <div class="collapse navbar-collapse" id="navbarToggler">
         <ul class="navbar-nav text-center me-2 mb-auto mb-lg-0">
           <?
-          if (strstr($_SESSION["access"],"C")) {
+          $access = $_SESSION["access"];
+          if (strstr($access,"C")){ 
             echo "<li class=\"nav-item\">";
             echo "<a class=\"nav-link\" href=\"shift.php\">Shift</a>";
             echo "</li>";
           }
-          if (strstr($_SESSION["access"],"E")) {
+          if (strstr($access,"E")) {
             echo "<li class=\"nav-item\">";
             echo "<a class=\"nav-link\" href=\"shift_myreport.php\">My Shift Report</a>";
             echo "</li>";
           }
-          if (strstr($_SESSION["access"],"M")) {
+          if (strstr($access,"M")) {
             echo "<li class=\"nav-item\">";
             echo "<a class=\"nav-link\" href=\"shift_template.php\">Shift Template</a>";
             echo "</li>";
           }
-          if (strstr($_SESSION["access"],"L")) {
+          if (strstr($access,"L")) {
             echo "<li class=\"nav-item\">";
             echo "<a class=\"nav-link\" href=\"shift_report.php\">Team Shift Report</a>";
             echo "</li>";
@@ -45,17 +46,35 @@
             }
             echo "</ul>";
           }
-          if (strstr($_SESSION["access"],"V")) {
+          if  (strstr($access,"P") || (strstr($access,"D")) || (strstr($access,"I")) || (strstr($access,"G"))) {
+            echo "<li class=\"nav-item dropdown\">";
+            echo "<a class=\"nav-link dropdown-toggle\" href=\"#\" id=\"recipedropdown\" role=\"button\" data-bs-toggle=\"dropdown\">Recipe</a>";
+            echo "<ul class=\"dropdown-menu\">";
+            if (strstr($access,"P")) {
+              echo "<li><a class=\"dropdown-item\" href=\"r_recipe.php\">Recipe</a></li>";
+            }
+            if (strstr($access,"F")) {
+              echo "<li><a class=\"dropdown-item\" href=\"r_product.php\">Product</a></li>";
+            }
+            if (strstr($access,"I")) {
+              echo "<li><a class=\"dropdown-item\" href=\"r_material.php\">Material</a></li>";
+            }
+            if (strstr($access,"G")) {
+              echo "<li><a class=\"dropdown-item\" href=\"r_edit.php\">Edit Recipe</a></li>";
+            }
+            echo "</ul>";
+          }
+          if (strstr($access,"V")) {
             echo "<li class=\"nav-item\">";
             echo "<a class=\"nav-link\" href=\"leave.php\">Leave</a>";
             echo "</li>";
           }
-          if (strstr($_SESSION["access"],"O")) {
+          if (strstr($access,"O")) {
             echo "<li class=\"nav-item\">";
             echo "<a class=\"nav-link\" href=\"myaccount.php\">Profile</a>";
             echo "</li>";
           }
-          if (strstr($_SESSION["access"],"A")) {
+          if (strstr($access,"A")) {
             echo "<li class=\"nav-item dropdown\">";
             echo "<a class=\"nav-link dropdown-toggle\" href=\"#\" id=\"admindropdown\" role=\"button\" data-bs-toggle=\"dropdown\">Admin</a>";
             echo "<ul class=\"dropdown-menu\">";
