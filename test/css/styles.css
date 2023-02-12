@@ -1,19 +1,7 @@
-* {
-    box-sizing: border-box;
-  }
-  
-  :focus {
-    outline: var(--bs-primary) auto 5px;
-  }
-  
-  input {
-    border: 0 none;
-  }
-  
+
   .search-container {
-    width: 400px;
     position: relative;
-    margin: 15px auto;
+    margin: 15px auto;    
   }
   .search-container input,
   .search-container .suggestions {
@@ -21,17 +9,15 @@
     background: #fff;
     text-align: left;
   }
-  .search-container input {
-    background: rgba(255, 255, 255, 0.2);
-    height: 60px;
-    padding: 0 10px;
+  .search-container :focus{
+    outline: var(--bs-primary) auto 5px;
   }
   .search-container .suggestions {
     position: absolute;
     top: 60px;
   }
   
-  ul {
+  .search-container ul {
     display: none;
     list-style-type: none;
     padding: 0;
@@ -40,18 +26,14 @@
     max-height: 200px;
     overflow-y: auto;
   }
-  ul.has-suggestions {
+  .search-container ul.has-suggestions {
     display: block;
   }
-  ul li {
+  .search-container ul li {
     padding: 10px;
     cursor: pointer;
     background: rgba(255, 255, 255, 0.2);
   }
-  ul li:hover {
-    background-color: #686cdf;
-  }
-  
-  input {
-    border-bottom: 2px solid #2e00e6;
+  .search-container ul li:hover {
+    background-color: rgba(0, 0, 255, 0.2);
   }
