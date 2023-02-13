@@ -12,13 +12,14 @@ if (f_shouldDie("I")) {
 <html>
 <head>
 	<? include "header.php"; ?>
-	<title>Recipe</title>
+    <link rel="stylesheet" href="css/styles.css">    
 	<script src="js/r_material.js"></script>
+	<title>Recipe</title>
 </head>
 <body>
 	<div class="container">
 		<h1 id="section_home" class="text-center mb-2">Material</h1>
-		<div class="mt-3">
+		<div class="my-3">
 			<select class="form-select" id="sltCat" onchange="f_supplierSelected()">
 				<option selected>Select Supplier</option>
 				<?
@@ -36,29 +37,27 @@ if (f_shouldDie("I")) {
 				?>
 			</select>
 		</div>
-		<div class="my-3">
-			<select class="form-select" disabled id="sltItem" onchange="f_itemSelected()">
-				<option selected>Select Material</option>
-				<option value="addNewItem" data-bo-supplier="" data-bo-unit="" data-bo-cost="" data-bo-moq="">&#9830;&nbsp;Add New Item&nbsp;&#9830;</option>
-				<?
-				$sql = "SELECT * FROM `t_material`";
-				$result = $conn->query($sql);
-				if ($result->num_rows > 0) {
-					while($row = $result->fetch_assoc()) {
-				?>
-					<option value="<?echo $row['c_name']?>" data-bo-supplier="<?echo $row['c_supplier']?>" data-bo-unit="<?echo $row['c_unit']?>" data-bo-cost="<?echo $row['c_cost']?>"><?echo $row["c_name"]?></option>
-				<?
-					}
-				}
-				?>
-			</select>
-		</div> <!-- cat and item selection rows-->
         <div class="card mb-3">
             <h5 class="card-header bg-secondary text-white">Edit Material</h5>
             <div class="card-body">
 				<div class="row mb-3">
-					<div class="col-6">
-				  		<input type="text" class="form-control" id="iptItem" disabled>
+					<div class="col-6 search-container">
+				  		<input type="text" class="form-control" id="iptMaterial" placeholder="search material...">
+						<div class="suggestions">
+							<ul id="ulMaterial">
+							<?
+							$sql = "SELECT * FROM `t_material`";
+							$result = $conn->query($sql);
+							if ($result->num_rows > 0) {
+								while($row = $result->fetch_assoc()) {
+							?>
+								<li value="<?echo $row['c_name']?>" data-bo-supplier="<?echo $row['c_supplier']?>" data-bo-unit="<?echo $row['c_unit']?>" data-bo-cost="<?echo $row['c_cost']?>"><?echo $row["c_name"]?></li>
+							<?
+								}
+							}
+							?>
+							</ul>
+						</div>						
 					</div>
 					<div class="col-3 text-end">Unit:</div>
 					<div class="col-3">

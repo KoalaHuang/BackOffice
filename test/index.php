@@ -9,11 +9,11 @@
   <body>
     <h1 class="" id="title">TEST</h1>
     <div class="search-container">
-	<input type="text" name="fruit" id="fruit" placeholder="Search fruit 🍎">
-	<div class="suggestions">
-		<ul></ul>
-	</div>
-</div>
+	    <input type="text" name="fruit" id="fruit" placeholder="Search fruit 🍎">
+	    <div class="suggestions">
+	    	<ul></ul>
+	   </div>
+    </div>
 <div>
 <input type="text" placeholder="Hello" class="mt-3">
 <ul>

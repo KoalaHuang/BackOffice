@@ -1,20 +1,19 @@
-
+/*
+style for recipe search box
+*/
   .search-container {
     position: relative;
-    margin: 15px auto;    
   }
   .search-container input,
   .search-container .suggestions {
-    width: 100%;
-    background: #fff;
     text-align: left;
   }
   .search-container :focus{
-    outline: var(--bs-primary) auto 5px;
+    outline: var(--bs-primary) auto;
   }
   .search-container .suggestions {
+    background: #fff;
     position: absolute;
-    top: 60px;
   }
   
   .search-container ul {
