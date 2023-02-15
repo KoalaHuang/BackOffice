@@ -11,7 +11,9 @@ if (f_shouldDie("I")) {
 <!DOCTYPE html>
 <html>
 <head>
-	<? include "header.php"; ?>
+	<? 	include "header.php"; 
+		include "connect_db.php";
+	?>
     <link rel="stylesheet" href="css/styles.css">    
 	<script src="js/r_material.js"></script>
 	<title>Recipe</title>
@@ -19,61 +21,68 @@ if (f_shouldDie("I")) {
 <body>
 	<div class="container">
 		<h1 id="section_home" class="text-center mb-2">Material</h1>
-		<div class="my-3">
-			<select class="form-select" id="sltCat" onchange="f_supplierSelected()">
-				<option selected>Select Supplier</option>
-				<?
-				include "connect_db.php";
-				$sql = "SELECT c_name FROM `t_supplier`";
-				$result = $conn->query($sql);
-				if ($result->num_rows > 0) {
-					while($row = $result->fetch_assoc()) {
-						$c_name = $row["c_name"];
-				?>
-						<option value="<?echo $c_name?>"><?echo $c_name?></option>
-				<?
-					}
-				}
-				?>
-			</select>
-		</div>
         <div class="card mb-3">
             <h5 class="card-header bg-secondary text-white">Edit Material</h5>
             <div class="card-body">
 				<div class="row mb-3">
-					<div class="col-6 search-container">
-				  		<input type="text" class="form-control" id="iptMaterial" placeholder="search material...">
+					<div class="col-10 search-container">
+				  		<input type="text" class="form-control" id="iptMaterial" onfocusout="f_inputDone()" placeholder="search material...">
 						<div class="suggestions">
 							<ul id="ulMaterial">
 							<?
 							$sql = "SELECT * FROM `t_material`";
 							$result = $conn->query($sql);
 							if ($result->num_rows > 0) {
+								$idx = 0;
 								while($row = $result->fetch_assoc()) {
 							?>
-								<li value="<?echo $row['c_name']?>" data-bo-supplier="<?echo $row['c_supplier']?>" data-bo-unit="<?echo $row['c_unit']?>" data-bo-cost="<?echo $row['c_cost']?>"><?echo $row["c_name"]?></li>
+								<li data-bo-supplier="<?echo $row['c_supplier']?>" data-bo-unit="<?echo $row['c_unit']?>" data-bo-cost="<?echo $row['c_cost']?>" data-bo-moq="<?echo $row['c_moq']?>" onclick="useSuggestion(<?echo $idx?>)"><?echo $row["c_name"]?></li>
 							<?
+								$idx++;	
 								}
 							}
 							?>
 							</ul>
 						</div>						
 					</div>
-					<div class="col-3 text-end">Unit:</div>
-					<div class="col-3">
-				  		<input type="text" class="form-control" id="iptUnit" disabled>
+					<div class="col-2">
+						<input type="checkbox" class="btn-check" id="btnList" onchange="f_ListToggle()">
+						<label class="btn btn-outline-primary" for="btnList" id="lblBtnList">&nbsp;+&nbsp;</label>
 					</div>
 				</div> <!--1st row-->
 				<div class="row mb-3">
-					<div class="col-3 text-end">MOQ:&nbsp;</div>
-					<div class="col-3">
-				  		<input type="text" class="form-control" id="iptMoq" disabled>
+					<div class="col-2 text-end">Unit</div>
+					<div class="col-4">
+						<input type="text" class="form-control" id="iptUnit" disabled>
 					</div>
-					<div class="col-3 text-end">Cost:</div>
-					<div class="col-3">
-				  		<input type="text" class="form-control" id="iptCost" disabled>
+					<div class="col-2 text-end">MOQ&nbsp;</div>
+					<div class="col-4">
+						<input type="text" class="form-control" id="iptMoq" disabled>
 					</div>
-				</div> <!--2nd row-->
+				</div><!--2nd row-->
+				<div class="row mb-3">
+					<div class="col-2 text-end">Cost</div>
+					<div class="col-4">
+						<input type="text" class="form-control" id="iptCost" disabled>
+					</div>
+				</div> <!--3rd row-->
+				<div class="my-3">
+					<select class="form-select" id="sltSupplier" onchange="f_supplierSelected()" disabled>
+						<option selected>Select Supplier</option>
+						<?
+						$sql = "SELECT c_name FROM `t_supplier`";
+						$result = $conn->query($sql);
+						if ($result->num_rows > 0) {
+							while($row = $result->fetch_assoc()) {
+								$c_name = $row["c_name"];
+						?>
+								<option value="<?echo $c_name?>"><?echo $c_name?></option>
+						<?
+							}
+						}
+						?>
+					</select>
+				</div>
 			</div>
 			<div class="row mb-3">
 				<span><button type="button" class="btn btn-primary col-3 ms-3 me-5" onclick="f_toConfirm()">OK</button>
