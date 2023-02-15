@@ -26,7 +26,7 @@ if (f_shouldDie("I")) {
             <div class="card-body">
 				<div class="row mb-3">
 					<div class="col-10 search-container">
-				  		<input type="text" class="form-control" id="iptMaterial" onfocusout="f_inputDone()" placeholder="search material...">
+				  		<input type="text" class="form-control" id="iptMaterial" placeholder="search material...">
 						<div class="suggestions">
 							<ul id="ulMaterial">
 							<?

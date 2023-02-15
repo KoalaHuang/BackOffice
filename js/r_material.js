@@ -135,18 +135,3 @@ function useSuggestion(idx) {
 	elmUlMaterial.classList.remove('listed');
 	f_checkBtnList(false);
 }
-
-function f_inputDone(e){
-	console.log(e);
-	/*collapse dropdown list*/
-	f_checkBtnList(false);
-	f_ListToggle();
-	const InputVal = elmIptMaterial.value;
-	if (InputVal.length == 0){
-		elmUnit.disabled = elmCost.disabled = elmMoq.disabled = elmSupplier.disabled = true;
-		elmUnit.value = elmCost.value = elmMoq.value = "";
-	}else{
-		elmUnit.disabled = elmCost.disabled = elmMoq.disabled = elmSupplier.disabled = false;
-
-	}
-}
