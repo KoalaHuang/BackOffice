@@ -53,21 +53,23 @@ function search(str) {
 
 /*trigger input box filter drop downlist when key in the box*/
 function searchHandler(e) {
-	console.log("keyup");
-	console.log(e);
 	const inputVal = e.currentTarget.value;
 	let results = [];
 	if (inputVal.length > 0) {
 		results = search(inputVal);
+	}else{
+		elmCost.value = "";
+		elmUnit.value = "";
+		elmMoq.value = "";
+		elmSupplier.value = "";
+		elmCost.disabled = elmUnit.disabled = elmMoq.disabled = elmSupplier.disabled = true;
 	}
 	showSuggestions(results, inputVal);
 }
 
 /*show input box drop down with filtered result*/
 function showSuggestions(results, inputVal) {
-    
     elmUlMaterial.innerHTML = '';
-
 	if (results.length > 0) {
 		for (i = 0; i < results.length; i++) {
 			let itemIdx = results[i];
@@ -75,7 +77,7 @@ function showSuggestions(results, inputVal) {
 
             const match = item.match(new RegExp(inputVal, 'i'));
 			item = item.replace(match[0], `<strong>${match[0]}</strong>`);
-			elmUlMaterial.innerHTML += `<li data-bo-cost="${arrayCost[itemIdx]}" data-bo-moq="${arrayMoq[i]}" data-bo-unit="${arrayUnit[itemIdx]}" data-bo-supplier="${arraySupplier[itemIdx]}" onclick="useSuggestion(${itemIdx})">${item}</li>`;
+			elmUlMaterial.innerHTML += `<li class="search-li" onclick="useSuggestion(${itemIdx})">${item}</li>`;
 		}
 		elmUlMaterial.classList.add('listed');
 		f_checkBtnList(true);
@@ -97,9 +99,9 @@ function f_checkBtnList(isToCheck){
 		document.getElementById("lblBtnList").innerHTML = "&nbsp;+&nbsp;";
 	}
 }
+
 /*Toggle dropdown list when button is clicked*/
 function f_ListToggle(){
-	console.log("toggle");
 	if (document.getElementById("btnList").checked){
 		const inputVal = elmIptMaterial.value;
 		if (inputVal.length > 0) {
@@ -109,7 +111,7 @@ function f_ListToggle(){
 		}else{
 			elmUlMaterial.innerHTML = '';
 			for (var i = 0; i < arrayM.length; i++) {
-				elmUlMaterial.innerHTML += `<li data-bo-cost="${arrayCost[i]}" data-bo-moq="${arrayMoq[i]}" data-bo-unit="${arrayUnit[i]}" data-bo-supplier="${arraySupplier[i]}" onclick="useSuggestion(${i})">${arrayM[i]}</li>`;
+				elmUlMaterial.innerHTML += `<li class="search-li" onclick="useSuggestion(${i})">${arrayM[i]}</li>`;
 			}
 			elmUlMaterial.classList.add('listed');
 			f_checkBtnList(true);
@@ -124,14 +126,92 @@ function f_ListToggle(){
 /*select from dropdown list to be value in input box*/
 function useSuggestion(idx) {
 	elmIptMaterial.value = arrayM[idx];
-	console.log("mouse");
-	console.log(idx);
-	elmIptMaterial.focus();
-//	elmCost.value = e.target.getAttribute("data-bo-cost");
-//	elmUnit.value = e.target.getAttribute("data-bo-unit");
-//	elmMoq.value = e.target.getAttribute("data-bo-moq");
-//	elmCost.value = e.target.getAttribute("data-bo-supplier");
+	elmCost.value = arrayCost[idx];
+	elmUnit.value = arrayUnit[idx];
+	elmMoq.value = arrayMoq[idx];
+	elmSupplier.value = arraySupplier[idx];
 	elmUlMaterial.innerHTML = '';
 	elmUlMaterial.classList.remove('listed');
+	elmCost.disabled = elmUnit.disabled = elmMoq.disabled = elmSupplier.disabled = false;
 	f_checkBtnList(false);
+	elmIptMaterial.focus();
 }
+
+/*Confirm to submit change*/
+function f_toConfirm(){
+	objGlobal.name = elmIptMaterial.value;
+	objGlobal.act = 2; //insert new record
+	strAct = "Add new material";
+	for (i=0; i < arrayM.length; i++){
+		if (objGlobal.name == arrayM[i]){
+			objGlobal.act = 1; //update existing record
+			strAct = "Update material";
+			break;
+		}
+	}
+	objGlobal.cost = elmCost.value;
+	objGlobal.unit = elmUnit.value;
+	objGlobal.moq = elmMoq.value;
+	objGlobal.supplier = elmSupplier.value;
+	document.getElementById("modal_body").innerHTML = "<strong>" + strAct + "</strong><br>" + "Item: " + objGlobal.name + "<br>Cost: " + objGlobal.cost + "<br>Unit: " + objGlobal.unit + "<br>MOQ: " + objGlobal.moq + "<br>Supplier: " + objGlobal.supplier;
+	document.getElementById("btn_ok").disabled = false;
+	document.getElementById("modal_status").innerHTML = "";
+	modal_Popup.show();  
+}
+
+/*Confirm to submit change*/
+function f_toDelete(){
+	objGlobal.name = elmIptMaterial.value;
+	objGlobal.act = 0; 
+	for (i=0; i < arrayM.length; i++){
+		if (objGlobal.name == arrayM[i]){
+			objGlobal.act = 3; //Delete record
+			break;
+		}
+	}
+	if (objGlobal.act == 3){
+		objGlobal.cost = elmCost.value;
+		objGlobal.unit = elmUnit.value;
+		objGlobal.moq = elmMoq.value;
+		objGlobal.supplier = elmSupplier.value;
+		document.getElementById("modal_body").innerHTML = "<strong>Delete Material</strong><br>" + "Item: " + objGlobal.name + "<br>Cost: " + objGlobal.cost + "<br>Unit: " + objGlobal.unit + "<br>MOQ: " + objGlobal.moq + "<br>Supplier: " + objGlobal.supplier;
+		document.getElementById("btn_ok").disabled = false;
+	}else{
+		document.getElementById("modal_body").innerHTML = "<strong>Material doesn't exist! Can't delete.</strong><br>" + "Item: " + objGlobal.name + "<br>Cost: " + objGlobal.cost + "<br>Unit: " + objGlobal.unit + "<br>MOQ: " + objGlobal.moq + "<br>Supplier: " + objGlobal.supplier;
+		document.getElementById("btn_ok").disabled = true;
+		document.getElementById("btn_cancel").disabled = false;
+	}
+	document.getElementById("modal_status").innerHTML = "";
+	modal_Popup.show();  
+}
+
+//submit data change
+function f_submit() {
+	const xhttp = new XMLHttpRequest();
+	xhttp.onload = function() {
+	  document.getElementById("modal_status").innerHTML = "";
+	  if (this.responseText == "true") {
+		document.getElementById("modal_body").innerHTML  = "Submit successfully!<br>Press OK to return";
+		document.getElementById("btn_ok").setAttribute("onclick","f_refresh()");
+		document.getElementById("btn_ok").disabled = false;
+		document.getElementById("btn_cancel").disabled = true;
+	  }else{
+		document.getElementById("modal_body").innerHTML  = "<p class=\"text-danger\">Update failed!</p>Return code: "+ this.responseText + "<br>Press Cancel to return";
+		document.getElementById("btn_ok").disabled = true;
+		document.getElementById("btn_cancel").disabled = false;
+	  }
+	}
+	const strJson = JSON.stringify(objGlobal);
+	xhttp.open("POST", "r_material_update.php");
+	xhttp.setRequestHeader("Accept", "application/json");
+	xhttp.setRequestHeader("Content-Type", "application/json");
+	xhttp.send(strJson);
+	document.getElementById("modal_status").innerHTML = "Submitting...";
+	document.getElementById("btn_cancel").disabled =  document.getElementById("btn_ok").disabled = true;
+  }//f_submit
+  
+//ok button to refresh the page when failed
+function f_refresh() {
+	location.reload();
+  }
+  

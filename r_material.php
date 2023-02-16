@@ -28,7 +28,7 @@ if (f_shouldDie("I")) {
 					<div class="col-10 search-container">
 				  		<input type="text" class="form-control" id="iptMaterial" placeholder="search material...">
 						<div class="suggestions">
-							<ul id="ulMaterial">
+							<ul id="ulMaterial" class="search-ul">
 							<?
 							$sql = "SELECT * FROM `t_material`";
 							$result = $conn->query($sql);
@@ -36,7 +36,7 @@ if (f_shouldDie("I")) {
 								$idx = 0;
 								while($row = $result->fetch_assoc()) {
 							?>
-								<li data-bo-supplier="<?echo $row['c_supplier']?>" data-bo-unit="<?echo $row['c_unit']?>" data-bo-cost="<?echo $row['c_cost']?>" data-bo-moq="<?echo $row['c_moq']?>" onclick="useSuggestion(<?echo $idx?>)"><?echo $row["c_name"]?></li>
+								<li class="search-li" data-bo-supplier="<?echo $row['c_supplier']?>" data-bo-unit="<?echo $row['c_unit']?>" data-bo-cost="<?echo $row['c_cost']?>" data-bo-moq="<?echo $row['c_moq']?>" onclick="useSuggestion(<?echo $idx?>)"><?echo $row["c_name"]?></li>
 							<?
 								$idx++;	
 								}
@@ -84,9 +84,10 @@ if (f_shouldDie("I")) {
 					</select>
 				</div>
 			</div>
-			<div class="row mb-3">
-				<span><button type="button" class="btn btn-primary col-3 ms-3 me-5" onclick="f_toConfirm()">OK</button>
-				<button type="button" class="btn btn-secondary col-3" onclick="f_refresh()">Cancel</button></span>
+			<div class="row gap-3 mb-3">
+				<button type="button" class="btn btn-primary col-3 ms-4" onclick="f_toConfirm()">OK</button>
+				<button type="button" class="btn btn-danger col-3" onclick="f_toDelete()">Delete</button>
+				<button type="button" class="btn btn-secondary col-3" onclick="f_refresh()">Cancel</button>
 			</div>
 		</div>
 

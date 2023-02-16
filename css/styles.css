@@ -21,7 +21,7 @@ style for recipe search box
   top: 50px;
 }
 
-ul {
+.search-ul {
   display: none;
   list-style-type: none;
   padding: 0;
@@ -33,11 +33,11 @@ ul {
 ul.listed {
   display: block;
 }
-ul li {
+.search-li {
   padding: 10px;
   cursor: pointer;
   background: rgba(130, 126, 126, 0.2);
 }
-ul li:hover {
+.search-li li:hover {
   background-color: #919cca;
 }
