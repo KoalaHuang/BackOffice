@@ -1,12 +1,5 @@
 <?
-/*
-Edit recipe
-
-TODO
-
-- start by searching product
-
-*/ 
+/*Edit recipe*/ 
 include_once "sessioncheck.php";
 if (f_shouldDie("G")) {
 	header("Location:login.php");
@@ -20,7 +13,7 @@ if (f_shouldDie("G")) {
 	include "connect_db.php";
 	?>
     <link rel="stylesheet" href="css/styles.css">    
-	<script src="js/r_material.js"></script>
+	<script src="js/r_edit.js"></script>
 	<title>Edit Recipe</title>
 </head>
 <body>
@@ -29,38 +22,31 @@ if (f_shouldDie("G")) {
         <div class="card mb-3">
             <h5 class="card-header bg-secondary text-white">Product</h5>
             <div class="card-body">
-				<div class="my-3">
-					<select class="form-select" id="sltCat" onchange="f_CatSelected()">
-						<option selected>Select product type</option>
-						<?
-						$sql = "SELECT c_name FROM `t_cat`";
-						$result = $conn->query($sql);
-						if ($result->num_rows > 0) {
-							while($row = $result->fetch_assoc()) {
-								$c_name = $row["c_name"];
-						?>
-								<option value="<?echo $c_name?>"><?echo $c_name?></option>
-						<?
-							}
-						}
-						?>
-					</select>
-				</div>
 				<div class="row mb-3">
 					<div class="col-10 search-container">
 				  		<input type="text" class="form-control" id="iptProduct" placeholder="search product...">
 						<div class="suggestions">
 							<ul id="ulProduct" class="search-ul">
 							<?
+							$arrayProduct = [[]];
 							$sql = "SELECT * FROM `t_recipe`";
 							$result = $conn->query($sql);
-							if ($result->num_rows > 0) {
+							$totalRows = $result->num_rows ;
+							if ($totalRows > 0) {
 								$idx = 0;
+								$lastProduct = "";
 								while($row = $result->fetch_assoc()) {
-							?>
-								<li class="search-li" data-bo-supplier="<?echo $row['c_supplier']?>" data-bo-unit="<?echo $row['c_unit']?>" data-bo-cost="<?echo $row['c_cost']?>" data-bo-moq="<?echo $row['c_moq']?>" onclick="useSuggestion(<?echo $idx?>)"><?echo $row["c_name"]?></li>
-							<?
-								$idx++;	
+									$c_product = $row['c_product'];
+									$c_cat = $row['c_cat'];
+									$c_ver = $row['c_version'];
+									if ($c_product != $lastProduct){
+										echo "<li class=\"search-li\" data-bo-cat=\"".$c_cat."\" onclick=useSuggestion(\"".$c_product."\")>".$c_product."</li";
+										$lastProduct = $c_product;
+									}
+									$arrayProduct[$idx][0] = $c_product;
+									$arrayProduct[$idx][1] = $c_ver;
+									$arrayProduct[$idx][2] = $c_recipe;
+									$idx++;	
 								}
 							}
 							?>
@@ -73,28 +59,41 @@ if (f_shouldDie("G")) {
 					</div>
 				</div> <!--1st row-->
 				<div class="row mb-3">
-					<div class="col-2 text-end">Unit</div>
 					<div class="col-4">
-						<input type="text" class="form-control" id="iptUnit" disabled>
+						<select class="form-select" id="sltVer" onchange="f_VerSelected()">
+							<option selected>Verion...</option>
+							<?
+							for ($idx=0; $idx < $totalRows; $idx++){
+								echo "<option value=".$arrayProduct[$idx][1]." data-bo-product=\"".$arrayProduct[$idx][0]."\" data-bo-recipe=".$arrayProduct[$idx][2].">".$arrayProduct[$idx][1]."</option>";
+							}
+							?>
+						</select>
 					</div>
-					<div class="col-2 text-end">MOQ&nbsp;</div>
-					<div class="col-4">
-						<input type="text" class="form-control" id="iptMoq" disabled>
+					<div class="col-8">
+						<select class="form-select" id="sltCat" onchange="f_CatSelected()">
+							<option selected>Product type...</option>
+							<?
+							$sql = "SELECT c_cat FROM `t_cat`";
+							$result = $conn->query($sql);
+							if ($result->num_rows > 0) {
+								while($row = $result->fetch_assoc()) {
+									$c_cat = $row["c_cat"];
+							?>
+									<option value="<?echo $c_cat?>"><?echo $c_cat?></option>
+							<?
+								}
+							}
+							?>
+						</select>
 					</div>
-				</div><!--2nd row-->
-				<div class="row mb-3">
-					<div class="col-2 text-end">Cost</div>
-					<div class="col-4">
-						<input type="text" class="form-control" id="iptCost" disabled>
-					</div>
-				</div> <!--3rd row-->
+				</div> <!--2nd row-->
 			</div>
 			<div class="row gap-3 mb-3">
 				<button type="button" class="btn btn-primary col-3 ms-4" onclick="f_toConfirm()">OK</button>
 				<button type="button" class="btn btn-danger col-3" onclick="f_toDelete()">Delete</button>
 				<button type="button" class="btn btn-secondary col-3" onclick="f_refresh()">Cancel</button>
 			</div>
-		</div>
+		</div><!--product card-->
 
  	</div> <!-- container -->
 
