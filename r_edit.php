@@ -39,8 +39,9 @@ if (f_shouldDie("G")) {
 									$c_product = $row['c_product'];
 									$c_cat = $row['c_cat'];
 									$c_ver = $row['c_version'];
+									$c_recipe = $row['c_recipe'];
 									if ($c_product != $lastProduct){
-										echo "<li class=\"search-li\" data-bo-cat=\"".$c_cat."\" onclick=useSuggestion(\"".$c_product."\")>".$c_product."</li";
+										echo "<li class=\"search-li\" data-bo-cat=\"".$c_cat."\" onclick=\"useSuggestion('".$c_product."')\">".$c_product."</li>";
 										$lastProduct = $c_product;
 									}
 									$arrayProduct[$idx][0] = $c_product;
@@ -61,7 +62,7 @@ if (f_shouldDie("G")) {
 				<div class="row mb-3">
 					<div class="col-4">
 						<select class="form-select" id="sltVer" onchange="f_VerSelected()">
-							<option selected>Verion...</option>
+							<option value=0 selected>Recipe</option>
 							<?
 							for ($idx=0; $idx < $totalRows; $idx++){
 								echo "<option value=".$arrayProduct[$idx][1]." data-bo-product=\"".$arrayProduct[$idx][0]."\" data-bo-recipe=".$arrayProduct[$idx][2].">".$arrayProduct[$idx][1]."</option>";
@@ -88,13 +89,32 @@ if (f_shouldDie("G")) {
 					</div>
 				</div> <!--2nd row-->
 			</div>
-			<div class="row gap-3 mb-3">
-				<button type="button" class="btn btn-primary col-3 ms-4" onclick="f_toConfirm()">OK</button>
+			<div class="row gap-4 mb-3">
+				<button type="button" class="btn btn-primary col-3 ms-4" onclick="f_toConfirm()">Get</button>
 				<button type="button" class="btn btn-danger col-3" onclick="f_toDelete()">Delete</button>
 				<button type="button" class="btn btn-secondary col-3" onclick="f_refresh()">Cancel</button>
 			</div>
 		</div><!--product card-->
 
+        <div class="card mb-3">
+            <h5 class="card-header bg-secondary text-white">Recipe</h5>
+            <div class="card-body">
+				<div class="row mb-1 search-container">
+					<div class="col-12"><input type="text"  class="form-control" id="iptItem"></div>
+					<div class="suggestions">
+						<ul id="ulItem" class="search-ul">
+						</ul>
+					</div>
+				</div>
+                <div class="row mb-3">
+					<div class="col-4"><input type="text" class="form-control" id="iptQuantity"></div>
+                    <div class="col-3"><input type="text" class="form-control" id="iptUnit" disabled></div>
+                    <button class="col-4 btn btn-primary ms-3" type="button" onclick="f_add_item()">Add</button>
+                </div>
+                <ul class="list-group" id="ulRecipe">
+                </ul>
+            </div>
+        </div><!--Recipe card-->
  	</div> <!-- container -->
 
 	<!-- Modal Submit-->

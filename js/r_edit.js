@@ -4,11 +4,10 @@ const arrayProduct = [];
 const arrayCat = [];
 
 const objGlobal = {
-	name: "",
-	unit: "",
-	cost: 0,
-	supplier: "",
-	moq: 0,
+	product: "",
+	version: 0,
+	recipe: 0,
+	cat: "",
 	act: 0 //1: update, 2: insert, 3: delete, 0: no change
   };
 
@@ -48,7 +47,7 @@ function searchHandler(e) {
 		results = search(inputVal);
 	}else{
 		elmSltCat.value = "Product type...";
-		elmSltVer.value = "Version...";
+		elmSltVer.value = "Recipe";
 		elmSltCat.disabled = elmSltVer.disabled = true;
 	}
 	showSuggestions(results, inputVal);
@@ -112,8 +111,25 @@ function f_ListToggle(){
 
 /*select from dropdown list to be value in input box*/
 function useSuggestion(idx) {
-	elmIptProduct.value = arrayProduct[idx];
-	elmSltCat.value = arrayCat[idx];
+	elmIptProduct.value = objGlobal.product = arrayProduct[idx];
+	elmSltCat.value = objGlobal.cat = arrayCat[idx];
+	///filter recipe version for selected product
+	const countVer = elmSltVer.childElementCount;
+	objGlobal.ver = 0;
+	for (i = 1;i < countVer; i++){//first option (0) is 'Recipe'
+		var elmVerOption = elmSltVer.children[i];
+		if (elmVerOption.getAttribute('data-bo-product') == objGlobal.product){
+			elmVerOption.setAttribute('class',"");
+			objGlobal.ver = elmVerOption.value;
+		}else{
+			elmVerOption.setAttribute('class',"d-none");
+		}
+	}
+	console.log(objGlobal);
+	if(objGlobal.ver > 0){
+		elmSltVer.value = objGlobal.ver;
+	}
+	elmSltCat.disabled = elmSltVer.disabled = false;
 	elmUlProduct.innerHTML = '';
 	elmUlProduct.classList.remove('listed');
 	f_checkBtnList(false);
