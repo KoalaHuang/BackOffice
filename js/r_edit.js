@@ -2,6 +2,9 @@
 
 const arrayProduct = [];
 const arrayCat = [];
+const arrayItem = [];
+const arrayItemUnit = [];
+const arrayItemIsBase = [];
 
 const objGlobal = {
 	product: "",
@@ -18,21 +21,36 @@ window.addEventListener("DOMContentLoaded", function() {
     elmUlProduct = document.getElementById('ulProduct');
     elmSltCat = document.getElementById('sltCat');
     elmSltVer = document.getElementById('sltVer');
+
+	elmIptItem = document.getElementById('iptItem');
+	elmIptUnit = document.getElementById('iptUnit');
+	elmIptQty = document.getElementById('iptQuantity');
+	elmUlItem = this.document.getElementById('ulItem');
+
     const totalProduct = elmUlProduct.childElementCount;
     for (idx = 0; idx < totalProduct; idx++){
         var elmLi = elmUlProduct.children[idx];
         arrayProduct[idx] = elmLi.innerText;
         arrayCat[idx] = elmLi.getAttribute("data-bo-cat");
     }
-    elmIptProduct.addEventListener('keyup', searchHandler);
+    const totalItem = elmUlItem.childElementCount;
+    for (idx = 0; idx < totalItem; idx++){
+        var elmLi = elmUlItem.children[idx];
+        arrayItem[idx] = elmLi.innerText;
+        arrayItemUnit[idx] = elmLi.getAttribute("data-bo-unit");
+        arrayItemIsBase[idx] = (elmLi.getAttribute("data-bo-isbase")==1)?true:false;
+    }
+
+	elmIptProduct.addEventListener('keyup', searchHandler);
+    elmIptItem.addEventListener('keyup', searchHandler);
   }, false);
 
  /*filter values for input box drop down list*/
-function search(str) {
+function search(str,arr) {
 	let results = [];
 	const val = str.toLowerCase();
-	for (i = 0; i < arrayProduct.length; i++) {
-		if (arrayProduct[i].toLowerCase().indexOf(val) > -1) {
+	for (i = 0; i < arr.length; i++) {
+		if (arr[i].toLowerCase().indexOf(val) > -1) {
 			results.push(i);
 		}
 	}
@@ -43,19 +61,32 @@ function search(str) {
 function searchHandler(e) {
 	const inputVal = e.currentTarget.value;
 	let results = [];
-	if (inputVal.length > 0) {
-		results = search(inputVal);
+	if (e.currentTarget == elmIptProduct){
+		if (inputVal.length > 0) {
+			results = search(inputVal,arrayProduct);
+		}else{
+			elmSltCat.value = "Product type...";
+			elmSltVer.value = "Recipe";
+			elmSltCat.disabled = elmSltVer.disabled = true;
+			elmIptUnit.disabled = elmIptQty.disabled = true;
+		}
+		showSuggestedProduct(results, inputVal);
 	}else{
-		elmSltCat.value = "Product type...";
-		elmSltVer.value = "Recipe";
-		elmSltCat.disabled = elmSltVer.disabled = true;
+		if (inputVal.length > 0) {
+			results = search(inputVal,arrayItem);
+		}else{
+			elmIptUnit.value = "";
+			elmIptQty.value = "";
+			elmIptUnit.disabled = elmIptQty.disabled = true;
+		}
+		showSuggestedItem(results,inputVal);
 	}
-	showSuggestions(results, inputVal);
 }
 
-/*show input box drop down with filtered result*/
-function showSuggestions(results, inputVal) {
+/*show input box drop down with filtered product*/
+function showSuggestedProduct(results, inputVal) {
     elmUlProduct.innerHTML = '';
+	const elmBtn = document.getElementById("btnProductList");
 	if (results.length > 0) {
 		for (i = 0; i < results.length; i++) {
 			let itemIdx = results[i];
@@ -63,54 +94,96 @@ function showSuggestions(results, inputVal) {
 
             const match = item.match(new RegExp(inputVal, 'i'));
 			item = item.replace(match[0], `<strong>${match[0]}</strong>`);
-			elmUlProduct.innerHTML += `<li class="search-li" onclick="useSuggestion(${itemIdx})">${item}</li>`;
+			elmUlProduct.innerHTML += `<li class="search-li" onclick="useSuggestedProduct(${itemIdx})">${item}</li>`;
 		}
 		elmUlProduct.classList.add('listed');
-		f_checkBtnList(true);
+		elmBtn.checked = true;
 	} else {
 		results = [];
 		elmUlProduct.innerHTML = '';
 		elmUlProduct.classList.remove('listed');
-		f_checkBtnList(false);
+		elmBtn.checked = false;
 	}
 }
 
-/*check/uncheck dropdown button*/
-function f_checkBtnList(isToCheck){
-	if (isToCheck){
-		document.getElementById("btnList").checked = true;
-		document.getElementById("lblBtnList").innerHTML = "&nbsp;-&nbsp;";
-	}else{
-		document.getElementById("btnList").checked = false;
-		document.getElementById("lblBtnList").innerHTML = "&nbsp;+&nbsp;";
+/*show input box drop down with filtered material item*/
+function showSuggestedItem(results, inputVal) {
+    elmUlItem.innerHTML = '';
+	const elmBtn = document.getElementById("btnItemList");
+	if (results.length > 0) {
+		for (i = 0; i < results.length; i++) {
+			let itemIdx = results[i];
+			let item = arrayItem[itemIdx];
+
+            const match = item.match(new RegExp(inputVal, 'i'));
+			item = item.replace(match[0], `<strong>${match[0]}</strong>`);
+			var strTextColor = (arrayItemIsBase[itemIdx])?" text-danger":"";
+			elmUlItem.innerHTML += `<li class="search-li${strTextColor}" onclick="useSuggestedItem(${itemIdx})">${item}</li>`;
+		}
+		elmUlItem.classList.add('listed');
+		elmBtn.checked = true;
+	} else {
+		results = [];
+		elmUlItem.innerHTML = '';
+		elmUlItem.classList.remove('listed');
+		elmBtn.checked = false;
 	}
 }
-
-/*Toggle dropdown list when button is clicked*/
-function f_ListToggle(){
-	if (document.getElementById("btnList").checked){
+/*Toggle dropdown list when Product button is clicked*/
+function f_ListToggleProduct(){
+	const elmBtn = document.getElementById("btnProductList");
+	const elmLabel = document.getElementById("lblProductList");
+	if (elmBtn.checked){
 		const inputVal = elmIptProduct.value;
 		if (inputVal.length > 0) {
 			let results = [];
-			results = search(inputVal);
-			showSuggestions(results, inputVal);
+			results = search(inputVal,arrayProduct);
+			showSuggestedProduct(results, inputVal);
 		}else{
 			elmUlProduct.innerHTML = '';
 			for (var i = 0; i < arrayProduct.length; i++) {
-				elmUlProduct.innerHTML += `<li class="search-li" onclick="useSuggestion(${i})">${arrayProduct[i]}</li>`;
+				elmUlProduct.innerHTML += `<li class="search-li" onclick="useSuggestedProduct(${i})">${arrayProduct[i]}</li>`;
 			}
 			elmUlProduct.classList.add('listed');
-			f_checkBtnList(true);
+			elmBtn.checked = true;
 		}
 	}else{
 		elmUlProduct.innerHTML = '';
 		elmUlProduct.classList.remove('listed');
-		f_checkBtnList(false);
+		elmBtn.checked = false;
+	}
+}
+
+/*Toggle dropdown list when Material Item button is clicked*/
+function f_ListToggleItem(){
+	const elmBtn = document.getElementById("btnItemList");
+	if (elmBtn.checked){
+		const inputVal = elmIptItem.value;
+		if (inputVal.length > 0) {
+			let results = [];
+			results = search(inputVal,arrayItem);
+			showSuggestedItem(results, inputVal);
+		}else{
+			elmUlItem.innerHTML = '';
+			for (var i = 0; i < arrayItem.length; i++) {
+				var strTextColor = '';
+				if (arrayItemIsBase[i]){
+					strTextColor = ' text-danger';
+				}
+				elmUlItem.innerHTML += `<li class="search-li${strTextColor}" onclick="useSuggestedItem(${i})">${arrayItem[i]}</li>`;
+			}
+			elmUlItem.classList.add('listed');
+			elmBtn.checked = true;
+		}
+	}else{
+		elmUlItem.innerHTML = '';
+		elmUlItem.classList.remove('listed');
+		elmBtn.checked = false;
 	}
 }
 
 /*select from dropdown list to be value in input box*/
-function useSuggestion(idx) {
+function useSuggestedProduct(idx) {
 	elmIptProduct.value = objGlobal.product = arrayProduct[idx];
 	elmSltCat.value = objGlobal.cat = arrayCat[idx];
 	///filter recipe version for selected product
@@ -125,55 +198,48 @@ function useSuggestion(idx) {
 			elmVerOption.setAttribute('class',"d-none");
 		}
 	}
-	console.log(objGlobal);
 	if(objGlobal.ver > 0){
 		elmSltVer.value = objGlobal.ver;
 	}
 	elmSltCat.disabled = elmSltVer.disabled = false;
 	elmUlProduct.innerHTML = '';
 	elmUlProduct.classList.remove('listed');
-	f_checkBtnList(false);
+	document.getElementById("btnProductList").checked = false;
 	elmIptProduct.focus();
 }
 
-/*Confirm to submit change*/
-function f_toConfirm(){
-	objGlobal.name = elmIptProduct.value;
+/*select from dropdown list to be value in input box*/
+function useSuggestedItem(idx) {
+	elmIptItem.value = arrayItem[idx];
+	elmIptQty.value = "";
+	elmIptUnit.value = arrayItemUnit[idx];
+	elmIptQty.disabled = false;
+	elmUlItem.innerHTML = '';
+	elmUlItem.classList.remove('listed');
+	document.getElementById("btnItemList").checked = false;
+	elmIptQty.focus();
+}
+
+/* Retrive recipe for selected product */
+function f_getRecipe(){
+	objGlobal.product = elmIptProduct.value;
+	objGlobal.cat = elmSltCat.value;
+	objGlobal.ver = elmSltVer;
 	objGlobal.act = 2; //insert new record
-	strAct = "Add new material";
-	for (i=0; i < arrayProduct.length; i++){
-		if (objGlobal.name == arrayProduct[i]){
-			objGlobal.act = 1; //update existing record
-			strAct = "Update material";
-			break;
-		}
+
+	if (arrayProduct.includes(objGlobal.product)){
+		window.location.href = "r_edit.php?product=" + objGlobal.product + "&cat=" + objGlobal.cat + "&ver=" + objGlobal.ver;
 	}
-	document.getElementById("modal_body").innerHTML = "<strong>" + strAct + "</strong><br>" + "Item: " + objGlobal.name + "<br>Cost: " + objGlobal.cost + "<br>Unit: " + objGlobal.unit + "<br>MOQ: " + objGlobal.moq + "<br>Supplier: " + objGlobal.supplier;
+	document.getElementById("modal_body").innerHTML = "<strong>Create NEW recipe?</strong><br>" + "Product: " + objGlobal.product + "<br>Type: " + objGlobal.cat;
+	document.getElementById("btn_ok").setAttribute('onclick','f_newRecipe()');
 	document.getElementById("btn_ok").disabled = false;
 	document.getElementById("modal_status").innerHTML = "";
 	modal_Popup.show();  
 }
 
-/*Confirm to submit change*/
-function f_toDelete(){
-	objGlobal.name = elmIptProduct.value;
-	objGlobal.act = 0; 
-	for (i=0; i < arrayProduct.length; i++){
-		if (objGlobal.name == arrayProduct[i]){
-			objGlobal.act = 3; //Delete record
-			break;
-		}
-	}
-	if (objGlobal.act == 3){
-		document.getElementById("modal_body").innerHTML = "<strong>Delete Material</strong><br>" + "Item: " + objGlobal.name + "<br>Cost: " + objGlobal.cost + "<br>Unit: " + objGlobal.unit + "<br>MOQ: " + objGlobal.moq + "<br>Supplier: " + objGlobal.supplier;
-		document.getElementById("btn_ok").disabled = false;
-	}else{
-		document.getElementById("modal_body").innerHTML = "<strong>Material doesn't exist! Can't delete.</strong><br>" + "Item: " + objGlobal.name + "<br>Cost: " + objGlobal.cost + "<br>Unit: " + objGlobal.unit + "<br>MOQ: " + objGlobal.moq + "<br>Supplier: " + objGlobal.supplier;
-		document.getElementById("btn_ok").disabled = true;
-		document.getElementById("btn_cancel").disabled = false;
-	}
-	document.getElementById("modal_status").innerHTML = "";
-	modal_Popup.show();  
+/* Create new recipe */
+function f_newRecipe(){
+	window.location.href = "r_edit.php?product=" + objGlobal.product + "&cat=" + objGlobal.cat + "&ver=0";
 }
 
 //submit data change

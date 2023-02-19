@@ -9,8 +9,14 @@ if (f_shouldDie("G")) {
 <!DOCTYPE html>
 <html>
 <head>
-	<? 	include "header.php"; 
+	<? 	
+	include "header.php"; 
 	include "connect_db.php";
+	$getProduct = $_GET['product'];
+	if ($getProduct != NULL) {//retrieve recipe for product
+		$getCat = $_GET['cat'];
+		(int)$getVer = $_GET['ver'];
+	}
 	?>
     <link rel="stylesheet" href="css/styles.css">    
 	<script src="js/r_edit.js"></script>
@@ -24,7 +30,7 @@ if (f_shouldDie("G")) {
             <div class="card-body">
 				<div class="row mb-3">
 					<div class="col-10 search-container">
-				  		<input type="text" class="form-control" id="iptProduct" placeholder="search product...">
+				  		<input type="text" class="form-control" id="iptProduct" placeholder="search product..." <?echo ($getProduct!=NULL)?$getProduct:""?>>
 						<div class="suggestions">
 							<ul id="ulProduct" class="search-ul">
 							<?
@@ -55,24 +61,24 @@ if (f_shouldDie("G")) {
 						</div>						
 					</div>
 					<div class="col-2">
-						<input type="checkbox" class="btn-check" id="btnList" onchange="f_ListToggle()">
-						<label class="btn btn-outline-primary" for="btnList" id="lblBtnList">&nbsp;+&nbsp;</label>
+						<input type="checkbox" class="btn-check" id="btnProductList" onchange="f_ListToggleProduct()">
+						<label class="btn btn-outline-primary" for="btnProductList" id="lblProductList">&nbsp;&#9776&nbsp;</label>
 					</div>
 				</div> <!--1st row-->
 				<div class="row mb-3">
 					<div class="col-4">
 						<select class="form-select" id="sltVer" onchange="f_VerSelected()">
-							<option value=0 selected>Recipe</option>
+							<option value=0 <?echo (($getVer==NULL)||($getVer==0))?"seclected":""?>>Version</option>
 							<?
 							for ($idx=0; $idx < $totalRows; $idx++){
-								echo "<option value=".$arrayProduct[$idx][1]." data-bo-product=\"".$arrayProduct[$idx][0]."\" data-bo-recipe=".$arrayProduct[$idx][2].">".$arrayProduct[$idx][1]."</option>";
+								echo "<option value=".$arrayProduct[$idx][1]." data-bo-product=\"".$arrayProduct[$idx][0]."\" data-bo-recipe=".$arrayProduct[$idx][2]." ".(($getVer!=NULL)&&($getVer==$arrayProduct[$idx][1]))?"selected":"".">".$arrayProduct[$idx][1]."</option>";
 							}
 							?>
 						</select>
 					</div>
 					<div class="col-8">
 						<select class="form-select" id="sltCat" onchange="f_CatSelected()">
-							<option selected>Product type...</option>
+							<option <?echo ($getProduct==NULL)?"seclected":""?>>Product type...</option>
 							<?
 							$sql = "SELECT c_cat FROM `t_cat`";
 							$result = $conn->query($sql);
@@ -80,7 +86,7 @@ if (f_shouldDie("G")) {
 								while($row = $result->fetch_assoc()) {
 									$c_cat = $row["c_cat"];
 							?>
-									<option value="<?echo $c_cat?>"><?echo $c_cat?></option>
+									<option value="<?echo $c_cat?>" <?echo (($getProduct!=NULL)&&($getCat==$c_cat))?"selected":""?>><?echo $c_cat?></option>
 							<?
 								}
 							}
@@ -90,7 +96,7 @@ if (f_shouldDie("G")) {
 				</div> <!--2nd row-->
 			</div>
 			<div class="row gap-4 mb-3">
-				<button type="button" class="btn btn-primary col-3 ms-4" onclick="f_toConfirm()">Get</button>
+				<button type="button" class="btn btn-primary col-3 ms-4" onclick="f_getRecipe()">Get</button>
 				<button type="button" class="btn btn-danger col-3" onclick="f_toDelete()">Delete</button>
 				<button type="button" class="btn btn-secondary col-3" onclick="f_refresh()">Cancel</button>
 			</div>
@@ -99,11 +105,38 @@ if (f_shouldDie("G")) {
         <div class="card mb-3">
             <h5 class="card-header bg-secondary text-white">Recipe</h5>
             <div class="card-body">
-				<div class="row mb-1 search-container">
-					<div class="col-12"><input type="text"  class="form-control" id="iptItem"></div>
+				<div class="row mb-3 search-container">
+					<div class="col-10"><input type="text"  class="form-control" id="iptItem"></div>
 					<div class="suggestions">
 						<ul id="ulItem" class="search-ul">
+						<?
+							//load base from recipe table
+							$sql = "SELECT `c_product`, max(c_version) FROM `t_recipe` WHERE `c_cat`='BASE' GROUP BY `c_product`";
+							$result = $conn->query($sql);
+							$totalRows = $result->num_rows ;
+							if ($totalRows > 0) {
+								while($row = $result->fetch_assoc()) {
+									$c_product = $row['c_product'];
+									echo "<li class=\"search-li text-danger\" data-bo-unit='g' data-bo-isbase=1>".$c_product."</li>";
+								}
+							}
+							//load material item from material table
+							$sql = "SELECT `c_name`, `c_unit` FROM `t_material`";
+							$result = $conn->query($sql);
+							$totalRows = $result->num_rows ;
+							if ($totalRows > 0) {
+								while($row = $result->fetch_assoc()) {
+									$c_name = $row['c_name'];
+									$c_unit = $row['c_unit'];
+									echo "<li class=\"search-li\" data-bo-unit='".$c_unit."' data-bo-isbase=0>".$c_name."</li>";
+								}
+							}
+						?>
 						</ul>
+					</div>
+					<div class="col-2">
+							<input type="checkbox" class="btn-check" id="btnItemList" onchange="f_ListToggleItem()">
+							<label class="btn btn-outline-primary" for="btnItemList" id="lblItemList">&nbsp;&#9776&nbsp;</label>
 					</div>
 				</div>
                 <div class="row mb-3">
