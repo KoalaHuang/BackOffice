@@ -1,5 +1,9 @@
 <?
-/*Edit recipe*/ 
+/*Edit recipe
+
+TODO: fix Select can't hide options in Safari. Need to store value in list, and filter options
+
+*/ 
 include_once "sessioncheck.php";
 if (f_shouldDie("G")) {
 	header("Location:login.php");
@@ -30,7 +34,7 @@ if (f_shouldDie("G")) {
             <div class="card-body">
 				<div class="row mb-3">
 					<div class="col-10 search-container">
-				  		<input type="text" class="form-control" id="iptProduct" placeholder="search product..." <?echo ($getProduct!=NULL)?$getProduct:""?>>
+				  		<input type="text" class="form-control" id="iptProduct" placeholder="search product..." value="<?echo ($getProduct!=NULL)?$getProduct:""?>">
 						<div class="suggestions">
 							<ul id="ulProduct" class="search-ul">
 							<?
@@ -53,6 +57,11 @@ if (f_shouldDie("G")) {
 									$arrayProduct[$idx][0] = $c_product;
 									$arrayProduct[$idx][1] = $c_ver;
 									$arrayProduct[$idx][2] = $c_recipe;
+									if ($getProduct!=NULL){
+										if (($getProduct == $c_product) && ($getVer == $c_ver)){
+											$recipeNum = $c_recipe;//every verion of product has unique recipe number
+										}
+									}
 									$idx++;	
 								}
 							}
@@ -68,10 +77,12 @@ if (f_shouldDie("G")) {
 				<div class="row mb-3">
 					<div class="col-4">
 						<select class="form-select" id="sltVer" onchange="f_VerSelected()">
-							<option value=0 <?echo (($getVer==NULL)||($getVer==0))?"seclected":""?>>Version</option>
+							<option value=0 <?echo (($getVer==NULL)||($getVer==0))?"seclected":""?>>New Ver</option>
 							<?
 							for ($idx=0; $idx < $totalRows; $idx++){
-								echo "<option value=".$arrayProduct[$idx][1]." data-bo-product=\"".$arrayProduct[$idx][0]."\" data-bo-recipe=".$arrayProduct[$idx][2]." ".(($getVer!=NULL)&&($getVer==$arrayProduct[$idx][1]))?"selected":"".">".$arrayProduct[$idx][1]."</option>";
+								$strSelect = (($getVer!=NULL)&&($recipeNum==$arrayProduct[$idx][2]))?" selected":"";
+								$strDisplay = (($getVer==NULL)||($getProduct!=$arrayProduct[$idx][0]))?" d-none":"";
+								echo "<option class=\"".$strDisplay."\" value=".$arrayProduct[$idx][1]." data-bo-product=\"".$arrayProduct[$idx][0]."\" data-bo-recipe=".$arrayProduct[$idx][2].$strSelect.">".$arrayProduct[$idx][1]."</option>";
 							}
 							?>
 						</select>
@@ -95,10 +106,10 @@ if (f_shouldDie("G")) {
 					</div>
 				</div> <!--2nd row-->
 			</div>
-			<div class="row gap-4 mb-3">
-				<button type="button" class="btn btn-primary col-3 ms-4" onclick="f_getRecipe()">Get</button>
-				<button type="button" class="btn btn-danger col-3" onclick="f_toDelete()">Delete</button>
-				<button type="button" class="btn btn-secondary col-3" onclick="f_refresh()">Cancel</button>
+			<div class="row gap-3 mb-2">
+				<button type="button" class="btn btn-primary col-3 ms-4" onclick="f_getRecipe()">Read</button>
+				<button type="button" class="btn btn-primary col-3" onclick="f_toDelete()">Save</button>
+				<button type="button" class="btn btn-secondary col-3" onclick="f_refresh()">Clean</button>
 			</div>
 		</div><!--product card-->
 
@@ -106,10 +117,11 @@ if (f_shouldDie("G")) {
             <h5 class="card-header bg-secondary text-white">Recipe</h5>
             <div class="card-body">
 				<div class="row mb-3 search-container">
-					<div class="col-10"><input type="text"  class="form-control" id="iptItem"></div>
+					<div class="col-10"><input type="text"  class="form-control" id="iptItem" <?echo ($getProduct==NULL)?"disabled":""?>></div>
 					<div class="suggestions">
 						<ul id="ulItem" class="search-ul">
 						<?
+						if ($getProduct!=NULL){
 							//load base from recipe table
 							$sql = "SELECT `c_product`, max(c_version) FROM `t_recipe` WHERE `c_cat`='BASE' GROUP BY `c_product`";
 							$result = $conn->query($sql);
@@ -130,7 +142,8 @@ if (f_shouldDie("G")) {
 									$c_unit = $row['c_unit'];
 									echo "<li class=\"search-li\" data-bo-unit='".$c_unit."' data-bo-isbase=0>".$c_name."</li>";
 								}
-							}
+							}	
+						}
 						?>
 						</ul>
 					</div>
@@ -140,11 +153,34 @@ if (f_shouldDie("G")) {
 					</div>
 				</div>
                 <div class="row mb-3">
-					<div class="col-4"><input type="text" class="form-control" id="iptQuantity"></div>
+					<div class="col-4"><input type="text" class="form-control" id="iptQuantity" <?echo ($getProduct==NULL)?"disabled":""?>></div>
                     <div class="col-3"><input type="text" class="form-control" id="iptUnit" disabled></div>
                     <button class="col-4 btn btn-primary ms-3" type="button" onclick="f_add_item()">Add</button>
                 </div>
+				<hr><!--list recipe items-->
                 <ul class="list-group" id="ulRecipe">
+				<?
+				$sql = "SELECT `c_material`, `c_quantity`,`c_unit`,`c_base` FROM `t_recipelib` WHERE `c_recipe`=".$recipeNum;
+				$result = $conn->query($sql);
+				$totalRows = $result->num_rows ;
+				if ($totalRows > 0) {
+					while($row = $result->fetch_assoc()) {
+						$c_material = $row['c_material'];
+						$c_qty = $row['c_quantity'];
+						$c_unit = $row['c_unit'];
+						$c_base = ($row['c_base']==1)?"list-group-item-info":"";
+						?>
+						<li class="list-group-item <?echo $c_base?>">
+							<div class="row">
+								<div class="col-8"><?echo $c_material?></div>
+								<div class="col-3 text-end"><?echo $c_qty?></div>
+								<div class="col-1"><?echo $c_unit?></div>
+							</div>
+						</li>
+						<?
+					}
+				}
+				?>
                 </ul>
             </div>
         </div><!--Recipe card-->

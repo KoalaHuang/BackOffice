@@ -224,17 +224,18 @@ function useSuggestedItem(idx) {
 function f_getRecipe(){
 	objGlobal.product = elmIptProduct.value;
 	objGlobal.cat = elmSltCat.value;
-	objGlobal.ver = elmSltVer;
+	objGlobal.ver = elmSltVer.value;
 	objGlobal.act = 2; //insert new record
 
 	if (arrayProduct.includes(objGlobal.product)){
-		window.location.href = "r_edit.php?product=" + objGlobal.product + "&cat=" + objGlobal.cat + "&ver=" + objGlobal.ver;
+		window.location.href = "r_edit.php?product=" + encodeURIComponent(objGlobal.product) + "&cat=" + encodeURIComponent(objGlobal.cat) + "&ver=" + objGlobal.ver;
+	}else{
+		document.getElementById("modal_body").innerHTML = "<strong>Create NEW recipe?</strong><br><br>" + "Product: " + objGlobal.product + "<br>Type: " + objGlobal.cat;
+		document.getElementById("btn_ok").setAttribute('onclick','f_newRecipe()');
+		document.getElementById("btn_ok").disabled = false;
+		document.getElementById("modal_status").innerHTML = "";
+		modal_Popup.show();  
 	}
-	document.getElementById("modal_body").innerHTML = "<strong>Create NEW recipe?</strong><br>" + "Product: " + objGlobal.product + "<br>Type: " + objGlobal.cat;
-	document.getElementById("btn_ok").setAttribute('onclick','f_newRecipe()');
-	document.getElementById("btn_ok").disabled = false;
-	document.getElementById("modal_status").innerHTML = "";
-	modal_Popup.show();  
 }
 
 /* Create new recipe */
@@ -269,6 +270,6 @@ function f_submit() {
   
 //ok button to refresh the page when failed
 function f_refresh() {
-	location.reload();
-  }
+	window.location.href = "r_edit.php";
+}
   
