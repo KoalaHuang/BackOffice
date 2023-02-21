@@ -1,8 +1,6 @@
 <?
-/*Edit recipe
-
-TODO: fix Select can't hide options in Safari. Need to store value in list, and filter options
-
+/*
+Edit recipe
 */ 
 include_once "sessioncheck.php";
 if (f_shouldDie("G")) {
@@ -39,11 +37,12 @@ if (f_shouldDie("G")) {
 							<ul id="ulProduct" class="search-ul">
 							<?
 							$arrayProduct = [[]];
+							$arrayVerUl = []; //Version option HTML for selected products
 							$sql = "SELECT * FROM `t_recipe`";
 							$result = $conn->query($sql);
 							$totalRows = $result->num_rows ;
 							if ($totalRows > 0) {
-								$idx = 0;
+								$idx = $idxVerUl = 0;
 								$lastProduct = "";
 								while($row = $result->fetch_assoc()) {
 									$c_product = $row['c_product'];
@@ -58,9 +57,16 @@ if (f_shouldDie("G")) {
 									$arrayProduct[$idx][1] = $c_ver;
 									$arrayProduct[$idx][2] = $c_recipe;
 									if ($getProduct!=NULL){
-										if (($getProduct == $c_product) && ($getVer == $c_ver)){
-											$recipeNum = $c_recipe;//every verion of product has unique recipe number
-										}
+										if ($getProduct == $c_product){
+											$strSelect = "";
+											$arrayVerUl[$idxVerUl] = "<option value=".$arrayProduct[$idx][1]." data-bo-product=\"".$arrayProduct[$idx][0]."\" data-bo-recipe=".$arrayProduct[$idx][2];
+											if ($getVer == $c_ver){
+												$recipeNum = $c_recipe;//every verion of product has unique recipe number
+												$strSelect = " selected";
+											}
+											$arrayVerUl[$idxVerUl] = $arrayVerUl[$idxVerUl].$strSelect.">".$arrayProduct[$idx][1]."</option>";
+											$idxVerUl++;
+										} 
 									}
 									$idx++;	
 								}
@@ -76,13 +82,23 @@ if (f_shouldDie("G")) {
 				</div> <!--1st row-->
 				<div class="row mb-3">
 					<div class="col-4">
+						<ul class="d-none" id="ulAllRecipe">
+						<?
+						for ($idx=0; $idx < $totalRows; $idx++){
+							echo "<li data-bo-product=\"".$arrayProduct[$idx][0]."\" data-bo-recipe=".$arrayProduct[$idx][2].">".$arrayProduct[$idx][1]."</li>";
+						}
+						?>
+						</ul>
 						<select class="form-select" id="sltVer" onchange="f_VerSelected()">
-							<option value=0 <?echo (($getVer==NULL)||($getVer==0))?"seclected":""?>>New Ver</option>
 							<?
-							for ($idx=0; $idx < $totalRows; $idx++){
-								$strSelect = (($getVer!=NULL)&&($recipeNum==$arrayProduct[$idx][2]))?" selected":"";
-								$strDisplay = (($getVer==NULL)||($getProduct!=$arrayProduct[$idx][0]))?" d-none":"";
-								echo "<option class=\"".$strDisplay."\" value=".$arrayProduct[$idx][1]." data-bo-product=\"".$arrayProduct[$idx][0]."\" data-bo-recipe=".$arrayProduct[$idx][2].$strSelect.">".$arrayProduct[$idx][1]."</option>";
+							if (($getVer==NULL)||($getVer==0)){//no product is selected
+								echo "<option value=0 selected>New Ver</option>";
+							}else{
+								echo "<option value=0>New Ver</option>";
+								$countVer = count($arrayVerUl);
+								for ($idx=0; $idx < $countVer; $idx++){
+									echo $arrayVerUl[$idx];
+								}
 							}
 							?>
 						</select>
@@ -158,7 +174,7 @@ if (f_shouldDie("G")) {
                     <button class="col-4 btn btn-primary ms-3" type="button" onclick="f_add_item()">Add</button>
                 </div>
 				<hr><!--list recipe items-->
-                <ul class="list-group" id="ulRecipe">
+                <ul class="list-group" style="z-index: 1000" id="ulRecipe">
 				<?
 				$sql = "SELECT `c_material`, `c_quantity`,`c_unit`,`c_base` FROM `t_recipelib` WHERE `c_recipe`=".$recipeNum;
 				$result = $conn->query($sql);

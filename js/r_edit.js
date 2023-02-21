@@ -5,6 +5,7 @@ const arrayCat = [];
 const arrayItem = [];
 const arrayItemUnit = [];
 const arrayItemIsBase = [];
+const arrayRecipe = [];
 
 const objGlobal = {
 	product: "",
@@ -41,6 +42,16 @@ window.addEventListener("DOMContentLoaded", function() {
         arrayItemIsBase[idx] = (elmLi.getAttribute("data-bo-isbase")==1)?true:false;
     }
 
+	const elmUlRecipe = document.getElementById("ulAllRecipe");
+	const totalRecipe = elmUlRecipe.childElementCount;
+    for (idx = 0; idx < totalRecipe; idx++){
+        var elmLi = elmUlRecipe.children[idx];
+		arrayRecipe[idx] = [];
+        arrayRecipe[idx][0] = elmLi.getAttribute("data-bo-product");
+        arrayRecipe[idx][1] = elmLi.innerText;
+        arrayRecipe[idx][2] = elmLi.getAttribute("data-bo-recipe");
+    }
+
 	elmIptProduct.addEventListener('keyup', searchHandler);
     elmIptItem.addEventListener('keyup', searchHandler);
   }, false);
@@ -66,7 +77,7 @@ function searchHandler(e) {
 			results = search(inputVal,arrayProduct);
 		}else{
 			elmSltCat.value = "Product type...";
-			elmSltVer.value = "Recipe";
+			elmSltVer.value = "New Ver";
 			elmSltCat.disabled = elmSltVer.disabled = true;
 			elmIptUnit.disabled = elmIptQty.disabled = true;
 		}
@@ -129,6 +140,25 @@ function showSuggestedItem(results, inputVal) {
 		elmBtn.checked = false;
 	}
 }
+
+/*Filter version/recipe for selected product*/
+function f_filterVersion(){
+	objGlobal.product = elmIptProduct.value;
+	for (var i = (elmSltVer.length - 1); i > 0; i--){
+		elmSltVer.remove(i); //remove verison selection. 0 is 'New Ver'
+	}
+	for (var i = 0; i < arrayRecipe.length; i++){
+		if (arrayRecipe[i][0] == objGlobal.product){
+			var elmVerOption = document.createElement("option");
+			elmVerOption.setAttribute("data-bo-product",arrayRecipe[i][0]);
+			elmVerOption.innerText = elmVerOption.value = arrayRecipe[i][1];
+			elmVerOption.setAttribute("data-bo-recipe",arrayRecipe[i][2]);
+			elmSltVer.add(elmVerOption);
+		}
+	}
+	elmSltVer.selectedIndex = elmSltVer.length - 1;
+}
+
 /*Toggle dropdown list when Product button is clicked*/
 function f_ListToggleProduct(){
 	const elmBtn = document.getElementById("btnProductList");
@@ -187,20 +217,7 @@ function useSuggestedProduct(idx) {
 	elmIptProduct.value = objGlobal.product = arrayProduct[idx];
 	elmSltCat.value = objGlobal.cat = arrayCat[idx];
 	///filter recipe version for selected product
-	const countVer = elmSltVer.childElementCount;
-	objGlobal.ver = 0;
-	for (i = 1;i < countVer; i++){//first option (0) is 'Recipe'
-		var elmVerOption = elmSltVer.children[i];
-		if (elmVerOption.getAttribute('data-bo-product') == objGlobal.product){
-			elmVerOption.setAttribute('class',"");
-			objGlobal.ver = elmVerOption.value;
-		}else{
-			elmVerOption.setAttribute('class',"d-none");
-		}
-	}
-	if(objGlobal.ver > 0){
-		elmSltVer.value = objGlobal.ver;
-	}
+	f_filterVersion();
 	elmSltCat.disabled = elmSltVer.disabled = false;
 	elmUlProduct.innerHTML = '';
 	elmUlProduct.classList.remove('listed');
