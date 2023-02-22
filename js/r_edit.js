@@ -5,7 +5,7 @@ const arrayCat = [];
 const arrayItem = [];
 const arrayItemUnit = [];
 const arrayItemIsBase = [];
-const arrayRecipe = [];
+const arrayRecipe = []; //all product, ver and recipe#
 
 const objGlobal = {
 	product: "",
@@ -23,10 +23,11 @@ window.addEventListener("DOMContentLoaded", function() {
     elmSltCat = document.getElementById('sltCat');
     elmSltVer = document.getElementById('sltVer');
 
-	elmIptItem = document.getElementById('iptItem');
+	elmIptItem = document.getElementById('iptItem');//recipe edit input box
 	elmIptUnit = document.getElementById('iptUnit');
 	elmIptQty = document.getElementById('iptQuantity');
-	elmUlItem = this.document.getElementById('ulItem');
+	elmUlItem = document.getElementById('ulItem'); //all material list group
+	elmUlRecipeItem = document.getElementById('ulRecipe'); //recipe item list group
 
     const totalProduct = elmUlProduct.childElementCount;
     for (idx = 0; idx < totalProduct; idx++){
@@ -47,7 +48,7 @@ window.addEventListener("DOMContentLoaded", function() {
     for (idx = 0; idx < totalRecipe; idx++){
         var elmLi = elmUlRecipe.children[idx];
 		arrayRecipe[idx] = [];
-        arrayRecipe[idx][0] = elmLi.getAttribute("data-bo-product");
+        arrayRecipe[idx][0] = elmLi.getAttribute("data-bo-product"); 
         arrayRecipe[idx][1] = elmLi.innerText;
         arrayRecipe[idx][2] = elmLi.getAttribute("data-bo-recipe");
     }
@@ -59,9 +60,9 @@ window.addEventListener("DOMContentLoaded", function() {
  /*filter values for input box drop down list*/
 function search(str,arr) {
 	let results = [];
-	const val = str.toLowerCase();
+	const valueLower = str.toLowerCase();
 	for (i = 0; i < arr.length; i++) {
-		if (arr[i].toLowerCase().indexOf(val) > -1) {
+		if (arr[i].toLowerCase().indexOf(valueLower) > -1) {
 			results.push(i);
 		}
 	}
@@ -258,6 +259,85 @@ function f_getRecipe(){
 /* Create new recipe */
 function f_newRecipe(){
 	window.location.href = "r_edit.php?product=" + objGlobal.product + "&cat=" + objGlobal.cat + "&ver=0";
+}
+
+/* Select recipe item */
+function f_selectItem(itemIdx){
+	const totalReciptItem = elmUlRecipeItem.childElementCount;
+	for (var idx = 0; idx < totalReciptItem; idx++){
+		var elmLi = elmUlRecipeItem.children[idx];//list item <li>
+		var strLiClass = elmLi.getAttribute('class');
+		strLiClass = strLiClass.replace(' active','');
+		if (idx == itemIdx){
+			strLiClass = strLiClass + ' active';
+			var elmRecipeRow = elmUlRecipeItem.children[idx].children[0];//<div row>
+			elmIptItem.value = elmRecipeRow.children[0].innerText; //material
+			elmIptQty.value = elmRecipeRow.children[1].innerText; //quantity
+			elmIptUnit.value = elmRecipeRow.children[2].innerText; //unit
+		}
+		elmLi.setAttribute('class',strLiClass);
+	}
+}
+
+/* return 1 if material is BASE, 0 if material can't be found */
+function f_checkMaterial(str){
+	var isBase = 0;
+	for (var idx=0; idx < arrayItem.length; idx++){
+		if (arrayItem[idx] == str){
+			isBase = (arrayItemIsBase[idx])?1:2;
+			break;
+		}
+	}
+	return isBase;
+}
+
+/*Update recipe item*/
+function f_updateItem(){
+	const totalReciptItem = elmUlRecipeItem.childElementCount;
+	const strItem = elmIptItem.value;
+	var isNewItem = true;
+	for (var idx = 0; idx < totalReciptItem; idx++){
+		var elmRecipeRow = elmUlRecipeItem.children[idx].children[0];//<div row>
+		if (strItem == elmRecipeRow.children[0].innerText){
+			isNewItem = false;
+			elmRecipeRow.children[1].innerText = elmIptQty.value; //quantity
+			f_selectItem(idx);
+			break;
+		}
+	}
+	if (isNewItem){ //new recipe item
+		const elmLi = document.createElement("li"); //append new list item
+		const isBase = f_checkMaterial(elmIptItem.value);
+		console.log(isBase);
+		if ( isBase == 0){
+			alert('Wrong material name! Please select from list.');
+		}else{
+			if (isBase == 1){
+				elmLi.setAttribute('class',"list-group-item list-group-item-info active");
+			}else{
+				elmLi.setAttribute('class',"list-group-item active");
+			}
+			elmLi.setAttribute('onclick','f_selectItem(' + totalReciptItem + ')');
+			const elmRow = document.createElement("div");
+			elmRow.setAttribute('class','row');
+			var elmCol = document.createElement("div");
+			elmCol.setAttribute('class','col-8');
+			elmCol.innerText = elmIptItem.value;
+			elmRow.appendChild(elmCol);
+			elmCol = document.createElement("div");
+			elmCol.setAttribute('class','col-3 text-end');
+			elmCol.innerText = elmIptQty.value;
+			elmRow.appendChild(elmCol);
+			elmCol = document.createElement("div");
+			elmCol.setAttribute('class','col-1');
+			elmCol.innerText = elmIptUnit.value;
+			elmRow.appendChild(elmCol);
+			elmLi.appendChild(elmRow);
+			elmUlRecipeItem.appendChild(elmLi);
+			f_selectItem(totalReciptItem);
+		}
+
+	}
 }
 
 //submit data change

@@ -170,15 +170,17 @@ if (f_shouldDie("G")) {
 				</div>
                 <div class="row mb-3">
 					<div class="col-4"><input type="text" class="form-control" id="iptQuantity" <?echo ($getProduct==NULL)?"disabled":""?>></div>
-                    <div class="col-3"><input type="text" class="form-control" id="iptUnit" disabled></div>
-                    <button class="col-4 btn btn-primary ms-3" type="button" onclick="f_add_item()">Add</button>
+                    <div class="col-2"><input type="text" class="form-control" id="iptUnit" disabled></div>
+                    <button class="col-3 btn btn-primary ms-1 me-3" type="button" onclick="f_updateItem()">Update</button>
+                    <button class="col-2 btn btn-danger" type="button" onclick="f_deleteItem()">DEL</button>
                 </div>
 				<hr><!--list recipe items-->
-                <ul class="list-group" style="z-index: 1000" id="ulRecipe">
+                <ul class="list-group" id="ulRecipe">
 				<?
 				$sql = "SELECT `c_material`, `c_quantity`,`c_unit`,`c_base` FROM `t_recipelib` WHERE `c_recipe`=".$recipeNum;
 				$result = $conn->query($sql);
 				$totalRows = $result->num_rows ;
+				$idx = 0;
 				if ($totalRows > 0) {
 					while($row = $result->fetch_assoc()) {
 						$c_material = $row['c_material'];
@@ -186,7 +188,7 @@ if (f_shouldDie("G")) {
 						$c_unit = $row['c_unit'];
 						$c_base = ($row['c_base']==1)?"list-group-item-info":"";
 						?>
-						<li class="list-group-item <?echo $c_base?>">
+						<li class="list-group-item <?echo $c_base?>" onclick="f_selectItem(<?echo $idx++?>)">
 							<div class="row">
 								<div class="col-8"><?echo $c_material?></div>
 								<div class="col-3 text-end"><?echo $c_qty?></div>
