@@ -28,7 +28,7 @@ if (f_shouldDie("G")) {
 	<div class="container">
 		<h1 id="section_home" class="text-center mb-2">Edit Recipe</h1>
         <div class="card mb-3">
-            <h5 class="card-header bg-secondary text-white">Product</h5>
+            <h5 class="card-header bg-dark text-white">Product</h5>
             <div class="card-body">
 				<div class="row mb-3">
 					<div class="col-10 search-container">
@@ -89,7 +89,7 @@ if (f_shouldDie("G")) {
 						}
 						?>
 						</ul>
-						<select class="form-select" id="sltVer" onchange="f_VerSelected()">
+						<select class="form-select" id="sltVer">
 							<?
 							if (($getVer==NULL)||($getVer==0)){//no product is selected
 								echo "<option value=0 selected>New Ver</option>";
@@ -122,15 +122,15 @@ if (f_shouldDie("G")) {
 					</div>
 				</div> <!--2nd row-->
 			</div>
-			<div class="row gap-3 mb-2">
-				<button type="button" class="btn btn-primary col-3 ms-4" onclick="f_getRecipe()">Read</button>
-				<button type="button" class="btn btn-primary col-3" onclick="f_toDelete()">Save</button>
+			<div class="row gap-2 mb-2">
+				<button type="button" class="btn btn-primary col-4 ms-4" onclick="f_getRecipe()">Read / New</button>
+				<button type="button" class="btn btn-primary col-3" onclick="f_saveRecipe()">Save</button>
 				<button type="button" class="btn btn-secondary col-3" onclick="f_refresh()">Clean</button>
 			</div>
 		</div><!--product card-->
 
         <div class="card mb-3">
-            <h5 class="card-header bg-secondary text-white">Recipe</h5>
+            <h5 class="card-header bg-dark text-white">Recipe</h5>
             <div class="card-body">
 				<div class="row mb-3 search-container">
 					<div class="col-10"><input type="text"  class="form-control" id="iptItem" <?echo ($getProduct==NULL)?"disabled":""?>></div>
@@ -188,7 +188,7 @@ if (f_shouldDie("G")) {
 						$c_unit = $row['c_unit'];
 						$c_base = ($row['c_base']==1)?"list-group-item-info":"";
 						?>
-						<li class="list-group-item <?echo $c_base?>" onclick="f_selectItem(<?echo $idx++?>)">
+						<li class="list-group-item <?echo $c_base?>" onclick="f_selectItem(this)">
 							<div class="row">
 								<div class="col-8"><?echo $c_material?></div>
 								<div class="col-3 text-end"><?echo $c_qty?></div>

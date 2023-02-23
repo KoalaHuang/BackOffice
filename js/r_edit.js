@@ -12,7 +12,11 @@ const objGlobal = {
 	version: 0,
 	recipe: 0,
 	cat: "",
-	act: 0 //1: update, 2: insert, 3: delete, 0: no change
+	arrayItemM: [], //recipe item
+	arrayItemU: [], //recipe unit
+	arrayItemQ: [], //recipe qty
+	arrayItemB: [], //1: base, 2: raw material
+	act: 0 //1: update, 2: insert
   };
 
 window.addEventListener("DOMContentLoaded", function() {
@@ -78,7 +82,7 @@ function searchHandler(e) {
 			results = search(inputVal,arrayProduct);
 		}else{
 			elmSltCat.value = "Product type...";
-			elmSltVer.value = "New Ver";
+			elmSltVer.value = 0;
 			elmSltCat.disabled = elmSltVer.disabled = true;
 			elmIptUnit.disabled = elmIptQty.disabled = true;
 		}
@@ -242,33 +246,37 @@ function useSuggestedItem(idx) {
 function f_getRecipe(){
 	objGlobal.product = elmIptProduct.value;
 	objGlobal.cat = elmSltCat.value;
-	objGlobal.ver = elmSltVer.value;
+	objGlobal.version = elmSltVer.value;
 	objGlobal.act = 2; //insert new record
 
-	if (arrayProduct.includes(objGlobal.product)){
-		window.location.href = "r_edit.php?product=" + encodeURIComponent(objGlobal.product) + "&cat=" + encodeURIComponent(objGlobal.cat) + "&ver=" + objGlobal.ver;
+	if (objGlobal.product == "") {
+		alert("Please fill in product name.");
 	}else{
-		document.getElementById("modal_body").innerHTML = "<strong>Create NEW recipe?</strong><br><br>" + "Product: " + objGlobal.product + "<br>Type: " + objGlobal.cat;
-		document.getElementById("btn_ok").setAttribute('onclick','f_newRecipe()');
-		document.getElementById("btn_ok").disabled = false;
-		document.getElementById("modal_status").innerHTML = "";
-		modal_Popup.show();  
+		if (arrayProduct.includes(objGlobal.product)){
+			window.location.href = "r_edit.php?product=" + encodeURIComponent(objGlobal.product) + "&cat=" + encodeURIComponent(objGlobal.cat) + "&ver=" + objGlobal.version;
+		}else{
+			document.getElementById("modal_body").innerHTML = "<strong>Create NEW recipe?</strong><br><br>" + "Product: " + objGlobal.product + "<br>Type: " + objGlobal.cat;
+			document.getElementById("btn_ok").setAttribute('onclick','f_newRecipe()');
+			document.getElementById("btn_ok").disabled = false;
+			document.getElementById("modal_status").innerHTML = "";
+			modal_Popup.show();  
+		}
 	}
 }
 
 /* Create new recipe */
 function f_newRecipe(){
-	window.location.href = "r_edit.php?product=" + objGlobal.product + "&cat=" + objGlobal.cat + "&ver=0";
+	window.location.href = "r_edit.php?product=" + encodeURIComponent(objGlobal.product) + "&cat=" + encodeURIComponent(objGlobal.cat) + "&ver=0";
 }
 
 /* Select recipe item */
-function f_selectItem(itemIdx){
+function f_selectItem(elmSelected){
 	const totalReciptItem = elmUlRecipeItem.childElementCount;
 	for (var idx = 0; idx < totalReciptItem; idx++){
 		var elmLi = elmUlRecipeItem.children[idx];//list item <li>
 		var strLiClass = elmLi.getAttribute('class');
 		strLiClass = strLiClass.replace(' active','');
-		if (idx == itemIdx){
+		if (elmLi == elmSelected){
 			strLiClass = strLiClass + ' active';
 			var elmRecipeRow = elmUlRecipeItem.children[idx].children[0];//<div row>
 			elmIptItem.value = elmRecipeRow.children[0].innerText; //material
@@ -301,7 +309,7 @@ function f_updateItem(){
 		if (strItem == elmRecipeRow.children[0].innerText){
 			isNewItem = false;
 			elmRecipeRow.children[1].innerText = elmIptQty.value; //quantity
-			f_selectItem(idx);
+			f_selectItem(elmUlRecipeItem.children[idx]);
 			break;
 		}
 	}
@@ -317,7 +325,7 @@ function f_updateItem(){
 			}else{
 				elmLi.setAttribute('class',"list-group-item active");
 			}
-			elmLi.setAttribute('onclick','f_selectItem(' + totalReciptItem + ')');
+			elmLi.setAttribute('onclick','f_selectItem(this)');
 			const elmRow = document.createElement("div");
 			elmRow.setAttribute('class','row');
 			var elmCol = document.createElement("div");
@@ -334,9 +342,63 @@ function f_updateItem(){
 			elmRow.appendChild(elmCol);
 			elmLi.appendChild(elmRow);
 			elmUlRecipeItem.appendChild(elmLi);
-			f_selectItem(totalReciptItem);
+			f_selectItem(elmLi);
 		}
 
+	}
+}
+
+/* delete selected item */
+function f_deleteItem(){
+	const totalReciptItem = elmUlRecipeItem.childElementCount;
+	for (var idx = 0; idx < totalReciptItem; idx++){
+		var elmLiRecipe = elmUlRecipeItem.children[idx];
+		if (elmLiRecipe.getAttribute('class').indexOf('active') >= 0){
+			elmLiRecipe.remove();
+			break;
+		}
+	}
+}
+
+/* to save the recipe */
+function f_saveRecipe(){
+	objGlobal.product = elmIptProduct.value;
+	objGlobal.cat = elmSltCat.value;
+	objGlobal.version = elmSltVer.value;
+	objGlobal.recipe = elmSltVer.getAttribute('data-bo-recipe');
+	var strAct = "";
+	if (objGlobal.product == "") {
+		alert("Please fill in product name.");
+	}else{	
+		if (objGlobal.version == 0){//new recipe
+			objGlobal.act = 2;
+			strAct = "Save NEW recipe:";
+		}else{
+			objGlobal.act = 0;
+			for (var idx=0; idx < arrayProduct.length; idx++){
+				if (objGlobal.product == arrayProduct[idx]){
+					objGlobal.act = 1; //update existing product
+					strAct = "Update recipe:";
+					break;
+				}
+			}
+			if (objGlobal.act == 0){
+				alert("Product can't be found. Check product name or select 'New Ver' to create new recipe.");
+				return;
+			}
+		}
+		const totalReciptItem = elmUlRecipeItem.childElementCount;
+		for (var idx = 0; idx < totalReciptItem; idx++){
+			var elmRecipeRow = elmUlRecipeItem.children[idx].children[0];//<div row>
+			objGlobal.arrayItemM[idx] = elmRecipeRow.children[0].innerText; //material
+			objGlobal.arrayItemQ[idx] = elmRecipeRow.children[1].innerText; //quantity
+			objGlobal.arrayItemU[idx] = elmRecipeRow.children[2].innerText; //unit
+			objGlobal.arrayItemB[idx] = (elmUlRecipeItem.children[idx].getAttribute('class').indexOf('active') < 0)?2:1;
+		}
+		document.getElementById("modal_body").innerHTML = "<strong>" + strAct + "</strong><br><br>" + "Product: " + objGlobal.product + "<br>Recipe version: " + objGlobal.version + "<br>Product type: " + objGlobal.cat;
+		document.getElementById("btn_ok").disabled = false;
+		document.getElementById("modal_status").innerHTML = "";
+		modal_Popup.show();  
 	}
 }
 
