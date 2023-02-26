@@ -38,7 +38,7 @@ if (f_shouldDie("G")) {
 							<?
 							$arrayProduct = [[]];
 							$arrayVerUl = []; //Version option HTML for selected products
-							$sql = "SELECT * FROM `t_recipe`";
+							$sql = "SELECT * FROM `t_recipe` ORDER BY `c_product`,`c_recipe`";
 							$result = $conn->query($sql);
 							$totalRows = $result->num_rows ;
 							if ($totalRows > 0) {
@@ -105,7 +105,7 @@ if (f_shouldDie("G")) {
 					</div>
 					<div class="col-8">
 						<select class="form-select" id="sltCat" onchange="f_CatSelected()">
-							<option <?echo ($getProduct==NULL)?"seclected":""?>>Product type...</option>
+							<option value="0" <?echo ($getProduct==NULL)?"seclected":""?>>Product type...</option>
 							<?
 							$sql = "SELECT c_cat FROM `t_cat`";
 							$result = $conn->query($sql);
@@ -177,7 +177,7 @@ if (f_shouldDie("G")) {
 				<hr><!--list recipe items-->
                 <ul class="list-group" id="ulRecipe">
 				<?
-				$sql = "SELECT `c_material`, `c_quantity`,`c_unit`,`c_base` FROM `t_recipelib` WHERE `c_recipe`=".$recipeNum;
+				$sql = "SELECT `c_material`, `c_quantity`,`c_unit`,`c_base` FROM `t_recipelib` WHERE `c_recipe`=".$recipeNum." ORDER BY `c_base`";
 				$result = $conn->query($sql);
 				$totalRows = $result->num_rows ;
 				$idx = 0;
@@ -190,9 +190,9 @@ if (f_shouldDie("G")) {
 						?>
 						<li class="list-group-item <?echo $c_base?>" onclick="f_selectItem(this)">
 							<div class="row">
-								<div class="col-8"><?echo $c_material?></div>
+								<div class="col-7"><?echo $c_material?></div>
 								<div class="col-3 text-end"><?echo $c_qty?></div>
-								<div class="col-1"><?echo $c_unit?></div>
+								<div class="col-2"><?echo $c_unit?></div>
 							</div>
 						</li>
 						<?

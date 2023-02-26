@@ -1,4 +1,5 @@
-/* Receipt - Material javacript */
+/* Receipe - edit recipe 
+*/
 
 const arrayProduct = [];
 const arrayCat = [];
@@ -52,9 +53,9 @@ window.addEventListener("DOMContentLoaded", function() {
     for (idx = 0; idx < totalRecipe; idx++){
         var elmLi = elmUlRecipe.children[idx];
 		arrayRecipe[idx] = [];
-        arrayRecipe[idx][0] = elmLi.getAttribute("data-bo-product"); 
-        arrayRecipe[idx][1] = elmLi.innerText;
-        arrayRecipe[idx][2] = elmLi.getAttribute("data-bo-recipe");
+        arrayRecipe[idx][0] = elmLi.getAttribute("data-bo-product"); //product
+        arrayRecipe[idx][1] = elmLi.innerText; //version
+        arrayRecipe[idx][2] = elmLi.getAttribute("data-bo-recipe"); //recipe num
     }
 
 	elmIptProduct.addEventListener('keyup', searchHandler);
@@ -81,7 +82,7 @@ function searchHandler(e) {
 		if (inputVal.length > 0) {
 			results = search(inputVal,arrayProduct);
 		}else{
-			elmSltCat.value = "Product type...";
+			elmSltCat.value = "0";
 			elmSltVer.value = 0;
 			elmSltCat.disabled = elmSltVer.disabled = true;
 			elmIptUnit.disabled = elmIptQty.disabled = true;
@@ -249,8 +250,8 @@ function f_getRecipe(){
 	objGlobal.version = elmSltVer.value;
 	objGlobal.act = 2; //insert new record
 
-	if (objGlobal.product == "") {
-		alert("Please fill in product name.");
+	if ((objGlobal.product == "") || (objGlobal.cat == 0)) {
+		alert("Please fill in product name and type.");
 	}else{
 		if (arrayProduct.includes(objGlobal.product)){
 			window.location.href = "r_edit.php?product=" + encodeURIComponent(objGlobal.product) + "&cat=" + encodeURIComponent(objGlobal.cat) + "&ver=" + objGlobal.version;
@@ -299,7 +300,7 @@ function f_checkMaterial(str){
 	return isBase;
 }
 
-/*Update recipe item*/
+/*Update recipe item by changing its quantity or adding new item in the recipe*/
 function f_updateItem(){
 	const totalReciptItem = elmUlRecipeItem.childElementCount;
 	const strItem = elmIptItem.value;
@@ -329,7 +330,7 @@ function f_updateItem(){
 			const elmRow = document.createElement("div");
 			elmRow.setAttribute('class','row');
 			var elmCol = document.createElement("div");
-			elmCol.setAttribute('class','col-8');
+			elmCol.setAttribute('class','col-7');
 			elmCol.innerText = elmIptItem.value;
 			elmRow.appendChild(elmCol);
 			elmCol = document.createElement("div");
@@ -337,7 +338,7 @@ function f_updateItem(){
 			elmCol.innerText = elmIptQty.value;
 			elmRow.appendChild(elmCol);
 			elmCol = document.createElement("div");
-			elmCol.setAttribute('class','col-1');
+			elmCol.setAttribute('class','col-2');
 			elmCol.innerText = elmIptUnit.value;
 			elmRow.appendChild(elmCol);
 			elmLi.appendChild(elmRow);
@@ -365,41 +366,59 @@ function f_saveRecipe(){
 	objGlobal.product = elmIptProduct.value;
 	objGlobal.cat = elmSltCat.value;
 	objGlobal.version = elmSltVer.value;
-	objGlobal.recipe = elmSltVer.getAttribute('data-bo-recipe');
+	objGlobal.recipe = elmSltVer.children[elmSltVer.selectedIndex].getAttribute('data-bo-recipe');
 	var strAct = "";
-	if (objGlobal.product == "") {
-		alert("Please fill in product name.");
-	}else{	
-		if (objGlobal.version == 0){//new recipe
-			objGlobal.act = 2;
-			strAct = "Save NEW recipe:";
+	var isExitingProduct = false;
+	const totalReciptItem = elmUlRecipeItem.childElementCount;
+
+
+	if ((objGlobal.product == "") || (objGlobal.cat == 0) || (totalReciptItem == 0)){
+		if (objGlobal.product == ""){
+			alert("Produt name is required!");
 		}else{
-			objGlobal.act = 0;
-			for (var idx=0; idx < arrayProduct.length; idx++){
-				if (objGlobal.product == arrayProduct[idx]){
-					objGlobal.act = 1; //update existing product
-					strAct = "Update recipe:";
-					break;
-				}
-			}
-			if (objGlobal.act == 0){
-				alert("Product can't be found. Check product name or select 'New Ver' to create new recipe.");
-				return;
+			if (objGlobal.cat == 0){
+				alert("Produt type is required!");
+			}else{
+				alert("No recipe is defined. Try to add something...");
 			}
 		}
-		const totalReciptItem = elmUlRecipeItem.childElementCount;
-		for (var idx = 0; idx < totalReciptItem; idx++){
-			var elmRecipeRow = elmUlRecipeItem.children[idx].children[0];//<div row>
-			objGlobal.arrayItemM[idx] = elmRecipeRow.children[0].innerText; //material
-			objGlobal.arrayItemQ[idx] = elmRecipeRow.children[1].innerText; //quantity
-			objGlobal.arrayItemU[idx] = elmRecipeRow.children[2].innerText; //unit
-			objGlobal.arrayItemB[idx] = (elmUlRecipeItem.children[idx].getAttribute('class').indexOf('active') < 0)?2:1;
+		return;
+	}//check data integrity
+
+	isExitingProduct = arrayProduct.includes(objGlobal.product);
+	if (isExitingProduct){
+		if (objGlobal.version == 0){
+			strAct = "Create <span class=\"text-danger\">NEW</span> recipe for <span class=\"text-danger\">EXISTING</span> product?";
+			objGlobal.act = 2; //new recipe - new recipe version for current product
+			//get current max version of the product
+			var strVer = elmSltVer.lastElementChild.innerText;
+			objGlobal.version = Number(strVer) + 1; //new version
+		}else{
+			strAct = "Update <span class=\"text-danger\">EXISTING</span> recipe?";
+			objGlobal.act = 1; //update recipe
 		}
-		document.getElementById("modal_body").innerHTML = "<strong>" + strAct + "</strong><br><br>" + "Product: " + objGlobal.product + "<br>Recipe version: " + objGlobal.version + "<br>Product type: " + objGlobal.cat;
-		document.getElementById("btn_ok").disabled = false;
-		document.getElementById("modal_status").innerHTML = "";
-		modal_Popup.show();  
+	}else{
+		if (objGlobal.version == 0){
+			strAct = "Create <span class=\"text-danger\">NEW</span> recipe with <span class=\"text-danger\">NEW</span> product?";
+			objGlobal.act = 2; //new recipe - new product recipe
+			objGlobal.version = 1; //new product starts with recipe version 1
+		}else{
+			alert("Product can't be found. Select 'New Ver' to create new recipe if product is correct.");
+			return;
+		}
 	}
+
+	for (var idx = 0; idx < totalReciptItem; idx++){
+		var elmRecipeRow = elmUlRecipeItem.children[idx].children[0];//<div row>
+		objGlobal.arrayItemM[idx] = elmRecipeRow.children[0].innerText; //material
+		objGlobal.arrayItemQ[idx] = elmRecipeRow.children[1].innerText; //quantity
+		objGlobal.arrayItemU[idx] = elmRecipeRow.children[2].innerText; //unit
+		objGlobal.arrayItemB[idx] = (elmUlRecipeItem.children[idx].getAttribute('class').indexOf('list-group-item-info') < 0)?2:1;//isbase
+	}
+	document.getElementById("modal_body").innerHTML = "<strong>" + strAct + "</strong><br><br>" + "Product: " + objGlobal.product + "<br>Recipe version: " + objGlobal.version + "<br>Product type: " + objGlobal.cat;
+	document.getElementById("btn_ok").disabled = false;
+	document.getElementById("modal_status").innerHTML = "";
+	modal_Popup.show();  
 }
 
 //submit data change
