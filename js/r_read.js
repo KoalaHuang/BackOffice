@@ -62,10 +62,9 @@ function searchHandler(e) {
     if (inputVal.length > 0) {
         results = search(inputVal,arrayProduct);
     }else{
-        elmSltCat.value = "0";
-        elmSltVer.value = 0;
-        elmSltCat.disabled = elmSltVer.disabled = true;
-        elmIptUnit.disabled = elmIptQty.disabled = true;
+        elmSltCat.value = "";
+        elmSltVer.value = "";
+        elmSltVer.disabled = true;
     }
     showSuggestedProduct(results, inputVal);
 }
@@ -142,7 +141,7 @@ function useSuggestedProduct(idx) {
 	elmSltCat.value = objGlobal.cat = arrayCat[idx];
 	///filter recipe version for selected product
 	f_filterVersion();
-	elmSltCat.disabled = elmSltVer.disabled = false;
+	elmSltVer.disabled = false;
 	elmUlProduct.innerHTML = '';
 	elmUlProduct.classList.remove('listed');
 	document.getElementById("btnProductList").checked = false;

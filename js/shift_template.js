@@ -82,9 +82,9 @@ function f_ShiftChanged(idxTab, intTimeChanged){
       sltTimeStart.disabled = sltTimeEnd.disabled = true;
       checkFullDay.disabled = (employeeStatus == "F");
       if (employeeStatus == "P") {
-        intTotalMins = 480; //P employee counts 8 hours
+        intTotalMins = 540; //P employee counts 8 hours !!Feb 27: change to 540 and 600
       }else{
-        intTotalMins = 540  //F and S employee counts 9 hours 
+        intTotalMins = 600  //F and S employee counts 9 hours 
       }
     }else{ //part time. 
       const startTime = sltTimeStart.value.split(":");
@@ -103,9 +103,9 @@ function f_ShiftChanged(idxTab, intTimeChanged){
     }else{
       checkFullDay.disabled = (employeeStatus == "F");
       if (employeeStatus == "P") {
-        intTotalMins = 480; //P employee counts 8 hours
+        intTotalMins = 540; //P employee counts 8 hours !!Feb 27: change to 540 and 600
       }else{
-        intTotalMins = 540  //F and S employee counts 9 hours 
+        intTotalMins = 600  //F and S employee counts 9 hours 
       }
     }
     f_refreshTabUser(); //only enable selected user in one tab
