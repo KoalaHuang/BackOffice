@@ -46,21 +46,18 @@
             }
             echo "</ul>";
           }
-          if  (strstr($access,"P") || (strstr($access,"D")) || (strstr($access,"I")) || (strstr($access,"G"))) {
+          if  ((strstr($access,"D")) || (strstr($access,"I")) || (strstr($access,"G"))) {
             echo "<li class=\"nav-item dropdown\">";
             echo "<a class=\"nav-link dropdown-toggle\" href=\"#\" id=\"recipedropdown\" role=\"button\" data-bs-toggle=\"dropdown\">Recipe</a>";
             echo "<ul class=\"dropdown-menu\">";
             if (strstr($access,"P")) {
-              echo "<li><a class=\"dropdown-item\" href=\"r_recipe.php\">Recipe</a></li>";
-            }
-            if (strstr($access,"F")) {
-              echo "<li><a class=\"dropdown-item\" href=\"r_product.php\">Product</a></li>";
-            }
-            if (strstr($access,"I")) {
-              echo "<li><a class=\"dropdown-item\" href=\"r_material.php\">Material</a></li>";
+              echo "<li><a class=\"dropdown-item\" href=\"r_read.php\">Read Recipe</a></li>";
             }
             if (strstr($access,"G")) {
               echo "<li><a class=\"dropdown-item\" href=\"r_edit.php\">Edit Recipe</a></li>";
+            }
+            if (strstr($access,"I")) {
+              echo "<li><a class=\"dropdown-item\" href=\"r_material.php\">Material</a></li>";
             }
             echo "</ul>";
           }

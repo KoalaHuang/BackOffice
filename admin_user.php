@@ -195,11 +195,6 @@ if (f_shouldDie("A")) {
 		</div>
 		<div class="col">
 			<div class="form-check">
-				<input disabled type="checkbox" class="form-check-input" name="btn_access" id="as13" value="D">
-			</div>
-		</div>
-		<div class="col">
-			<div class="form-check">
 				<input disabled type="checkbox" class="form-check-input" name="btn_access" id="as14" value="I">
 			</div>
 		</div>
@@ -208,12 +203,13 @@ if (f_shouldDie("A")) {
 				<input disabled type="checkbox" class="form-check-input" name="btn_access" id="as15" value="G">
 			</div>
 		</div>
+		<div class="col"></div>
     </div>
     <div class="row mx-auto mb-3">
-		<span class="col text-primary">Recipe</span>
-      	<span class="col text-primary">Product</span>
+		<span class="col text-primary">Read Recipe</span>
 		<span class="col text-primary">Material</span>
 		<span class="col text-primary">Edit Recipe</span>
+		<span class="col text-primary">&nbsp;</span>
     </div>
 	<div class="col-12 bg-info text-center mb-1"><strong>Store</strong></div>
 	<div class="row mx-auto">

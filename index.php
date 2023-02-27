@@ -66,16 +66,13 @@ $access = $_SESSION["access"];
       <h5 class="text-center text-muted">Recipe</h5>
       <?
       if (strstr($access,"P")) {
-        echo "<a href=\"r_recipe.php\" class=\"btn btn-primary mb-1\" role=\"button\">Recipe</a>";
-      }
-      if (strstr($access,"D")) {
-        echo "<a href=\"r_product.php\" class=\"btn btn-primary mb-1\" role=\"button\">Product</a>";
-      }
-      if (strstr($access,"I")) {
-        echo "<a href=\"r_material.php\" class=\"btn btn-primary mb-1\" role=\"button\">Material</a>";
+        echo "<a href=\"r_read.php\" class=\"btn btn-primary mb-1\" role=\"button\">Read Recipe</a>";
       }
       if (strstr($access,"G")) {
         echo "<a href=\"r_edit.php\" class=\"btn btn-primary mb-1\" role=\"button\">Edit Recipe</a>";
+      }
+      if (strstr($access,"I")) {
+        echo "<a href=\"r_material.php\" class=\"btn btn-primary mb-1\" role=\"button\">Material</a>";
       }
       ?>
     </div>

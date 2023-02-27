@@ -1,9 +1,9 @@
 <?
 /*
-Edit recipe
+Read recipe
 */ 
 include_once "sessioncheck.php";
-if (f_shouldDie("G")) {
+if (f_shouldDie("P")) {
 	header("Location:login.php");
 	exit();
   }
@@ -21,12 +21,12 @@ if (f_shouldDie("G")) {
 	}
 	?>
     <link rel="stylesheet" href="css/styles.css">    
-	<script src="js/r_edit.js"></script>
-	<title>Edit Recipe</title>
+	<script src="js/r_read.js"></script>
+	<title>Recipe</title>
 </head>
 <body>
 	<div class="container">
-		<h1 id="section_home" class="text-center mb-2">Edit Recipe</h1>
+		<h1 id="section_home" class="text-center mb-2">Recipe</h1>
         <div class="card mb-3">
             <h5 class="card-header bg-dark text-white">Product</h5>
             <div class="card-body">
@@ -91,21 +91,15 @@ if (f_shouldDie("G")) {
 						</ul>
 						<select class="form-select" id="sltVer">
 							<?
-							if (($getVer==NULL)||($getVer==0)){//no product is selected
-								echo "<option value=0 selected>New Ver</option>";
-							}else{
-								echo "<option value=0>New Ver</option>";
-								$countVer = count($arrayVerUl);
-								for ($idx=0; $idx < $countVer; $idx++){
-									echo $arrayVerUl[$idx];
-								}
-							}
+                            $countVer = count($arrayVerUl);
+                            for ($idx=0; $idx < $countVer; $idx++){
+                                echo $arrayVerUl[$idx];
+                            }
 							?>
 						</select>
 					</div>
 					<div class="col-8">
-						<select class="form-select" id="sltCat" onchange="f_CatSelected()">
-							<option value="0" <?echo ($getProduct==NULL)?"seclected":""?>>Product type...</option>
+						<select class="form-select" id="sltCat" onchange="f_CatSelected()" disabled>
 							<?
 							$sql = "SELECT c_cat FROM `t_cat`";
 							$result = $conn->query($sql);
@@ -123,8 +117,7 @@ if (f_shouldDie("G")) {
 				</div> <!--2nd row-->
 			</div>
 			<div class="row gap-2 mb-2">
-				<button type="button" class="btn btn-primary col-4 ms-4" onclick="f_getRecipe()">Read / New</button>
-				<button type="button" class="btn btn-primary col-3" onclick="f_saveRecipe()">Save</button>
+				<button type="button" class="btn btn-primary col-4 ms-4" onclick="f_getRecipe()">Read</button>
 				<button type="button" class="btn btn-secondary col-3" onclick="f_refresh()">Clean</button>
 			</div>
 		</div><!--product card-->
@@ -132,47 +125,13 @@ if (f_shouldDie("G")) {
         <div class="card mb-3">
             <h5 class="card-header bg-dark text-white">Recipe</h5>
             <div class="card-body">
-				<div class="row mb-3 search-container">
-					<div class="col-10"><input type="text"  class="form-control" id="iptItem" <?echo ($getProduct==NULL)?"disabled":""?>></div>
-					<div class="suggestions">
-						<ul id="ulItem" class="search-ul">
-						<?
-						if ($getProduct!=NULL){
-							//load base from recipe table
-							$sql = "SELECT `c_product`, max(c_version) FROM `t_recipe` WHERE `c_cat`='BASE' GROUP BY `c_product`";
-							$result = $conn->query($sql);
-							$totalRows = $result->num_rows ;
-							if ($totalRows > 0) {
-								while($row = $result->fetch_assoc()) {
-									$c_product = $row['c_product'];
-									echo "<li class=\"search-li text-danger\" data-bo-unit='g' data-bo-isbase=1>".$c_product."</li>";
-								}
-							}
-							//load material item from material table
-							$sql = "SELECT `c_name`, `c_unit` FROM `t_material`";
-							$result = $conn->query($sql);
-							$totalRows = $result->num_rows ;
-							if ($totalRows > 0) {
-								while($row = $result->fetch_assoc()) {
-									$c_name = $row['c_name'];
-									$c_unit = $row['c_unit'];
-									echo "<li class=\"search-li\" data-bo-unit='".$c_unit."' data-bo-isbase=0>".$c_name."</li>";
-								}
-							}	
-						}
-						?>
-						</ul>
-					</div>
-					<div class="col-2">
-							<input type="checkbox" class="btn-check" id="btnItemList" onchange="f_ListToggleItem()">
-							<label class="btn btn-outline-primary" for="btnItemList" id="lblItemList">&nbsp;&#9776&nbsp;</label>
-					</div>
-				</div>
                 <div class="row mb-3">
-					<div class="col-4"><input type="text" class="form-control" id="iptQuantity" <?echo ($getProduct==NULL)?"disabled":""?>></div>
-                    <div class="col-2"><input type="text" class="form-control" id="iptUnit" disabled></div>
-                    <button class="col-3 btn btn-primary ms-1 me-3" type="button" onclick="f_updateItem()">Update</button>
-                    <button class="col-2 btn btn-danger" type="button" onclick="f_deleteItem()">DEL</button>
+                    <div class="col-2"><button class="btn btn-primary" type="button" onclick="f_kg(1)">&nbsp;&nbsp;&nbsp;1&nbsp;&nbsp;&nbsp;</button></div>
+                    <div class="col-2"><button class="btn btn-primary" type="button" onclick="f_kg(4)">&nbsp;&nbsp;&nbsp;4&nbsp;&nbsp;&nbsp;</button></div>
+                    <div class="col-2"><button class="btn btn-primary" type="button" onclick="f_kg(6)">&nbsp;&nbsp;&nbsp;6&nbsp;&nbsp;&nbsp;</button></div>
+                    <div class="col-2"><button class="btn btn-primary" type="button" onclick="f_kg(8)">&nbsp;&nbsp;&nbsp;8&nbsp;&nbsp;&nbsp;</button></div>
+					<div class="col-2"><input type="text" class="form-control" id="iptPlanQty" onchange="f_planQty()"></div>
+                    <div class="col-2">Kg</div>
                 </div>
 				<hr><!--list recipe items-->
                 <ul class="list-group" id="ulRecipe">
@@ -182,14 +141,13 @@ if (f_shouldDie("G")) {
 				$totalRows = $result->num_rows ;
 				$idx = 0;
 				if ($totalRows > 0) {
-					echo "<div class=\"text-secondary text-center fst-italic fw-light\">Click the item to edit...</div>";
 					while($row = $result->fetch_assoc()) {
 						$c_material = $row['c_material'];
 						$c_qty = $row['c_quantity'];
 						$c_unit = $row['c_unit'];
 						$c_base = ($row['c_base']==1)?"list-group-item-info":"";
 						?>
-						<li class="list-group-item <?echo $c_base?>" onclick="f_selectItem(this)">
+						<li class="list-group-item <?echo $c_base?>">
 							<div class="row">
 								<div class="col-7"><?echo $c_material?></div>
 								<div class="col-3 text-end"><?echo $c_qty?></div>

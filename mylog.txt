@@ -1,180 +1,14 @@
 (object) array(
    'product' => 'test',
-   'version' => '1',
-   'recipe' => '63',
-   'cat' => 'Batter',
-   'arrayItemM' => 
-  array (
-    0 => 'White Base',
-    1 => 'Capfruit Kumquat',
-    2 => 'Glucouse Powder',
-    3 => 'Egg',
-  ),
-   'arrayItemU' => 
-  array (
-    0 => 'g',
-    1 => 'g',
-    2 => 'g',
-    3 => 'pcs',
-  ),
-   'arrayItemQ' => 
-  array (
-    0 => '1',
-    1 => '2',
-    2 => '3',
-    3 => '4',
-  ),
-   'arrayItemB' => 
-  array (
-    0 => 1,
-    1 => 2,
-    2 => 2,
-    3 => 2,
-  ),
-   'act' => 1,
-)
-'63 White Base 1 g 1'
-true
-'63 Capfruit Kumquat 2 g 2'
-true
-'63 Glucouse Powder 3 g 2'
-true
-'63 Egg 4 pcs 2'
-true
-(object) array(
-   'product' => 'test',
-   'version' => '1',
-   'recipe' => '63',
-   'cat' => 'Batter',
-   'arrayItemM' => 
-  array (
-    0 => 'White Base',
-    1 => 'Capfruit Kumquat',
-    2 => 'Glucouse Powder',
-    3 => 'Egg',
-  ),
-   'arrayItemU' => 
-  array (
-    0 => 'g',
-    1 => 'g',
-    2 => 'g',
-    3 => 'pcs',
-  ),
-   'arrayItemQ' => 
-  array (
-    0 => '1',
-    1 => '2',
-    2 => '3',
-    3 => '4',
-  ),
-   'arrayItemB' => 
-  array (
-    0 => 1,
-    1 => 2,
-    2 => 2,
-    3 => 2,
-  ),
-   'act' => 1,
-)
-'INSERT INTO `t_recipelib` (`c_recipe`,`c_material`,`c_quantity`,`c_unit`,`c_base`) VALUES (63,\'White Base\',1,\'g\',1)'
-'INSERT INTO `t_recipelib` (`c_recipe`,`c_material`,`c_quantity`,`c_unit`,`c_base`) VALUES (63,\'Capfruit Kumquat\',2,\'g\',2)'
-'INSERT INTO `t_recipelib` (`c_recipe`,`c_material`,`c_quantity`,`c_unit`,`c_base`) VALUES (63,\'Glucouse Powder\',3,\'g\',2)'
-'INSERT INTO `t_recipelib` (`c_recipe`,`c_material`,`c_quantity`,`c_unit`,`c_base`) VALUES (63,\'Egg\',4,\'pcs\',2)'
-(object) array(
-   'product' => 'test',
-   'version' => '1',
-   'recipe' => '63',
-   'cat' => 'Batter',
-   'arrayItemM' => 
-  array (
-    0 => 'White Base',
-    1 => 'Capfruit Kumquat',
-    2 => 'Glucouse Powder',
-    3 => 'Water',
-  ),
-   'arrayItemU' => 
-  array (
-    0 => 'g',
-    1 => 'g',
-    2 => 'g',
-    3 => 'g',
-  ),
-   'arrayItemQ' => 
-  array (
-    0 => '1',
-    1 => '2',
-    2 => '3',
-    3 => '4',
-  ),
-   'arrayItemB' => 
-  array (
-    0 => 1,
-    1 => 2,
-    2 => 2,
-    3 => 2,
-  ),
-   'act' => 1,
-)
-'INSERT INTO `t_recipelib` (`c_recipe`,`c_material`,`c_quantity`,`c_unit`,`c_base`) VALUES (63,\'White Base\',1,\'g\',1)'
-'INSERT INTO `t_recipelib` (`c_recipe`,`c_material`,`c_quantity`,`c_unit`,`c_base`) VALUES (63,\'Capfruit Kumquat\',2,\'g\',2)'
-'INSERT INTO `t_recipelib` (`c_recipe`,`c_material`,`c_quantity`,`c_unit`,`c_base`) VALUES (63,\'Glucouse Powder\',3,\'g\',2)'
-'INSERT INTO `t_recipelib` (`c_recipe`,`c_material`,`c_quantity`,`c_unit`,`c_base`) VALUES (63,\'Water\',4,\'g\',2)'
-(object) array(
-   'product' => 'test',
-   'version' => '1',
-   'recipe' => '63',
-   'cat' => 'Batter',
-   'arrayItemM' => 
-  array (
-    0 => 'White Base',
-    1 => 'Capfruit Kumquat',
-    2 => 'Glucouse Powder',
-    3 => 'Water',
-    4 => 'Egg',
-  ),
-   'arrayItemU' => 
-  array (
-    0 => 'g',
-    1 => 'g',
-    2 => 'g',
-    3 => 'g',
-    4 => 'pcs',
-  ),
-   'arrayItemQ' => 
-  array (
-    0 => '1',
-    1 => '2',
-    2 => '3',
-    3 => '4',
-    4 => '5',
-  ),
-   'arrayItemB' => 
-  array (
-    0 => 1,
-    1 => 2,
-    2 => 2,
-    3 => 2,
-    4 => 2,
-  ),
-   'act' => 1,
-)
-'INSERT INTO `t_recipelib` (`c_recipe`,`c_material`,`c_quantity`,`c_unit`,`c_base`) VALUES (63,\'White Base\',1,\'g\',1)'
-'INSERT INTO `t_recipelib` (`c_recipe`,`c_material`,`c_quantity`,`c_unit`,`c_base`) VALUES (63,\'Capfruit Kumquat\',2,\'g\',2)'
-'INSERT INTO `t_recipelib` (`c_recipe`,`c_material`,`c_quantity`,`c_unit`,`c_base`) VALUES (63,\'Glucouse Powder\',3,\'g\',2)'
-'INSERT INTO `t_recipelib` (`c_recipe`,`c_material`,`c_quantity`,`c_unit`,`c_base`) VALUES (63,\'Water\',4,\'g\',2)'
-'INSERT INTO `t_recipelib` (`c_recipe`,`c_material`,`c_quantity`,`c_unit`,`c_base`) VALUES (63,\'Egg\',5,\'pcs\',2)'
-(object) array(
-   'product' => 'test',
-   'version' => 2,
-   'recipe' => NULL,
+   'version' => '2',
+   'recipe' => '64',
    'cat' => 'Batter',
    'arrayItemM' => 
   array (
     0 => 'White Base',
     1 => 'Capfruit Kumquat',
     2 => 'Egg',
-    3 => 'Glucouse Powder',
-    4 => 'Water',
+    3 => 'Water',
   ),
    'arrayItemU' => 
   array (
@@ -182,15 +16,13 @@ true
     1 => 'g',
     2 => 'pcs',
     3 => 'g',
-    4 => 'g',
   ),
    'arrayItemQ' => 
   array (
     0 => '100',
     1 => '200',
     2 => '500',
-    3 => '300',
-    4 => '400',
+    3 => '400',
   ),
    'arrayItemB' => 
   array (
@@ -198,46 +30,10 @@ true
     1 => 2,
     2 => 2,
     3 => 2,
-    4 => 2,
   ),
-   'act' => 2,
+   'act' => 1,
 )
-(object) array(
-   'product' => 'test2',
-   'version' => 1,
-   'recipe' => NULL,
-   'cat' => 'Batter',
-   'arrayItemM' => 
-  array (
-    0 => 'White Base',
-    1 => 'Capfruit Kumquat',
-    2 => 'Egg',
-    3 => 'Glucouse Powder',
-    4 => 'Water',
-  ),
-   'arrayItemU' => 
-  array (
-    0 => 'g',
-    1 => 'g',
-    2 => 'pcs',
-    3 => 'g',
-    4 => 'g',
-  ),
-   'arrayItemQ' => 
-  array (
-    0 => '1000',
-    1 => '2000',
-    2 => '5000',
-    3 => '3000',
-    4 => '4000',
-  ),
-   'arrayItemB' => 
-  array (
-    0 => 1,
-    1 => 2,
-    2 => 2,
-    3 => 2,
-    4 => 2,
-  ),
-   'act' => 2,
-)
+'INSERT INTO `t_recipelib` (`c_recipe`,`c_material`,`c_quantity`,`c_unit`,`c_base`) VALUES (64,\'White Base\',100,\'g\',1)'
+'INSERT INTO `t_recipelib` (`c_recipe`,`c_material`,`c_quantity`,`c_unit`,`c_base`) VALUES (64,\'Capfruit Kumquat\',200,\'g\',2)'
+'INSERT INTO `t_recipelib` (`c_recipe`,`c_material`,`c_quantity`,`c_unit`,`c_base`) VALUES (64,\'Egg\',500,\'pcs\',2)'
+'INSERT INTO `t_recipelib` (`c_recipe`,`c_material`,`c_quantity`,`c_unit`,`c_base`) VALUES (64,\'Water\',400,\'g\',2)'
