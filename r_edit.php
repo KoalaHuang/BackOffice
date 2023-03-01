@@ -182,7 +182,6 @@ if (f_shouldDie("G")) {
 				$totalRows = $result->num_rows ;
 				$idx = 0;
 				if ($totalRows > 0) {
-					echo "<div class=\"text-secondary text-center fst-italic fw-light\">Click the item to edit...</div>";
 					while($row = $result->fetch_assoc()) {
 						$c_material = $row['c_material'];
 						$c_qty = $row['c_quantity'];

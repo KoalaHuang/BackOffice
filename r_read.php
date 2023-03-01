@@ -100,7 +100,7 @@ if (f_shouldDie("P")) {
 					</div>
 					<div class="col-8">
 						<select class="form-select" id="sltCat" disabled>
-							<option value="0" disabled <?echo ($getProduct==NULL)?"seclected":""?>>Product type...</option>
+							<option value="0"  <?echo ($getProduct==NULL)?"seclected":""?>>Product type...</option>
 							<?
 							$sql = "SELECT c_cat FROM `t_cat`";
 							$result = $conn->query($sql);

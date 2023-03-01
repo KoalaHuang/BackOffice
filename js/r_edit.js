@@ -307,6 +307,8 @@ function f_updateItem(){
 	var isNewItem = true;
 	for (var idx = 0; idx < totalReciptItem; idx++){
 		var elmRecipeRow = elmUlRecipeItem.children[idx].children[0];//<div row>
+		console.log(idx);
+		console.log(elmRecipeRow);
 		if (strItem == elmRecipeRow.children[0].innerText){
 			isNewItem = false;
 			elmRecipeRow.children[1].innerText = elmIptQty.value; //quantity
