@@ -118,7 +118,7 @@ if (f_shouldDie("P")) {
 				</div> <!--2nd row-->
 			</div>
 			<div class="row gap-2 mb-2">
-				<button type="button" class="btn btn-primary col-4 ms-4" onclick="f_getRecipe()">Read</button>
+				<button type="button" class="btn btn-primary col-4 mx-4" onclick="f_getRecipe()">Read</button>
 				<button type="button" class="btn btn-secondary col-3" onclick="f_refresh()">Clean</button>
 			</div>
 		</div><!--product card-->
@@ -127,12 +127,11 @@ if (f_shouldDie("P")) {
             <h5 class="card-header bg-dark text-white">Recipe</h5>
             <div class="card-body">
                 <div class="row mb-3">
-                    <div class="col-2"><button class="btn btn-primary" type="button" onclick="f_kg(1)">&nbsp;&nbsp;&nbsp;1&nbsp;&nbsp;&nbsp;</button></div>
-                    <div class="col-2"><button class="btn btn-primary" type="button" onclick="f_kg(4)">&nbsp;&nbsp;&nbsp;4&nbsp;&nbsp;&nbsp;</button></div>
-                    <div class="col-2"><button class="btn btn-primary" type="button" onclick="f_kg(6)">&nbsp;&nbsp;&nbsp;6&nbsp;&nbsp;&nbsp;</button></div>
-                    <div class="col-2"><button class="btn btn-primary" type="button" onclick="f_kg(8)">&nbsp;&nbsp;&nbsp;8&nbsp;&nbsp;&nbsp;</button></div>
-					<div class="col-2"><input type="text" class="form-control" id="iptPlanQty" onchange="f_planQty()"></div>
-                    <div class="col-2">Kg</div>
+                    <div class="col-2"><button class="btn btn-primary" type="button" onclick="f_kg(1)">&nbsp;1&nbsp;</button></div>
+                    <div class="col-2"><button class="btn btn-primary" type="button" onclick="f_kg(4)">&nbsp;4&nbsp;</button></div>
+                    <div class="col-2"><button class="btn btn-primary" type="button" onclick="f_kg(6)">&nbsp;6&nbsp;</button></div>
+                    <div class="col-2"><button class="btn btn-primary" type="button" onclick="f_kg(8)">&nbsp;8&nbsp;</button></div>
+					<div class="col-3"><input type="text" placeholder="Kg" class="form-control" id="iptPlanQty" onchange="f_planQty()"></div>
                 </div>
 				<hr><!--list recipe items-->
                 <ul class="list-group" id="ulRecipe">

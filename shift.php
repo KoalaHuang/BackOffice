@@ -1,8 +1,11 @@
 <? 
 /*
 Shift Calendar
-* normal user can add/remove his/her assignmet
-* admin can change all assignment
+GET para:
+year: year of calendar
+mon: month of calendar
+user: employee ID to filter the calendar
+store: store to display. For example: Papa`Queens`VP
 */
 include_once "sessioncheck.php";
 if (f_shouldDie("C")) {
@@ -26,6 +29,9 @@ if (f_shouldDie("C")) {
 	$UserStore = "";
 	$UserIsAdmin = false;
 	$arrayStore = array();
+
+	$getEmployee = $_GET['user']; //employ id to filter to calendar view
+	$getStore = $_GET['store']; // store to be displayed
 	
 	include "connect_db.php";
 	$sql = "SELECT `c_name`,`c_id`,`c_workday`,`c_store`, `c_access`, `c_employee` FROM `t_user` WHERE `c_name`='".$UserName."'";
@@ -41,6 +47,7 @@ if (f_shouldDie("C")) {
 		echo "User data error!";
 		die;
 	}
+	myLOG($UserIsAdmin);
 	$sql = "SELECT `c_name` FROM `t_store`";
 	$result = $conn->query($sql);
 	$idx = 0;
@@ -82,15 +89,23 @@ if (f_shouldDie("C")) {
 			<div class="col-4"></div>
 			<div class="col-4">
 		<select class="form-select text-center fw-bold text-white bg-primary" id="sltName" onchange="f_NameChange()">
-		<option value="All" <?echo $UserIsAdmin?"selected":"";?> data-stocking-userstore="All">All</option>";
+		<option value="All" <?echo ((($getEmployee==NULL)&&($UserIsAdmin))||($getEmployee=='All'))?"selected":"";?> data-stocking-userstore="All">All</option>";
 		<?
-		$sql = "SELECT `c_id`, `c_name`, `c_store` FROM `t_user`";
+		$sql = "SELECT `c_id`, `c_name`, `c_store` FROM `t_user` WHERE NOT (`c_employee`='D')";
 		$result = $conn->query($sql);
 		while($row = $result->fetch_assoc()) {
-			if ($UserIsAdmin || ($row['c_id'] != $UserID)){
-				$strSelected = "";
+			if (($getEmployee == NULL)||($getEmployee == 'All')){
+				if ($UserIsAdmin || ($row['c_id'] != $UserID)){
+					$strSelected = "";
+				}else{
+					$strSelected = "selected";//default shows only login user calendar if it's non-admin
+				}
 			}else{
-				$strSelected = "selected";//default shows only login user calendar if it's non-admin
+				if ($getEmployee == $row['c_id']){
+					$strSelected = "selected";// show selected employee's calendar
+				}else{
+					$strSelected = "";
+				}
 			}
 			echo "<option value=\"".$row['c_id']."\" ".$strSelected." data-stocking-userstore=\"".$row['c_store']."\">".$row['c_name']."</option>";
 		}
@@ -105,15 +120,20 @@ if (f_shouldDie("C")) {
 				<?
 				$totalStore = count($arrayStore);
 				for ($idxStore=0; $idxStore<$totalStore; $idxStore++){
+					$strStoreChecked = "";
+					myLOG($UserStore." ".$arrayStore[$idxStore]." ".$UserIsAdmin);
 					if (($UserStore == "ALL") || ($arrayStore[$idxStore] == $UserStore) || ($UserIsAdmin)) {
 						$strStoreDisplay = "";
+						if (($getStore == NULL)||(strstr($getStore,$arrayStore[$idxStore]))){//if store is in GET store para, then display
+							$strStoreChecked = "checked";
+						}
 					}else{
 						$strStoreDisplay = " d-none";//hide the stores user is not assigned to
 					}
 				?>
-				<div class="form-check form-switch form-check-inline me-5<?echo $strStoreDisplay?>" id="<? echo "divBtnStore".$idxStore ?>">
-					<input checked type="checkbox" class="form-check-input" name="btnStores" value="<? echo $arrayStore[$idxStore] ?>" id="<? echo "btnST".$idxStore ?>" onclick="f_storeSelected(<?echo $idxStore?>)">
-					<label class="form-check-label fw-bold" for="<? echo "btnST".$idxStore ?>"><? echo $arrayStore[$idxStore] ?></label>
+				<div class="form-check form-switch form-check-inline me-5 <?echo $strStoreDisplay?>" id="<? echo "divBtnStore".$idxStore ?>">
+					<input <?echo $strStoreChecked?> type="checkbox" class="form-check-input" name="btnStores" value="<? echo $arrayStore[$idxStore] ?>" id="<? echo "btnST".$idxStore ?>" onclick="f_storeSelected(<?echo $idxStore?>)">
+					<label id="<? echo "lblST".$idxStore?>" class="form-check-label fw-bold" for="<? echo "btnST".$idxStore ?>"><? echo $arrayStore[$idxStore] ?></label>
 				</div>
 				<?
 				}
@@ -179,7 +199,11 @@ if (f_shouldDie("C")) {
 			for ($idxStore = 0; $idxStore < $totalStore; $idxStore++) {
 				$rowStore = $arrayStore[$idxStore];
 				if (($UserStore == "ALL") || ($rowStore == $UserStore) || ($UserIsAdmin)) {
-					$strStoreDisplay = "";
+					if (($getStore == NULL)||(strstr($getStore,$rowStore))){
+						$strStoreDisplay = ""; //if store is in GET store para, then display
+					}else{
+						$strStoreDisplay = " d-none";
+					}
 				}else{
 					$strStoreDisplay = " d-none";//hide the stores user is not assigned to
 				}

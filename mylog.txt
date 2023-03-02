@@ -1,39 +1,20 @@
-(object) array(
-   'product' => 'test',
-   'version' => '2',
-   'recipe' => '64',
-   'cat' => 'Batter',
-   'arrayItemM' => 
-  array (
-    0 => 'White Base',
-    1 => 'Capfruit Kumquat',
-    2 => 'Egg',
-    3 => 'Water',
-  ),
-   'arrayItemU' => 
-  array (
-    0 => 'g',
-    1 => 'g',
-    2 => 'pcs',
-    3 => 'g',
-  ),
-   'arrayItemQ' => 
-  array (
-    0 => '100',
-    1 => '200',
-    2 => '500',
-    3 => '400',
-  ),
-   'arrayItemB' => 
-  array (
-    0 => 1,
-    1 => 2,
-    2 => 2,
-    3 => 2,
-  ),
-   'act' => 1,
-)
-'INSERT INTO `t_recipelib` (`c_recipe`,`c_material`,`c_quantity`,`c_unit`,`c_base`) VALUES (64,\'White Base\',100,\'g\',1)'
-'INSERT INTO `t_recipelib` (`c_recipe`,`c_material`,`c_quantity`,`c_unit`,`c_base`) VALUES (64,\'Capfruit Kumquat\',200,\'g\',2)'
-'INSERT INTO `t_recipelib` (`c_recipe`,`c_material`,`c_quantity`,`c_unit`,`c_base`) VALUES (64,\'Egg\',500,\'pcs\',2)'
-'INSERT INTO `t_recipelib` (`c_recipe`,`c_material`,`c_quantity`,`c_unit`,`c_base`) VALUES (64,\'Water\',400,\'g\',2)'
+2
+'Papa Papa 2'
+'Papa Queens 2'
+'Papa VP 2'
+2
+'Papa Papa 2'
+'Papa Queens 2'
+'Papa VP 2'
+2
+'Papa Papa 2'
+'Papa Queens 2'
+'Papa VP 2'
+2
+'Papa Papa 2'
+'Papa Queens 2'
+'Papa VP 2'
+2
+'Papa Papa 2'
+'Papa Queens 2'
+'Papa VP 2'

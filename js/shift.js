@@ -56,6 +56,21 @@ function f_weekday(intWD) {
   }
 }
 
+//get string of selected store to be used as GET para
+function f_getSelectedStore(){
+  const elmBtnStores = document.getElementsByName('btnStores');
+  const totalBtnStore = elmBtnStores.length;
+  var strStoreSelected = "";
+  for (var idx=0; idx<totalBtnStore; idx++) {
+    var strClass = document.getElementById('divBtnStore'+idx).getAttribute('class');
+    var isDisplayed = strClass.includes('d-none');
+    if ((!isDisplayed) && (elmBtnStores[idx].checked)) {
+      strStoreSelected = strStoreSelected + "`" + document.getElementById('lblST'+idx).innerText;
+    }
+  }
+  return strStoreSelected;
+}
+
 function f_nextMon() {
   if (objGlobal.mon == 12) {
     newYear = objGlobal.year + 1;
@@ -64,7 +79,8 @@ function f_nextMon() {
     newYear = objGlobal.year;
     newMon = objGlobal.mon + 1;
   }
-  window.location.href = "shift.php?year=" + newYear.toString() + "&mon=" + newMon.toString();
+  const strNameSelected = document.getElementById("sltName").value;
+  window.location.href = "shift.php?year=" + newYear.toString() + "&mon=" + newMon.toString() + "&user=" + strNameSelected + "&store=" + f_getSelectedStore();
 }
 
 function f_lastMon() {
@@ -75,7 +91,8 @@ function f_lastMon() {
     newYear = objGlobal.year;
     newMon = objGlobal.mon - 1;
   }
-  window.location.href = "shift.php?year=" + newYear.toString() + "&mon=" + newMon.toString();
+  const strNameSelected = document.getElementById("sltName").value;
+  window.location.href = "shift.php?year=" + newYear.toString() + "&mon=" + newMon.toString() + "&user=" + strNameSelected + "&store=" + f_getSelectedStore();
 }
 
 //store selected
@@ -223,7 +240,7 @@ function f_cellSelected(strStore, intWD, intCellYear, intCellMon, intmDay, isRea
 
 //Shift edit for all
 function f_editForAll(strStore, intWD, intCellYear, intCellMon, intmDay){
-  strURL = "shift_admin.php?year=" + intCellYear + "&mon=" + intCellMon + "&day=" + intmDay + "&WD=" + intWD + "&store=" + strStore + "&cmon=" + document.getElementById("iptDate").getAttribute("data-stocking-mon") + "&cyear=" + document.getElementById("iptDate").getAttribute("data-stocking-year");
+  strURL = "shift_admin.php?year=" + intCellYear + "&mon=" + intCellMon + "&day=" + intmDay + "&WD=" + intWD + "&store=" + strStore + "&cmon=" + document.getElementById("iptDate").getAttribute("data-stocking-mon") + "&cyear=" + document.getElementById("iptDate").getAttribute("data-stocking-year") + "&cuser=" + document.getElementById("sltName").value + "&cstore=" + f_getSelectedStore();;
   window.location.href = strURL;
 }
 
@@ -325,7 +342,7 @@ function f_submit() {
     xhttp.setRequestHeader("Accept", "application/json");
     xhttp.setRequestHeader("Content-Type", "application/json");
     xhttp.send(strJson);
-    document.getElementById("lbl_status").innerHTML = "<span class=\"text-primary\">Chang submitted......</span>";
+    document.getElementById("lbl_status").innerHTML = "<span class=\"text-primary\">Change submitted......</span>";
     document.getElementById("btn_cancel").disabled =  document.getElementById("btn_ok").disabled = true;
   }
 }//f_submit
