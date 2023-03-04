@@ -63,6 +63,7 @@ if (f_shouldDie("G")) {
 											if ($getVer == $c_ver){
 												$recipeNum = $c_recipe;//every verion of product has unique recipe number
 												$strSelect = " selected";
+												$strComment = $row['c_comment'];
 											}
 											$arrayVerUl[$idxVerUl] = $arrayVerUl[$idxVerUl].$strSelect.">".$arrayProduct[$idx][1]."</option>";
 											$idxVerUl++;
@@ -121,6 +122,9 @@ if (f_shouldDie("G")) {
 						</select>
 					</div>
 				</div> <!--2nd row-->
+				<div>
+					<textarea class="form-control" rows="2" id="txtComment" <?echo ($getProduct==NULL)?"disabled":""?>><?echo ($getProduct!=NULL)?$strComment:""?></textarea>
+				</div>
 			</div>
 			<div class="row gap-2 mb-2">
 				<button type="button" class="btn btn-primary col-4 ms-4" onclick="f_getRecipe()">Read / New</button>
