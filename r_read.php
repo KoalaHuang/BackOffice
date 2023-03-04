@@ -127,10 +127,22 @@ if (f_shouldDie("P")) {
             <h5 class="card-header bg-dark text-white">Recipe</h5>
             <div class="card-body">
                 <div class="row mb-3">
-                    <div class="col-2"><button class="btn btn-primary" type="button" onclick="f_kg(1)">&nbsp;1&nbsp;</button></div>
-                    <div class="col-2"><button class="btn btn-primary" type="button" onclick="f_kg(4)">&nbsp;4&nbsp;</button></div>
-                    <div class="col-2"><button class="btn btn-primary" type="button" onclick="f_kg(6)">&nbsp;6&nbsp;</button></div>
-                    <div class="col-2"><button class="btn btn-primary" type="button" onclick="f_kg(8)">&nbsp;8&nbsp;</button></div>
+                    <div class="col-2">
+						<input type="radio" class="btn-check" id="rdoQty1" name="rdoQty" onclick="f_kg(1)" checked>
+						<label class="btn btn-outline-primary" for="rdoQty1">&nbsp;1&nbsp;</label>
+					</div>
+                    <div class="col-2">
+						<input type="radio" class="btn-check" id="rdoQty2" name="rdoQty" onclick="f_kg(2)">
+						<label class="btn btn-outline-primary" for="rdoQty2">&nbsp;2&nbsp;</label>
+					</div>
+                    <div class="col-2">
+						<input type="radio" class="btn-check" id="rdoQty35" name="rdoQty" onclick="f_kg(3.5)">
+						<label class="btn btn-outline-primary" for="rdoQty35">3.5</label>
+					</div>
+                    <div class="col-2">
+						<input type="radio" class="btn-check" id="rdoQty4" name="rdoQty" onclick="f_kg(4)">
+						<label class="btn btn-outline-primary" for="rdoQty4">&nbsp;4&nbsp;</label>
+					</div>
 					<div class="col-3"><input type="text" placeholder="Kg" class="form-control" id="iptPlanQty" onchange="f_planQty()"></div>
                 </div>
 				<hr><!--list recipe items-->
