@@ -47,7 +47,6 @@ if (f_shouldDie("C")) {
 		echo "User data error!";
 		die;
 	}
-	myLOG($UserIsAdmin);
 	$sql = "SELECT `c_name` FROM `t_store`";
 	$result = $conn->query($sql);
 	$idx = 0;
@@ -121,7 +120,6 @@ if (f_shouldDie("C")) {
 				$totalStore = count($arrayStore);
 				for ($idxStore=0; $idxStore<$totalStore; $idxStore++){
 					$strStoreChecked = "";
-					myLOG($UserStore." ".$arrayStore[$idxStore]." ".$UserIsAdmin);
 					if (($UserStore == "ALL") || ($arrayStore[$idxStore] == $UserStore) || ($UserIsAdmin)) {
 						$strStoreDisplay = "";
 						if (($getStore == NULL)||(strstr($getStore,$arrayStore[$idxStore]))){//if store is in GET store para, then display
