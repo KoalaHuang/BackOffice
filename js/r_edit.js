@@ -13,6 +13,7 @@ const objGlobal = {
 	version: 0,
 	recipe: 0,
 	cat: "",
+	comment: "",
 	arrayItemM: [], //recipe item
 	arrayItemU: [], //recipe unit
 	arrayItemQ: [], //recipe qty
@@ -27,6 +28,7 @@ window.addEventListener("DOMContentLoaded", function() {
     elmUlProduct = document.getElementById('ulProduct');
     elmSltCat = document.getElementById('sltCat');
     elmSltVer = document.getElementById('sltVer');
+	elmTxtComment = document.getElementById('txtComment');
 
 	elmIptItem = document.getElementById('iptItem');//recipe edit input box
 	elmIptUnit = document.getElementById('iptUnit');
@@ -84,7 +86,8 @@ function searchHandler(e) {
 		}else{
 			elmSltCat.value = "0";
 			elmSltVer.value = 0;
-			elmSltCat.disabled = elmSltVer.disabled = true;
+			elmTxtComment.value = "";
+			elmTxtComment.disabled = elmSltVer.disabled = true;
 			elmIptUnit.disabled = elmIptQty.disabled = true;
 		}
 		showSuggestedProduct(results, inputVal);
@@ -224,7 +227,9 @@ function useSuggestedProduct(idx) {
 	elmSltCat.value = objGlobal.cat = arrayCat[idx];
 	///filter recipe version for selected product
 	f_filterVersion();
-	elmSltCat.disabled = elmSltVer.disabled = false;
+	elmSltVer.disabled = false;
+	elmTxtComment.value = "";//clean comment field
+	elmTxtComment.disabled = true;
 	elmUlProduct.innerHTML = '';
 	elmUlProduct.classList.remove('listed');
 	document.getElementById("btnProductList").checked = false;
@@ -250,11 +255,11 @@ function f_getRecipe(){
 	objGlobal.version = elmSltVer.value;
 	objGlobal.act = 2; //insert new record
 
-	if ((objGlobal.product == "") || (objGlobal.cat == 0)) {
-		alert("Please fill in product name and type.");
+	if (objGlobal.product == ""){
+		alert("Please fill in product name.");
 	}else{
 		if (arrayProduct.includes(objGlobal.product)){
-			window.location.href = "r_edit.php?product=" + encodeURIComponent(objGlobal.product) + "&cat=" + encodeURIComponent(objGlobal.cat) + "&ver=" + objGlobal.version;
+			window.location.href = "r_edit.php?product=" + encodeURIComponent(objGlobal.product) + "&ver=" + objGlobal.version;
 		}else{
 			document.getElementById("modal_body").innerHTML = "<strong>Create NEW recipe?</strong><br><br>" + "Product: " + objGlobal.product + "<br>Type: " + objGlobal.cat;
 			document.getElementById("btn_ok").setAttribute('onclick','f_newRecipe()');
@@ -267,7 +272,7 @@ function f_getRecipe(){
 
 /* Create new recipe */
 function f_newRecipe(){
-	window.location.href = "r_edit.php?product=" + encodeURIComponent(objGlobal.product) + "&cat=" + encodeURIComponent(objGlobal.cat) + "&ver=0";
+	window.location.href = "r_edit.php?product=" + encodeURIComponent(objGlobal.product) + "&ver=0";
 }
 
 /* Select recipe item */
@@ -368,25 +373,26 @@ function f_saveRecipe(){
 	objGlobal.product = elmIptProduct.value;
 	objGlobal.cat = elmSltCat.value;
 	objGlobal.version = elmSltVer.value;
+	objGlobal.comment = elmTxtComment.value;
 	objGlobal.recipe = elmSltVer.children[elmSltVer.selectedIndex].getAttribute('data-bo-recipe');
 	var strAct = "";
 	var isExitingProduct = false;
 	const totalReciptItem = elmUlRecipeItem.childElementCount;
 
+	//data integrity check
+	var isErrorFound = false;
+	var strAlert = "";
+	strAlert = (isErrorFound = (isErrorFound || (objGlobal.product == "")))?(strAlert+"Missing product name.<br>"):strAlert;
+	strAlert = (isErrorFound = (isErrorFound || (objGlobal.cat == 0)))?(strAlert+"Missing product type.<br>"):strAlert;
+	strAlert = (isErrorFound = isErrorFound || (totalReciptItem == 0))?(strAlert+"Missing recipe item.<br>"):strAlert;
+	strAlert = (isErrorFound = isErrorFound || (objGlobal.comment.includes("'")))?(strAlert+"Recipe comment can not include <'\">.<br>"):strAlert;
+	strAlert = (isErrorFound = isErrorFound || (objGlobal.comment.includes("\"")))?(strAlert+"Recipe comment can not include <'\">.<br>"):strAlert;
 
-	if ((objGlobal.product == "") || (objGlobal.cat == 0) || (totalReciptItem == 0)){
-		if (objGlobal.product == ""){
-			alert("Produt name is required!");
-		}else{
-			if (objGlobal.cat == 0){
-				alert("Produt type is required!");
-			}else{
-				alert("No recipe is defined. Try to add something...");
-			}
-		}
+	if (isErrorFound){
+		alert(strAlert);
 		return;
-	}//check data integrity
-
+	}
+	
 	isExitingProduct = arrayProduct.includes(objGlobal.product);
 	if (isExitingProduct){
 		if (objGlobal.version == 0){

@@ -30,9 +30,9 @@ if (f_shouldDie("C")) {
 	$UserIsAdmin = false;
 	$arrayStore = array();
 
-	$getEmployee = $_GET['user']; //employ id to filter to calendar view
+	$getEmployee = $_GET['user']; //employ id sent as para
 	$getStore = $_GET['store']; // store to be displayed
-	
+
 	include "connect_db.php";
 	$sql = "SELECT `c_name`,`c_id`,`c_workday`,`c_store`, `c_access`, `c_employee` FROM `t_user` WHERE `c_name`='".$UserName."'";
 	$result = $conn->query($sql);
@@ -47,6 +47,16 @@ if (f_shouldDie("C")) {
 		echo "User data error!";
 		die;
 	}
+	if ($getEmployee==NULL){
+		if ($UserIsAdmin){
+			$displayedUser = "All"; //admin user default display all
+		}else{
+			$displayedUser = $UserID; //non admin user display themself by default
+		}
+	}else{
+		$displayedUser = $getEmployee; //if employee is sent as para, then filtered by it
+	}
+	myLOG("user ".$UserID." get: ".$getEmployee." disp: ".$displayedUser);
 	$sql = "SELECT `c_name` FROM `t_store`";
 	$result = $conn->query($sql);
 	$idx = 0;
@@ -88,23 +98,15 @@ if (f_shouldDie("C")) {
 			<div class="col-4"></div>
 			<div class="col-4">
 		<select class="form-select text-center fw-bold text-white bg-primary" id="sltName" onchange="f_NameChange()">
-		<option value="All" <?echo ((($getEmployee==NULL)&&($UserIsAdmin))||($getEmployee=='All'))?"selected":"";?> data-stocking-userstore="All">All</option>";
+		<option value="All" <?echo ($displayedUser == 'All')?"selected":"";?> data-stocking-userstore="All">All</option>";
 		<?
 		$sql = "SELECT `c_id`, `c_name`, `c_store` FROM `t_user` WHERE NOT (`c_employee`='D')";
 		$result = $conn->query($sql);
 		while($row = $result->fetch_assoc()) {
-			if (($getEmployee == NULL)||($getEmployee == 'All')){
-				if ($UserIsAdmin || ($row['c_id'] != $UserID)){
-					$strSelected = "";
-				}else{
-					$strSelected = "selected";//default shows only login user calendar if it's non-admin
-				}
+			if ($row['c_id'] == $displayedUser){
+				$strSelected = "selected";
 			}else{
-				if ($getEmployee == $row['c_id']){
-					$strSelected = "selected";// show selected employee's calendar
-				}else{
-					$strSelected = "";
-				}
+				$strSelected = "";
 			}
 			echo "<option value=\"".$row['c_id']."\" ".$strSelected." data-stocking-userstore=\"".$row['c_store']."\">".$row['c_name']."</option>";
 		}
@@ -247,16 +249,14 @@ if (f_shouldDie("C")) {
 						$strDivClass = "<div name=\"".$strStoreWeek."\" class=\"text-center fs-6"; //name all assignme by store&week to toggle Only Me and all calendar
 						$row = $result->fetch_assoc();
 						if ($row){
-							if (!($UserIsAdmin)){//for non-admin user, display Only Me shift
-								if (($row['c_id']) != $UserID){
-									if ((!($isRowBlank)) || ($idxPpl < $MaxPpl) || ($idxWD < 7)) {
-										$strDivClass = $strDivClass . " d-none"; //hide the row if it's not you
-									}else{
-										$strDivClass = $strDivClass . " invisible"; //if whole row/week is blank, display a placehholder so that user can click to add assignment
-										$isRowBlank = false;
-									}
+							if ((($row['c_id']) == $displayedUser) || ($displayedUser == 'All')){
+								$isRowBlank = false; //this row/week has current user assignment
+							}else{
+								if ((!($isRowBlank)) || ($idxPpl < $MaxPpl) || ($idxWD < 7)) {
+									$strDivClass = $strDivClass . " d-none"; //hide the row if it's not the user to be displayed
 								}else{
-									$isRowBlank = false; //this row/week has current user assignment
+									$strDivClass = $strDivClass . " invisible"; //if whole row/week is blank, display a placehholder so that user can click to change assignment
+									$isRowBlank = false;
 								}
 							}
 							$c_type = $row['c_type'];
@@ -277,13 +277,11 @@ if (f_shouldDie("C")) {
 									break;
 							}
 						}else{
-							if (!($UserIsAdmin)){
-								if ((!($isRowBlank)) || ($idxPpl < $MaxPpl) || ($idxWD < 7)) {
-									$strDivClass = $strDivClass . " d-none"; //hide the row if it's not you
-								}else{
-									$strDivClass = $strDivClass . " invisible"; //if whole row/week is blank, display a placehholder so that user can click to add assignment
-									$isRowBlank = false;
-								}
+							if ((!($isRowBlank)) || ($idxPpl < $MaxPpl) || ($idxWD < 7)) {
+								$strDivClass = $strDivClass . " d-none"; //hide the row if it's not the user to be displayed
+							}else{
+								$strDivClass = $strDivClass . " invisible"; //if whole row/week is blank, display a placehholder so that user can click to change assignment
+								$isRowBlank = false;
 							}
 							$strDivData = "\" data-stocking-fullday=\"\" data-stocking-timestart=\"\"  data-stocking-timeend=\"\" data-stocking-totalmins=\"\" id=\"".$cellID."_".$idxPpl."\">";
 							if ($idxPpl <= $MinPpl) {

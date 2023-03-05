@@ -20,6 +20,7 @@ window.addEventListener("DOMContentLoaded", function() {
     elmUlProduct = document.getElementById('ulProduct');
     elmSltCat = document.getElementById('sltCat');
     elmSltVer = document.getElementById('sltVer');
+	elmTxtComment = document.getElementById('txtComment');
 
 	elmIptPlanQty = document.getElementById('iptPlanQty');//planned quantity
 
@@ -65,7 +66,8 @@ function searchHandler(e) {
         elmSltCat.value = "";
         elmSltVer.value = "";
         elmSltVer.disabled = true;
-    }
+		elmTxtComment.innerText = "";
+}
     showSuggestedProduct(results, inputVal);
 }
 
@@ -142,6 +144,7 @@ function useSuggestedProduct(idx) {
 	///filter recipe version for selected product
 	f_filterVersion();
 	elmSltVer.disabled = false;
+	elmTxtComment.value = "";//clean comment field
 	elmUlProduct.innerHTML = '';
 	elmUlProduct.classList.remove('listed');
 	document.getElementById("btnProductList").checked = false;

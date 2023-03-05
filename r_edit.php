@@ -16,7 +16,6 @@ if (f_shouldDie("G")) {
 	include "connect_db.php";
 	$getProduct = $_GET['product'];
 	if ($getProduct != NULL) {//retrieve recipe for product
-		$getCat = $_GET['cat'];
 		(int)$getVer = $_GET['ver'];
 	}
 	?>
@@ -64,6 +63,7 @@ if (f_shouldDie("G")) {
 												$recipeNum = $c_recipe;//every verion of product has unique recipe number
 												$strSelect = " selected";
 												$strComment = $row['c_comment'];
+												$strCat = $c_cat;
 											}
 											$arrayVerUl[$idxVerUl] = $arrayVerUl[$idxVerUl].$strSelect.">".$arrayProduct[$idx][1]."</option>";
 											$idxVerUl++;
@@ -105,7 +105,8 @@ if (f_shouldDie("G")) {
 						</select>
 					</div>
 					<div class="col-8">
-						<select class="form-select" id="sltCat" onchange="f_CatSelected()">
+						<!--Product category is not editable via recipe function, since multiple recipe may share same product&cat-->
+						<select class="form-select" id="sltCat" onchange="f_CatSelected()" disabled>
 							<option value="0" <?echo ($getProduct==NULL)?"seclected":""?>>Product type...</option>
 							<?
 							$sql = "SELECT c_cat FROM `t_cat`";
@@ -114,18 +115,18 @@ if (f_shouldDie("G")) {
 								while($row = $result->fetch_assoc()) {
 									$c_cat = $row["c_cat"];
 							?>
-									<option value="<?echo $c_cat?>" <?echo (($getProduct!=NULL)&&($getCat==$c_cat))?"selected":""?>><?echo $c_cat?></option>
+									<option value="<?echo $c_cat?>" <?echo (($getProduct!=NULL)&&($strCat==$c_cat))?"selected":""?>><?echo $c_cat?></option>
 							<?
 								}
 							}
 							?>
 						</select>
 					</div>
-				</div> <!--2nd row-->
-				<div>
-					<textarea class="form-control" rows="2" id="txtComment" <?echo ($getProduct==NULL)?"disabled":""?>><?echo ($getProduct!=NULL)?$strComment:""?></textarea>
 				</div>
-			</div>
+				<div>
+					<textarea class="form-control" rows="2" id="txtComment" <?echo ($getProduct==NULL)?"disabled":""?>><?echo ($getProduct!=NULL)?$strComment:"Recipe comment..."?></textarea>
+				</div>
+			</div> <!--2nd row-->
 			<div class="row gap-2 mb-2">
 				<button type="button" class="btn btn-primary col-4 ms-4" onclick="f_getRecipe()">Read / New</button>
 				<button type="button" class="btn btn-primary col-3" onclick="f_saveRecipe()">Save</button>

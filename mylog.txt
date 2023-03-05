@@ -1,94 +1,29 @@
-2
-'Papa Papa 2'
-'Papa Queens 2'
-'Papa VP 2'
-2
-'Papa Papa 2'
-'Papa Queens 2'
-'Papa VP 2'
-2
-'Papa Papa 2'
-'Papa Queens 2'
-'Papa VP 2'
-2
-'Papa Papa 2'
-'Papa Queens 2'
-'Papa VP 2'
-2
-'Papa Papa 2'
-'Papa Queens 2'
-'Papa VP 2'
-false
-'ALL Papa '
-'ALL Queens '
-'ALL VP '
-(object) array(
-   'product' => 'Base Core',
-   'version' => 2,
-   'recipe' => NULL,
-   'cat' => 'BASE',
-   'arrayItemM' => 
-  array (
-    0 => 'White Base',
-    1 => 'Cream',
-    2 => 'Glucouse Powder',
-    3 => 'Sucrose',
-  ),
-   'arrayItemU' => 
-  array (
-    0 => 'g',
-    1 => 'g',
-    2 => 'g',
-    3 => 'g',
-  ),
-   'arrayItemQ' => 
-  array (
-    0 => '935',
-    1 => '47',
-    2 => '90',
-    3 => '12',
-  ),
-   'arrayItemB' => 
-  array (
-    0 => 1,
-    1 => 2,
-    2 => 2,
-    3 => 2,
-  ),
-   'act' => 2,
-)
-(object) array(
-   'product' => 'Base Core2',
-   'version' => 1,
-   'recipe' => NULL,
-   'cat' => 'BASE',
-   'arrayItemM' => 
-  array (
-    0 => 'White Base',
-    1 => 'Cream',
-    2 => 'Dextrose',
-    3 => 'Glucouse Powder',
-  ),
-   'arrayItemU' => 
-  array (
-    0 => 'g',
-    1 => 'g',
-    2 => 'g',
-    3 => 'g',
-  ),
-   'arrayItemQ' => 
-  array (
-    0 => '935',
-    1 => '47',
-    2 => '9',
-    3 => '9',
-  ),
-   'arrayItemB' => 
-  array (
-    0 => 1,
-    1 => 2,
-    2 => 2,
-    3 => 2,
-  ),
-   'act' => 2,
-)
+'user TST get: All disp: All'
+'user TST get: All disp: All'
+'user TST get: All disp: All'
+'user TST get: All disp: All'
+'user TST get: XM disp: XM'
+'user TST get: XM disp: XM'
+'user TST get: XM disp: XM'
+'user TST get: XM disp: XM'
+'user TST get: AM disp: AM'
+'user TST get: AM disp: AM'
+'user KO get:  disp: All'
+'user KO get: RF disp: RF'
+'user KO get: RF disp: RF'
+'user KO get: RF disp: RF'
+'user KO get: RF disp: RF'
+'user KO get: RF disp: RF'
+'user KO get: RF disp: RF'
+'user KO get: RF disp: RF'
+'user KO get: RF disp: RF'
+'user KO get: RF disp: RF'
+'user KO get: RF disp: RF'
+'user KO get: RF disp: RF'
+'user KO get: RF disp: RF'
+'user KO get: RF disp: RF'
+'user KO get: RF disp: RF'
+'user KO get: SHA disp: SHA'
+'user KO get: SHA disp: SHA'
+'user KO get: SHA disp: SHA'
+'user KO get: SHA disp: SHA'
