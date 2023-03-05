@@ -312,8 +312,6 @@ function f_updateItem(){
 	var isNewItem = true;
 	for (var idx = 0; idx < totalReciptItem; idx++){
 		var elmRecipeRow = elmUlRecipeItem.children[idx].children[0];//<div row>
-		console.log(idx);
-		console.log(elmRecipeRow);
 		if (strItem == elmRecipeRow.children[0].innerText){
 			isNewItem = false;
 			elmRecipeRow.children[1].innerText = elmIptQty.value; //quantity
@@ -324,7 +322,6 @@ function f_updateItem(){
 	if (isNewItem){ //new recipe item
 		const elmLi = document.createElement("li"); //append new list item
 		const isBase = f_checkMaterial(elmIptItem.value);
-		console.log(isBase);
 		if ( isBase == 0){
 			alert('Wrong material name! Please select from list.');
 		}else{

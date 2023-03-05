@@ -56,7 +56,6 @@ if (f_shouldDie("C")) {
 	}else{
 		$displayedUser = $getEmployee; //if employee is sent as para, then filtered by it
 	}
-	myLOG("user ".$UserID." get: ".$getEmployee." disp: ".$displayedUser);
 	$sql = "SELECT `c_name` FROM `t_store`";
 	$result = $conn->query($sql);
 	$idx = 0;

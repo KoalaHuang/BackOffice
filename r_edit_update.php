@@ -25,7 +25,6 @@
     die;
   }
 
-  include "mylog.php";
   include "connect_db.php";
   $result = true;
   $c_product = $obj->product;
