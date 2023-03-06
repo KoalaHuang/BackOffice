@@ -259,6 +259,7 @@ function f_getRecipe(){
 		alert("Please fill in product name.");
 	}else{
 		if (arrayProduct.includes(objGlobal.product)){
+			objGlobal.product = objGlobal.product.replace(/'/g,'{'); //encoded apostrophe can't be supported by some webserver. replace it with {
 			window.location.href = "r_edit.php?product=" + encodeURIComponent(objGlobal.product) + "&ver=" + objGlobal.version;
 		}else{
 			document.getElementById("modal_body").innerHTML = "<strong>Create NEW recipe?</strong><br><br>" + "Product: " + objGlobal.product + "<br>Type: " + objGlobal.cat;
@@ -272,6 +273,7 @@ function f_getRecipe(){
 
 /* Create new recipe */
 function f_newRecipe(){
+	objGlobal.product = objGlobal.product.replace(/'/g,'{'); //encoded apostrophe can't be supported by some webserver. replace it with {
 	window.location.href = "r_edit.php?product=" + encodeURIComponent(objGlobal.product) + "&ver=0";
 }
 

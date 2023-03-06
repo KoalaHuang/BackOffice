@@ -16,11 +16,12 @@ if (f_shouldDie("P")) {
 	include "connect_db.php";
 	$getProduct = $_GET['product'];
 	if ($getProduct != NULL) {//retrieve recipe for product
-		$getCat = $_GET['cat'];
+		$getProduct = str_replace('{',"'",$getProduct); //apostrophe is transfered as { 
 		(int)$getVer = $_GET['ver'];
+		$strCat = "";
 	}
 	?>
-    <link rel="stylesheet" href="css/styles.css">    
+    <link rel="stylesheet" href="css/bostyles.css">    
 	<script src="js/r_read.js"></script>
 	<title>Recipe</title>
 </head>
@@ -148,7 +149,11 @@ if (f_shouldDie("P")) {
 						<input type="radio" class="btn-check" id="rdoQty4" name="rdoQty" onclick="f_kg(4)">
 						<label class="btn btn-outline-primary" for="rdoQty4">&nbsp;4&nbsp;</label>
 					</div>
-					<div class="col-3"><input type="text" placeholder="Kg" class="form-control" id="iptPlanQty" onchange="f_planQty()"></div>
+                    <div class="col-2">
+						<input type="radio" class="btn-check" id="rdoQty6" name="rdoQty" onclick="f_kg(6)">
+						<label class="btn btn-outline-primary" for="rdoQty6">&nbsp;6&nbsp;</label>
+					</div>
+					<div class="col-2"><input type="text" placeholder="<?echo ($strCat=='Batter')?"Tub":"Kg"?>" class="form-control" id="iptPlanQty" onchange="f_planQty()"></div>
                 </div>
 				<hr><!--list recipe items-->
                 <ul class="list-group" id="ulRecipe">

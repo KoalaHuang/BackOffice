@@ -14,7 +14,7 @@ if (f_shouldDie("I")) {
 	<? 	include "header.php"; 
 		include "connect_db.php";
 	?>
-    <link rel="stylesheet" href="css/styles.css">    
+    <link rel="stylesheet" href="css/bostyles.css">    
 	<script src="js/r_material.js"></script>
 	<title>Recipe</title>
 </head>

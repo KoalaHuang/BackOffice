@@ -161,7 +161,8 @@ function f_getRecipe(){
 		alert("Please fill in product name.");
 	}else{
 		if (arrayProduct.includes(objGlobal.product)){
-			window.location.href = "r_read.php?product=" + encodeURIComponent(objGlobal.product) + "&cat=" + encodeURIComponent(objGlobal.cat) + "&ver=" + objGlobal.version;
+			objGlobal.product = objGlobal.product.replace(/'/g,'{'); //encoded apostrophe can't be supported by some webserver. replace it with {
+			window.location.href = "r_read.php?product=" + encodeURIComponent(objGlobal.product) + "&ver=" + objGlobal.version;
 		}else{
             alert("Product name doesn't exist.");
         }

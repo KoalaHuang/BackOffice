@@ -16,10 +16,11 @@ if (f_shouldDie("G")) {
 	include "connect_db.php";
 	$getProduct = $_GET['product'];
 	if ($getProduct != NULL) {//retrieve recipe for product
+		$getProduct = str_replace('{',"'",$getProduct); //apostrophe is transfered as { 
 		(int)$getVer = $_GET['ver'];
 	}
 	?>
-    <link rel="stylesheet" href="css/styles.css">    
+    <link rel="stylesheet" href="css/bostyles.css">    
 	<script src="js/r_edit.js"></script>
 	<title>Edit Recipe</title>
 </head>
@@ -106,7 +107,7 @@ if (f_shouldDie("G")) {
 					</div>
 					<div class="col-8">
 						<!--Product category is not editable via recipe function, since multiple recipe may share same product&cat-->
-						<select class="form-select" id="sltCat" onchange="f_CatSelected()" disabled>
+						<select class="form-select" id="sltCat" onchange="f_CatSelected()" <?echo (($getProduct!=NULL)&&($getVer==0))?"":"disabled"?>>
 							<option value="0" <?echo ($getProduct==NULL)?"seclected":""?>>Product type...</option>
 							<?
 							$sql = "SELECT c_cat FROM `t_cat`";

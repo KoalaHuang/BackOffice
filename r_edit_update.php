@@ -45,7 +45,7 @@
       $sql = "UPDATE `t_config` SET `c_value`=".($c_recipe+1)." WHERE `c_setup`='recipe_num'";
       $result = $conn->query($sql);
       if (!$result) throw new Exception('Error updating new recipe number!');
-      $sql = "INSERT INTO `t_recipe` (`c_recipe`,`c_product`,`c_cat`,`c_version`,`c_comment`) VALUES (".$c_recipe.",'".$c_product."','".$c_cat."',".$c_version.",'".$c_comment."')";
+      $sql = "INSERT INTO `t_recipe` (`c_recipe`,`c_product`,`c_cat`,`c_version`,`c_comment`) VALUES (".$c_recipe.",\"".$c_product."\",'".$c_cat."',".$c_version.",'".$c_comment."')";
       $result = $conn->query($sql);
       if (!$result) throw new Exception('Error creating new product!');
       $totalRow = count($obj->arrayItemM);
@@ -54,13 +54,13 @@
         $c_unit = $obj->arrayItemU[$i];
         $c_quantity = $obj->arrayItemQ[$i];
         $c_base = $obj->arrayItemB[$i];
-        $sql = "INSERT INTO `t_recipelib` (`c_recipe`,`c_material`,`c_quantity`,`c_unit`,`c_base`) VALUES (".$c_recipe.",'".$c_material."',".$c_quantity.",'".$c_unit."',".$c_base.")";
+        $sql = "INSERT INTO `t_recipelib` (`c_recipe`,`c_material`,`c_quantity`,`c_unit`,`c_base`) VALUES (".$c_recipe.",\"".$c_material."\",".$c_quantity.",'".$c_unit."',".$c_base.")";
         $result = $conn->query($sql);
         if (!$result) throw new Exception('Error creating new recipe item!');
       }
     }else{//update existing recipe
       //update comment field
-      $sql = "UPDATE `t_recipe` SET `c_comment`='".$c_comment."' WHERE `c_recipe`=".$c_recipe;
+      $sql = "UPDATE `t_recipe` SET `c_comment`=\"".$c_comment."\" WHERE `c_recipe`=".$c_recipe;
       $result = $conn->query($sql);
       if (!$result){
         throw new Exception('Error updating recipe comment!');
@@ -74,7 +74,7 @@
           $c_unit = $obj->arrayItemU[$i];
           $c_quantity = $obj->arrayItemQ[$i];
           $c_base = $obj->arrayItemB[$i];
-          $sql = "INSERT INTO `t_recipelib` (`c_recipe`,`c_material`,`c_quantity`,`c_unit`,`c_base`) VALUES (".$c_recipe.",'".$c_material."',".$c_quantity.",'".$c_unit."',".$c_base.")";
+          $sql = "INSERT INTO `t_recipelib` (`c_recipe`,`c_material`,`c_quantity`,`c_unit`,`c_base`) VALUES (".$c_recipe.",\"".$c_material."\",".$c_quantity.",'".$c_unit."',".$c_base.")";
           $result = $conn->query($sql);
           if (!$result) throw new Exception('Error creating new recipe when updating recipe with item:'.$c_material."!");
         }
