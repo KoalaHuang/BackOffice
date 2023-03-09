@@ -17,7 +17,7 @@ const objGlobal = {
 	arrayItemM: [], //recipe item
 	arrayItemU: [], //recipe unit
 	arrayItemQ: [], //recipe qty
-	arrayItemB: [], //1: base, 2: raw material
+	arrayItemB: [], //1: base, 0: raw material
 	act: 0 //1: update, 2: insert
   };
 
@@ -381,18 +381,21 @@ function f_saveRecipe(){
 	//data integrity check
 	var isErrorFound = false;
 	var strAlert = "";
-	strAlert = (isErrorFound = (isErrorFound || (objGlobal.product == "")))?(strAlert+"Missing product name.<br>"):strAlert;
-	strAlert = (isErrorFound = (isErrorFound || (objGlobal.cat == 0)))?(strAlert+"Missing product type.<br>"):strAlert;
-	strAlert = (isErrorFound = isErrorFound || (totalReciptItem == 0))?(strAlert+"Missing recipe item.<br>"):strAlert;
-	strAlert = (isErrorFound = isErrorFound || (objGlobal.comment.includes("'")))?(strAlert+"Recipe comment can not include <'\">.<br>"):strAlert;
-	strAlert = (isErrorFound = isErrorFound || (objGlobal.comment.includes("\"")))?(strAlert+"Recipe comment can not include <'\">.<br>"):strAlert;
+
+	isExitingProduct = arrayProduct.includes(objGlobal.product);
+
+	strAlert = (isErrorFound = (isErrorFound || (objGlobal.product == "")))?(strAlert+"* Missing product name.   "):strAlert;
+	strAlert = (isErrorFound = (isErrorFound || (objGlobal.cat == 0)))?(strAlert+"* Missing product type.    "):strAlert;
+	strAlert = (isErrorFound = isErrorFound || (totalReciptItem == 0))?(strAlert+"* Missing recipe item.    "):strAlert;
+	strAlert = (isErrorFound = isErrorFound || (objGlobal.comment.includes("'")))?(strAlert+"* Recipe comment can not include <'\">.    "):strAlert;
+	strAlert = (isErrorFound = isErrorFound || (objGlobal.comment.includes("\"")))?(strAlert+"* Recipe comment can not include <'\">.   "):strAlert;
+	strAlert = (isErrorFound = isErrorFound || ((objGlobal.cat=='BASE')&&(objGlobal.version==0)&&(isExitingProduct)))?(strAlert+"* BASE doesn't support multiple version. Please choose version 1.    "):strAlert;
 
 	if (isErrorFound){
 		alert(strAlert);
 		return;
 	}
 	
-	isExitingProduct = arrayProduct.includes(objGlobal.product);
 	if (isExitingProduct){
 		if (objGlobal.version == 0){
 			strAct = "Create <span class=\"text-danger\">NEW</span> recipe for <span class=\"text-danger\">EXISTING</span> product?";
@@ -420,7 +423,7 @@ function f_saveRecipe(){
 		objGlobal.arrayItemM[idx] = elmRecipeRow.children[0].innerText; //material
 		objGlobal.arrayItemQ[idx] = elmRecipeRow.children[1].innerText; //quantity
 		objGlobal.arrayItemU[idx] = elmRecipeRow.children[2].innerText; //unit
-		objGlobal.arrayItemB[idx] = (elmUlRecipeItem.children[idx].getAttribute('class').indexOf('list-group-item-info') < 0)?2:1;//isbase
+		objGlobal.arrayItemB[idx] = (elmUlRecipeItem.children[idx].getAttribute('class').indexOf('list-group-item-info') < 0)?0:1;//isbase
 	}
 	document.getElementById("modal_body").innerHTML = "<strong>" + strAct + "</strong><br><br>" + "Product: " + objGlobal.product + "<br>Recipe version: " + objGlobal.version + "<br>Product type: " + objGlobal.cat;
 	document.getElementById("btn_ok").disabled = false;

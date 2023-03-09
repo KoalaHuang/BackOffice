@@ -158,7 +158,7 @@ if (f_shouldDie("P")) {
 				<hr><!--list recipe items-->
                 <ul class="list-group" id="ulRecipe">
 				<?
-				$sql = "SELECT `c_material`, `c_quantity`,`c_unit`,`c_base` FROM `t_recipelib` WHERE `c_recipe`=".$recipeNum." ORDER BY `c_base`";
+				$sql = "SELECT `c_material`, `c_quantity`,`c_unit`,`c_base` FROM `t_recipelib` WHERE `c_recipe`=".$recipeNum." ORDER BY `c_base` DESC";//decendent so that base can be display on top
 				$result = $conn->query($sql);
 				$totalRows = $result->num_rows ;
 				$idx = 0;
@@ -167,16 +167,53 @@ if (f_shouldDie("P")) {
 						$c_material = $row['c_material'];
 						$c_qty = $row['c_quantity'];
 						$c_unit = $row['c_unit'];
-						$c_base = ($row['c_base']==1)?"list-group-item-info":"";
+						$c_base = $row['c_base'];
+						if ($c_base>0){//raw materail is 0. otherwise c_base is recipe number of Base
 						?>
-						<li class="list-group-item <?echo $c_base?>">
+						<button class="btn btn-primary text-start" type="button" data-bs-toggle="collapse" data-bs-target="#collapseBase">							
 							<div class="row">
 								<div class="col-7"><?echo $c_material?></div>
-								<div class="col-3 text-end"><?echo $c_qty?></div>
+								<div class="col-3 text-end" name="divQty"><?echo $c_qty?></div>
 								<div class="col-2"><?echo $c_unit?></div>
+							</div>							
+						</button>
+						<div class="collapse my-3" id="collapseBase">
+							<div class="card card-body">
+							<?
+								$sqlBase = "SELECT `c_material`, `c_quantity`,`c_unit` FROM `t_recipelib` WHERE `c_recipe`=".$c_base." ORDER BY `c_base` DESC";
+								$resultBase = $conn->query($sqlBase);
+								$totalRowsBase = $resultBase->num_rows ;
+								if ($totalRowsBase > 0) {
+									while($rowBase = $resultBase->fetch_assoc()) {
+										$c_materialBase = $rowBase['c_material'];
+										$c_qtyBase = $rowBase['c_quantity'];
+										$c_unitBase = $rowBase['c_unit'];
+							?>
+										<li class="list-group-item">
+											<div class="row">
+												<div class="col-7"><?echo $c_materialBase?></div>
+												<div class="col-3 text-end" name="divQty"><?echo $c_qtyBase?></div>
+												<div class="col-2"><?echo $c_unitBase?></div>
+											</div>
+										</li>
+							<?
+									}
+								}
+							?>
 							</div>
-						</li>
+						</div><!--collapse-->
 						<?
+						}else{
+						?>
+							<li class="list-group-item">
+								<div class="row">
+									<div class="col-7"><?echo $c_material?></div>
+									<div class="col-3 text-end" name="divQty"><?echo $c_qty?></div>
+									<div class="col-2"><?echo $c_unit?></div>
+								</div>
+							</li>
+						<?							
+						}
 					}
 				}
 				?>

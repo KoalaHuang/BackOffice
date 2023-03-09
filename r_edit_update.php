@@ -9,7 +9,7 @@
 	arrayItemM: [], //recipe item
 	arrayItemU: [], //recipe unit
 	arrayItemQ: [], //recipe qty
-	arrayItemB: [], //1: base, 2: raw material
+	arrayItemB: [], //0: raw material, 1: base, need to get recipe num of base to save in c_base
 	act: 0//1: update, 2: insert
   }
   */
@@ -24,7 +24,6 @@
     echo "NULL JSON result from:".$str;
     die;
   }
-
   include "connect_db.php";
   $result = true;
   $c_product = $obj->product;
@@ -54,6 +53,13 @@
         $c_unit = $obj->arrayItemU[$i];
         $c_quantity = $obj->arrayItemQ[$i];
         $c_base = $obj->arrayItemB[$i];
+        if ($c_base!=0){
+          $sqlBase = "SELECT `c_recipe` FROM `t_recipe` WHERE `c_product`=\"".$c_material."\"";
+          $resultBase = $conn->query($sqlBase);
+          if (!$resultBase) throw new Exception('Error getting recipe number for'.$c_material.'!');
+          $row = $resultBase->fetch_assoc();
+          $c_base = $row['c_recipe'];
+        }
         $sql = "INSERT INTO `t_recipelib` (`c_recipe`,`c_material`,`c_quantity`,`c_unit`,`c_base`) VALUES (".$c_recipe.",\"".$c_material."\",".$c_quantity.",'".$c_unit."',".$c_base.")";
         $result = $conn->query($sql);
         if (!$result) throw new Exception('Error creating new recipe item!');
@@ -74,6 +80,13 @@
           $c_unit = $obj->arrayItemU[$i];
           $c_quantity = $obj->arrayItemQ[$i];
           $c_base = $obj->arrayItemB[$i];
+          if ($c_base!=0){
+            $sqlBase = "SELECT `c_recipe` FROM `t_recipe` WHERE `c_product`=\"".$c_material."\"";
+            $resultBase = $conn->query($sqlBase);
+            if (!$resultBase) throw new Exception('Error getting recipe number for'.$c_material.'!');
+            $row = $resultBase->fetch_assoc();
+            $c_base = $row['c_recipe'];
+          }
           $sql = "INSERT INTO `t_recipelib` (`c_recipe`,`c_material`,`c_quantity`,`c_unit`,`c_base`) VALUES (".$c_recipe.",\"".$c_material."\",".$c_quantity.",'".$c_unit."',".$c_base.")";
           $result = $conn->query($sql);
           if (!$result) throw new Exception('Error creating new recipe when updating recipe with item:'.$c_material."!");

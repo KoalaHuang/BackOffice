@@ -183,7 +183,7 @@ if (f_shouldDie("G")) {
 				<hr><!--list recipe items-->
                 <ul class="list-group" id="ulRecipe">
 				<?
-				$sql = "SELECT `c_material`, `c_quantity`,`c_unit`,`c_base` FROM `t_recipelib` WHERE `c_recipe`=".$recipeNum." ORDER BY `c_base`";
+				$sql = "SELECT `c_material`, `c_quantity`,`c_unit`,`c_base` FROM `t_recipelib` WHERE `c_recipe`=".$recipeNum." ORDER BY `c_base` DESC";//decendent so that base can be display on top;
 				$result = $conn->query($sql);
 				$totalRows = $result->num_rows ;
 				$idx = 0;
@@ -192,7 +192,7 @@ if (f_shouldDie("G")) {
 						$c_material = $row['c_material'];
 						$c_qty = $row['c_quantity'];
 						$c_unit = $row['c_unit'];
-						$c_base = ($row['c_base']==1)?"list-group-item-info":"";
+						$c_base = ($row['c_base']>0)?"list-group-item-info":"";
 						?>
 						<li class="list-group-item <?echo $c_base?>" onclick="f_selectItem(this)">
 							<div class="row">

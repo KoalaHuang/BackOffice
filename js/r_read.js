@@ -171,12 +171,12 @@ function f_getRecipe(){
   
 //Adjust recipe item quantity
 function f_kg(plannedQty){
-    const elmUlRecipeItem = document.getElementById("ulRecipe");
-    const totalReciptItem = elmUlRecipeItem.childElementCount;
+    const elmDivQty = document.getElementsByName("divQty");
+    const totalReciptItem = elmDivQty.length;
 	for (var idx = 0; idx < totalReciptItem; idx++){
-		var elmRecipeRow = elmUlRecipeItem.children[idx].children[0];//<div row>
-        var itemQty = elmRecipeRow.children[1].innerText; //quantity
-        elmRecipeRow.children[1].innerText = Number(itemQty)/objGlobal.qty*plannedQty;
+		var elmRecipeRow = elmDivQty[idx];
+        var itemQty = elmRecipeRow.innerText; //quantity
+        elmRecipeRow.innerText = Number(itemQty)/objGlobal.qty*plannedQty;
 	}    
     objGlobal.qty = plannedQty;
     elmIptPlanQty.value = objGlobal.qty;
