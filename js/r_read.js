@@ -176,7 +176,13 @@ function f_kg(plannedQty){
 	for (var idx = 0; idx < totalReciptItem; idx++){
 		var elmRecipeRow = elmDivQty[idx];
         var itemQty = elmRecipeRow.innerText; //quantity
-        elmRecipeRow.innerText = Number(itemQty)/objGlobal.qty*plannedQty;
+		var num = Number(itemQty)/objGlobal.qty*plannedQty;
+		if (num % 1 !== 0) { // check if number has decimal
+			num = num.toFixed(1); // display one decimal
+		} else {
+			num = num.toFixed(0); // display no decimal
+		}
+        elmRecipeRow.innerText = num;
 	}    
     objGlobal.qty = plannedQty;
     elmIptPlanQty.value = objGlobal.qty;

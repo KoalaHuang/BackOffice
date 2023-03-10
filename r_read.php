@@ -20,6 +20,7 @@ if (f_shouldDie("P")) {
 		(int)$getVer = $_GET['ver'];
 		$strCat = "";
 	}
+	$userID = $_SESSION["id"];
 	?>
     <link rel="stylesheet" href="css/bostyles.css">    
 	<script src="js/r_read.js"></script>
@@ -39,7 +40,8 @@ if (f_shouldDie("P")) {
 							<?
 							$arrayProduct = [[]];
 							$arrayVerUl = []; //Version option HTML for selected products
-							$sql = "SELECT * FROM `t_recipe` ORDER BY `c_product`,`c_recipe`";
+							$sql = "SELECT * FROM `t_recipe` WHERE `c_cat` IN (SELECT `c_cat` FROM `t_cataccess` WHERE `c_id`='".$userID."') ORDER BY `c_product`,`c_recipe`";
+							myLOG($sql);
 							$result = $conn->query($sql);
 							$totalRows = $result->num_rows ;
 							if ($totalRows > 0) {
