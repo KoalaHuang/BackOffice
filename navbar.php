@@ -12,6 +12,9 @@
             echo "<li class=\"nav-item\">";
             echo "<a class=\"nav-link\" href=\"shift.php\">Shift</a>";
             echo "</li>";
+            echo "<li class=\"nav-item\">";
+            echo "<a class=\"nav-link\" href=\"shift_teamview.php\">View by team</a>";
+            echo "</li>";
           }
           if (strstr($access,"E")) {
             echo "<li class=\"nav-item\">";

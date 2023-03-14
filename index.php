@@ -25,6 +25,7 @@ $access = $_SESSION["access"];
       <?
       if (strstr($access,"C")) {
         echo "<a href=\"shift.php\" class=\"btn btn-primary mb-1\" role=\"button\">Shift</a>";
+        echo "<a href=\"shift_teamview.php\" class=\"btn btn-primary mb-1\" role=\"button\">View by team</a>";
       }
       if (strstr($access,"E")) {
         echo "<a href=\"shift_myreport.php\" class=\"btn btn-primary mb-1\" role=\"button\">My Report</a>";
