@@ -153,19 +153,26 @@ if (f_shouldDie("C")) {
 					$mday = date('j',date_timestamp_get($objDay));
 					$cellYear = date("Y",date_timestamp_get($objDay));
 					$cellMon = date("n",date_timestamp_get($objDay));
+					$cellDate = $cellYear."-".$cellMon."-".$mday;
 					$cellID = $rowStore.$cellMon."_".$mday;
 					if ($idxWD == 7) {
 						$strBorder = " border";
 					}else{
 						$strBorder = " border-top border-start border-bottom";
 					}
-                    $sql = "SELECT `c_store`, `c_timestart`, `c_timeend` FROM `t_calendar` WHERE `c_id`='".$rowEmployeeID."' AND `c_date`='".$cellYear."-".$cellMon."-".$mday."'";
+                    $sql = "SELECT `c_leavetype`, `c_leavetime` FROM `t_leave` WHERE `c_from`<='".$cellDate."' AND `c_to`>='".$cellDate."' AND `c_id`='".$rowEmployeeID."'";
+                    $result = $conn->query($sql);
+					$dispTxt = "";
+					if ($row = $result->fetch_assoc()){
+						$dispTxt = "*".substr($row['c_leavetype'],0,1)."L*";
+					}
+					$sql = "SELECT `c_store`, `c_timestart`, `c_timeend` FROM `t_calendar` WHERE `c_id`='".$rowEmployeeID."' AND `c_date`='".$cellDate."'";
                     $result = $conn->query($sql);
                     if ($row = $result->fetch_assoc()) {
                         $strBkColor = $arrayBkColor[array_search($row['c_store'],$arrayStore)];
-                        echo "<div class=\"col text-center".$strBorder."\" style=\"background:var(".$strBkColor.")\">".$row['c_store']."</div>";
+                        echo "<div class=\"col text-center".$strBorder."\" style=\"background:var(".$strBkColor.")\">".$row['c_store'].$dispTxt."</div>";
                     }else{
-                        echo "<div class=\"col text-center text-secondary".$strBorder."\">&nbsp;</div>";
+                        echo "<div class=\"col text-center text-secondary".$strBorder."\">".$dispTxt."</div>";
                     }
 					date_add($objDay,date_interval_create_from_date_string("1 day"));
 				}//for loop weekday
