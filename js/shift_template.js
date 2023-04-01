@@ -293,6 +293,8 @@ function f_toConfirmSaveTemplate() {
       this.tm = totalmins;
     }
   }
+  //track and make sure same ppl won't be assigned twice in same day
+  var pplByWD = [[],[],[],[],[],[],[]]; 
   idxArray = 0;
   var strStore = "";
   elmStores = document.getElementsByName("divStores");
@@ -305,6 +307,13 @@ function f_toConfirmSaveTemplate() {
         const elmPpl = document.getElementById(strStore+idxWD+idxPpl);
         strPpl = elmPpl.innerHTML;
         if ((strPpl != '*') && (strPpl != '&nbsp;')) {
+          for (idxDup = 0; idxDup < pplByWD[idxWD-1].length; idxDup++){//check if ppl already assigned
+            if (pplByWD[idxWD-1][idxDup] == strPpl){
+              alert(strPpl + " assigned more than once on " + f_weekday(idxWD) + "!");
+              return; //found duplicated assignment!
+            }
+          }
+          pplByWD[idxWD-1][idxDup] = strPpl;
           arrayToSubmit[idxArray] = new ClassToSubmit(strStore,idxWD,strPpl, elmPpl.getAttribute("data-stocking-timestart"), elmPpl.getAttribute("data-stocking-timeend"), (Number)(elmPpl.getAttribute("data-stocking-fullday")), (Number)(elmPpl.getAttribute("data-stocking-totalmins")));
           idxArray++;
         }
