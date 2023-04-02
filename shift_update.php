@@ -33,15 +33,14 @@
       array_push($noticeMsg,"Change: removed from shift");
       break;
     case 1: //add working assignment
-      /*get user workday
-      $sql = "SELECT `c_workday` FROM `t_user` WHERE (`c_id`='".$obj->id."')";
-    	$wdResult = $conn->query($sql);
-      if ($row = $wdResult->fetch_assoc()) {
-        $userWD = $row['c_workday'];
-      }else{
-        echo json_encode("Employee weekday data error!");
+      //check if user is used assigned on same day
+      $sql = "SELECT `c_store` FROM `t_calendar` WHERE (`c_id`='".$obj->id."' AND `c_date`='".date_format($currentDate,'Y-m-d')."')";
+    	$chkResult = $conn->query($sql);
+      if ($row = $chkResult->fetch_assoc()) {
+        $chkStore = $row['c_store'];
+        echo json_encode($obj->id." already working in ".$chkStore." on ".date_format($currentDate,'Y-m-d'));
         die;
-      }*/
+      }
       array_push($noticeMsg,"Change: added to shift");
       //check if it's holiday
       $sql = "SELECT `c_holiday` FROM `t_holiday` WHERE `c_date`='".date_format($currentDate,'Y-m-d')."'";
@@ -51,11 +50,7 @@
       if ($isHoliday) {
         $c_type = "HW";
       }else{
-        //if (strstr($userWD,(string)$obj->wd)) {
           $c_type = "WW";
-        //}else{
-          //$c_type = "OW";
-        //}
       }// if HW
       $stmt = $conn->prepare("INSERT INTO `t_calendar`(`c_date`, `c_id`, `c_store`, `c_type`, `c_timestart`, `c_timeend`, `c_fullday`, `c_totalmins`) VALUES (?,?,?,?,?,?,?,?)");
       $stmt->bind_param("ssssssii",$c_date,$c_id,$c_store,$c_type,$c_timestart,$c_timeend,$c_fullday,$c_totalmins);
