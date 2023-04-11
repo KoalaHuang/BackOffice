@@ -41,7 +41,6 @@ if (f_shouldDie("P")) {
 							$arrayProduct = [[]];
 							$arrayVerUl = []; //Version option HTML for selected products
 							$sql = "SELECT * FROM `t_recipe` WHERE `c_cat` IN (SELECT `c_cat` FROM `t_cataccess` WHERE `c_id`='".$userID."') ORDER BY `c_product`,`c_recipe`";
-							myLOG($sql);
 							$result = $conn->query($sql);
 							$totalRows = $result->num_rows ;
 							if ($totalRows > 0) {

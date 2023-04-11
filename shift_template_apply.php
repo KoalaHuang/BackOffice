@@ -13,7 +13,6 @@
     die;
   }
   include "connect_db.php";
-  include "mylog.php";
 
   $currentDate = date_create_from_format("Y/n/j",$obj->from);
   $endDate = date_create_from_format("Y/n/j",$obj->to);
