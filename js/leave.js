@@ -69,11 +69,25 @@ function f_OK(){
   if ((objGlobal.act == 1) && ((objGlobal.from == "") || (objGlobal.to == ""))){
     alert ("Pick the date to take leave.");
   }else{
-    document.getElementById("modal_title").innerHTML = "Apply Leave"
-    document.getElementById("modal_body").innerHTML = document.getElementById('txtTitle').innerHTML;
-    document.getElementById("btn_ok").disabled = false;
-    document.getElementById("modal_status").innerHTML = "";
-    modal_Popup.show();  
+    //check if leave applied is within left leave range
+    var tblLeave = document.getElementById("tableLeave");
+    var isLeaveAvailable = true;
+    for (var i = 1, row; row = tblLeave.rows[i]; i++){//first row is title
+      var leaveType = row.cells[0].innerText;
+      var leftLeave = row.cells[2].innerText;
+      if ((leaveType == objGlobal.type) && (Number(leftLeave) < objGlobal.count)){
+        isLeaveAvailable = false;
+        alert("You don't have enough " + leaveType + " left to apply."); 
+        break;
+      }
+    }
+    if (isLeaveAvailable){
+      document.getElementById("modal_title").innerHTML = "Apply Leave"
+      document.getElementById("modal_body").innerHTML = document.getElementById('txtTitle').innerHTML;
+      document.getElementById("btn_ok").disabled = false;
+      document.getElementById("modal_status").innerHTML = "";
+      modal_Popup.show();  
+    }
   }
 }
 

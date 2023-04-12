@@ -42,7 +42,7 @@ while($row = $result->fetch_assoc()) {
         <div class="card mb-3">
             <h5 class="card-header bg-secondary text-white">Leave summary</h5>
             <div class="card-body">
-                <table class="table">
+                <table class="table" id="tableLeave">
                     <thead>
                         <tr>
                             <td>Leave</th>
