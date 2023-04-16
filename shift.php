@@ -42,7 +42,7 @@ if (f_shouldDie("C")) {
 		$UserWorkday = $row["c_workday"];
 		$UserStore = $row["c_store"];
 		$UserStatus = $row["c_employee"];
-		$UserIsAdmin = strpos($row["c_access"],"M");
+		$UserIsAdmin = strpos($row["c_access"],"M");//"M" - shift template access
 	}else{
 		echo "User data error!";
 		die;

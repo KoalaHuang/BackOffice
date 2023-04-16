@@ -10,15 +10,14 @@ const objGlobal = {
   act: 1 //1: apply leave. 0: cancel leave
 };
 
-
 window.addEventListener("DOMContentLoaded", function() {
   const today = new Date();
   objDate = new Lightpick({ // Lightpick snippet manual in vendor\Lightpick\README.md
     field: document.getElementById('iptDate'),
     inline: true,//show calendar
     singleDate: false,//from and to dates
-    selectForward: true,//only select forward date
-    minDate: today, //only select future dates
+    selectForward: true, //move forward to select date range
+    //minDate: today, //only select future dates
     onSelect: function(start, end){
       f_refreshTitle();
     }
@@ -26,7 +25,7 @@ window.addEventListener("DOMContentLoaded", function() {
   
   modal_Popup = new bootstrap.Modal(document.getElementById("modal_box"));
 
-  elmUser =  document.getElementById('txtUserName');
+  elmUser = document.getElementById('txtUserName');
   objGlobal.name = elmUser.innerText;
   objGlobal.id = elmUser.getAttribute("data-stocking-userid");
 
@@ -53,11 +52,16 @@ function f_refreshTitle(){
   }
 }
 
+function f_NameChange(){
+  var userid = document.getElementById('sltName').value;
+  window.location.href = "leave.php?user=" + userid;
+}
+
 //select leave to cancel
 function f_LeaveSelected(strFrom){
   objGlobal.from = strFrom;
   objGlobal.act = 0; //cancel leave
-  document.getElementById("modal_title").innerHTML = "Cancel Leave"
+  document.getElementById("modal_title").innerHTML = "Cancel Leave for <strong>" + objGlobal.name + "</strong>";
   document.getElementById("modal_body").innerHTML = "Cancel leave starting from <span class=\"text-danger\">" + strFrom + "</span>?";
   document.getElementById("btn_ok").disabled = false;
   document.getElementById("modal_status").innerHTML = "";
@@ -77,12 +81,12 @@ function f_OK(){
       var leftLeave = row.cells[2].innerText;
       if ((leaveType == objGlobal.type) && (Number(leftLeave) < objGlobal.count)){
         isLeaveAvailable = false;
-        alert("You don't have enough " + leaveType + " left to apply."); 
+        alert(objGlobal.name + " don't have enough " + leaveType + " left to apply."); 
         break;
       }
     }
     if (isLeaveAvailable){
-      document.getElementById("modal_title").innerHTML = "Apply Leave"
+      document.getElementById("modal_title").innerHTML = "Apply Leave for <strong>" + objGlobal.name + "</strong>";
       document.getElementById("modal_body").innerHTML = document.getElementById('txtTitle').innerHTML;
       document.getElementById("btn_ok").disabled = false;
       document.getElementById("modal_status").innerHTML = "";

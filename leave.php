@@ -14,7 +14,27 @@ $UserName = $_SESSION["user"];
 $arrLeaveType = array();
 $arrLeaveQuota = array();
 include "connect_db.php";
-$sql = "SELECT `c_leavetype`,`c_quota` FROM `t_leavequota` WHERE `c_id`='".$UserID."'";
+
+//check user access. Store leads can edit leave for others
+$sql = "SELECT `c_name`,`c_id`,`c_access` FROM `t_user` WHERE `c_name`='".$UserName."'";
+$result = $conn->query($sql);
+if ($row = $result->fetch_assoc()) {
+    $UserID = $row["c_id"];
+    $UserName = $row["c_name"];
+    $isTeamLead = strpos($row["c_access"],"M");//"M" - shift template access or team lead access
+}else{
+    echo "User data error!";
+    die;
+}
+
+if (($isTeamLead) && ($_GET['user'] != NULL)){
+    $selectedUser = $_GET['user'];
+}else{
+    $selectedUser = $UserID;
+}
+
+//read leave quota for the user
+$sql = "SELECT `c_leavetype`,`c_quota` FROM `t_leavequota` WHERE `c_id`='".$selectedUser."'";
 $result = $conn->query($sql);
 $idxType = 0;
 while($row = $result->fetch_assoc()) {
@@ -38,7 +58,35 @@ while($row = $result->fetch_assoc()) {
 <body>
 	<div class="container">
 		<h1 id="section_home" class="text-center mb-3">Leave</h1>
-		<h5 id="txtUserName" class="text-center" data-stocking-userid="<?echo $UserID?>"><?echo $UserName?></h5>
+		<div class="row mb-3">
+			<div class="col-4"></div>
+			<div class="col-4">
+                <?
+                if ($isTeamLead){//display user selection for team lead to edit others' leave
+                    echo "<select class=\"form-select text-center text-white bg-primary\" id=\"sltName\" onchange=\"f_NameChange()\">";
+                    $sql = "SELECT `c_id`, `c_name` FROM `t_user` WHERE (`c_employee`='F')";
+                    $result = $conn->query($sql);
+                    while($row = $result->fetch_assoc()) {
+                        if ($row['c_id'] == $selectedUser){
+                            $strSelected = "selected";
+                            $selectedUserName = $row['c_name'];
+                            $displayTxtUserName = " d-none"; //hide txtUserName element for team lead
+                        }else{
+                            $strSelected = "";
+                        }
+                        echo "<option value=\"".$row['c_id']."\" ".$strSelected.">".$row['c_name']."</option>";
+                    }
+                    echo "</select>";
+                }else{
+                    $displayTxtUserName = "";
+                    $selectedUserName = $UserName;
+                }
+                ?>
+                <h5 id="txtUserName" class="text-center<?echo $displayTxtUserName?>" data-stocking-userid="<?echo $selectedUser?>"><?echo $selectedUserName?></h5>
+		    </div>
+		    <div class="col-4"></div>
+    	</div>
+
         <div class="card mb-3">
             <h5 class="card-header bg-secondary text-white">Leave summary</h5>
             <div class="card-body">
@@ -54,8 +102,10 @@ while($row = $result->fetch_assoc()) {
                         <?
                             $totalType = count($arrLeaveType);
                             for ($idxType = 0; $idxType < $totalType; $idxType++){
-                                $sql = "SELECT SUM(`c_count`) FROM `t_leave` WHERE `c_id`=\"".$UserID."\" AND `c_leavetype`=\"".$arrLeaveType[$idxType]."\"";
+                                $sql = "SELECT SUM(`c_count`) FROM `t_leave` WHERE `c_id`=\"".$selectedUser."\" AND `c_leavetype`=\"".$arrLeaveType[$idxType]."\"";
+                                myLOG($sql);
                                 $result = $conn->query($sql);
+                                myLOG($result);
                                 if ($result->num_rows > 0) {
                                     $row = $result->fetch_assoc();
                                     $c_count = $row["SUM(`c_count`)"];
@@ -84,7 +134,7 @@ while($row = $result->fetch_assoc()) {
                         </thead>
                         <tbody>
                         <?
-                            $sql = "SELECT c_from, c_to, c_leavetime, c_leavetype, c_count FROM `t_leave` WHERE c_id='".$UserID."'";
+                            $sql = "SELECT c_from, c_to, c_leavetime, c_leavetype, c_count FROM `t_leave` WHERE c_id='".$selectedUser."'";
                             $result = $conn->query($sql);
                             $idx = 0;
                             $today = new DateTime("today");
@@ -99,11 +149,11 @@ while($row = $result->fetch_assoc()) {
                                     $c_count = $row["c_count"];
                                     $dateFrom->setTime(0,0,0);
                                     $diffFromToday = $today->diff($dateFrom);
-                                    if ($diffFromToday->invert == 1){ //Leave has started. Can't cancell
-                                        $strRowAttribute = "class=\"text-dark\"";
-                                    }else{
+                                    //if ($diffFromToday->invert == 1){ //Leave has started. Can't cancell
+                                    //    $strRowAttribute = "class=\"text-dark\"";
+                                    //}else{
                                         $strRowAttribute = "class=\"text-primary\" onclick=\"f_LeaveSelected('".$c_from."')\"";
-                                    }
+                                    //}
                         ?>
                                     <tr <?echo $strRowAttribute?>>
                                         <td><?echo $c_from."-".$c_to?></td>
@@ -152,6 +202,7 @@ while($row = $result->fetch_assoc()) {
                         </div>
                     </div>
                 </div><!--Leave type-->
+                <!--lightpick element placeholder. Detail setup by leave.js-->
                 <div class="mb-2"><input type="text" class="form-control d-none" id = "iptDate"></input></div>
             </div>
 		<div class="row ms-3 mb-3">

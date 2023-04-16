@@ -1,0 +1,544 @@
+'SELECT SUM(`c_count`) FROM `t_leave` WHERE `c_id`="" AND `c_leavetype`="Paid leave"'
+mysqli_result::__set_state(array(
+   'current_field' => NULL,
+   'field_count' => NULL,
+   'lengths' => NULL,
+   'num_rows' => NULL,
+   'type' => NULL,
+))
+'SELECT SUM(`c_count`) FROM `t_leave` WHERE `c_id`="" AND `c_leavetype`="Sick leave"'
+mysqli_result::__set_state(array(
+   'current_field' => NULL,
+   'field_count' => NULL,
+   'lengths' => NULL,
+   'num_rows' => NULL,
+   'type' => NULL,
+))
+'SELECT SUM(`c_count`) FROM `t_leave` WHERE `c_id`="TST" AND `c_leavetype`="Paid leave"'
+mysqli_result::__set_state(array(
+   'current_field' => NULL,
+   'field_count' => NULL,
+   'lengths' => NULL,
+   'num_rows' => NULL,
+   'type' => NULL,
+))
+'SELECT SUM(`c_count`) FROM `t_leave` WHERE `c_id`="TST" AND `c_leavetype`="Sick leave"'
+mysqli_result::__set_state(array(
+   'current_field' => NULL,
+   'field_count' => NULL,
+   'lengths' => NULL,
+   'num_rows' => NULL,
+   'type' => NULL,
+))
+'SELECT SUM(`c_count`) FROM `t_leave` WHERE `c_id`="KO" AND `c_leavetype`="Paid leave"'
+mysqli_result::__set_state(array(
+   'current_field' => NULL,
+   'field_count' => NULL,
+   'lengths' => NULL,
+   'num_rows' => NULL,
+   'type' => NULL,
+))
+'SELECT SUM(`c_count`) FROM `t_leave` WHERE `c_id`="KO" AND `c_leavetype`="Sick leave"'
+mysqli_result::__set_state(array(
+   'current_field' => NULL,
+   'field_count' => NULL,
+   'lengths' => NULL,
+   'num_rows' => NULL,
+   'type' => NULL,
+))
+'SELECT SUM(`c_count`) FROM `t_leave` WHERE `c_id`="TST" AND `c_leavetype`="Paid leave"'
+mysqli_result::__set_state(array(
+   'current_field' => NULL,
+   'field_count' => NULL,
+   'lengths' => NULL,
+   'num_rows' => NULL,
+   'type' => NULL,
+))
+'SELECT SUM(`c_count`) FROM `t_leave` WHERE `c_id`="TST" AND `c_leavetype`="Sick leave"'
+mysqli_result::__set_state(array(
+   'current_field' => NULL,
+   'field_count' => NULL,
+   'lengths' => NULL,
+   'num_rows' => NULL,
+   'type' => NULL,
+))
+'SELECT SUM(`c_count`) FROM `t_leave` WHERE `c_id`="XM" AND `c_leavetype`="Paid leave"'
+mysqli_result::__set_state(array(
+   'current_field' => NULL,
+   'field_count' => NULL,
+   'lengths' => NULL,
+   'num_rows' => NULL,
+   'type' => NULL,
+))
+'SELECT SUM(`c_count`) FROM `t_leave` WHERE `c_id`="XM" AND `c_leavetype`="Sick leave"'
+mysqli_result::__set_state(array(
+   'current_field' => NULL,
+   'field_count' => NULL,
+   'lengths' => NULL,
+   'num_rows' => NULL,
+   'type' => NULL,
+))
+'SELECT SUM(`c_count`) FROM `t_leave` WHERE `c_id`="KO" AND `c_leavetype`="Paid leave"'
+mysqli_result::__set_state(array(
+   'current_field' => NULL,
+   'field_count' => NULL,
+   'lengths' => NULL,
+   'num_rows' => NULL,
+   'type' => NULL,
+))
+'SELECT SUM(`c_count`) FROM `t_leave` WHERE `c_id`="KO" AND `c_leavetype`="Sick leave"'
+mysqli_result::__set_state(array(
+   'current_field' => NULL,
+   'field_count' => NULL,
+   'lengths' => NULL,
+   'num_rows' => NULL,
+   'type' => NULL,
+))
+'SELECT SUM(`c_count`) FROM `t_leave` WHERE `c_id`="KO" AND `c_leavetype`="Paid leave"'
+mysqli_result::__set_state(array(
+   'current_field' => NULL,
+   'field_count' => NULL,
+   'lengths' => NULL,
+   'num_rows' => NULL,
+   'type' => NULL,
+))
+'SELECT SUM(`c_count`) FROM `t_leave` WHERE `c_id`="KO" AND `c_leavetype`="Sick leave"'
+mysqli_result::__set_state(array(
+   'current_field' => NULL,
+   'field_count' => NULL,
+   'lengths' => NULL,
+   'num_rows' => NULL,
+   'type' => NULL,
+))
+'SELECT SUM(`c_count`) FROM `t_leave` WHERE `c_id`="TST" AND `c_leavetype`="Paid leave"'
+mysqli_result::__set_state(array(
+   'current_field' => NULL,
+   'field_count' => NULL,
+   'lengths' => NULL,
+   'num_rows' => NULL,
+   'type' => NULL,
+))
+'SELECT SUM(`c_count`) FROM `t_leave` WHERE `c_id`="TST" AND `c_leavetype`="Sick leave"'
+mysqli_result::__set_state(array(
+   'current_field' => NULL,
+   'field_count' => NULL,
+   'lengths' => NULL,
+   'num_rows' => NULL,
+   'type' => NULL,
+))
+'SELECT SUM(`c_count`) FROM `t_leave` WHERE `c_id`="TST" AND `c_leavetype`="Paid leave"'
+mysqli_result::__set_state(array(
+   'current_field' => NULL,
+   'field_count' => NULL,
+   'lengths' => NULL,
+   'num_rows' => NULL,
+   'type' => NULL,
+))
+'SELECT SUM(`c_count`) FROM `t_leave` WHERE `c_id`="TST" AND `c_leavetype`="Sick leave"'
+mysqli_result::__set_state(array(
+   'current_field' => NULL,
+   'field_count' => NULL,
+   'lengths' => NULL,
+   'num_rows' => NULL,
+   'type' => NULL,
+))
+'SELECT SUM(`c_count`) FROM `t_leave` WHERE `c_id`="TST" AND `c_leavetype`="Paid leave"'
+mysqli_result::__set_state(array(
+   'current_field' => NULL,
+   'field_count' => NULL,
+   'lengths' => NULL,
+   'num_rows' => NULL,
+   'type' => NULL,
+))
+'SELECT SUM(`c_count`) FROM `t_leave` WHERE `c_id`="TST" AND `c_leavetype`="Sick leave"'
+mysqli_result::__set_state(array(
+   'current_field' => NULL,
+   'field_count' => NULL,
+   'lengths' => NULL,
+   'num_rows' => NULL,
+   'type' => NULL,
+))
+'SELECT SUM(`c_count`) FROM `t_leave` WHERE `c_id`="TST" AND `c_leavetype`="Paid leave"'
+mysqli_result::__set_state(array(
+   'current_field' => NULL,
+   'field_count' => NULL,
+   'lengths' => NULL,
+   'num_rows' => NULL,
+   'type' => NULL,
+))
+'SELECT SUM(`c_count`) FROM `t_leave` WHERE `c_id`="TST" AND `c_leavetype`="Sick leave"'
+mysqli_result::__set_state(array(
+   'current_field' => NULL,
+   'field_count' => NULL,
+   'lengths' => NULL,
+   'num_rows' => NULL,
+   'type' => NULL,
+))
+'SELECT SUM(`c_count`) FROM `t_leave` WHERE `c_id`="TST" AND `c_leavetype`="Paid leave"'
+mysqli_result::__set_state(array(
+   'current_field' => NULL,
+   'field_count' => NULL,
+   'lengths' => NULL,
+   'num_rows' => NULL,
+   'type' => NULL,
+))
+'SELECT SUM(`c_count`) FROM `t_leave` WHERE `c_id`="TST" AND `c_leavetype`="Sick leave"'
+mysqli_result::__set_state(array(
+   'current_field' => NULL,
+   'field_count' => NULL,
+   'lengths' => NULL,
+   'num_rows' => NULL,
+   'type' => NULL,
+))
+'SELECT SUM(`c_count`) FROM `t_leave` WHERE `c_id`="TST" AND `c_leavetype`="Paid leave"'
+mysqli_result::__set_state(array(
+   'current_field' => NULL,
+   'field_count' => NULL,
+   'lengths' => NULL,
+   'num_rows' => NULL,
+   'type' => NULL,
+))
+'SELECT SUM(`c_count`) FROM `t_leave` WHERE `c_id`="TST" AND `c_leavetype`="Sick leave"'
+mysqli_result::__set_state(array(
+   'current_field' => NULL,
+   'field_count' => NULL,
+   'lengths' => NULL,
+   'num_rows' => NULL,
+   'type' => NULL,
+))
+'SELECT SUM(`c_count`) FROM `t_leave` WHERE `c_id`="TST" AND `c_leavetype`="Paid leave"'
+mysqli_result::__set_state(array(
+   'current_field' => NULL,
+   'field_count' => NULL,
+   'lengths' => NULL,
+   'num_rows' => NULL,
+   'type' => NULL,
+))
+'SELECT SUM(`c_count`) FROM `t_leave` WHERE `c_id`="TST" AND `c_leavetype`="Sick leave"'
+mysqli_result::__set_state(array(
+   'current_field' => NULL,
+   'field_count' => NULL,
+   'lengths' => NULL,
+   'num_rows' => NULL,
+   'type' => NULL,
+))
+'SELECT SUM(`c_count`) FROM `t_leave` WHERE `c_id`="TST" AND `c_leavetype`="Paid leave"'
+mysqli_result::__set_state(array(
+   'current_field' => NULL,
+   'field_count' => NULL,
+   'lengths' => NULL,
+   'num_rows' => NULL,
+   'type' => NULL,
+))
+'SELECT SUM(`c_count`) FROM `t_leave` WHERE `c_id`="TST" AND `c_leavetype`="Sick leave"'
+mysqli_result::__set_state(array(
+   'current_field' => NULL,
+   'field_count' => NULL,
+   'lengths' => NULL,
+   'num_rows' => NULL,
+   'type' => NULL,
+))
+'SELECT SUM(`c_count`) FROM `t_leave` WHERE `c_id`="TST" AND `c_leavetype`="Paid leave"'
+mysqli_result::__set_state(array(
+   'current_field' => NULL,
+   'field_count' => NULL,
+   'lengths' => NULL,
+   'num_rows' => NULL,
+   'type' => NULL,
+))
+'SELECT SUM(`c_count`) FROM `t_leave` WHERE `c_id`="TST" AND `c_leavetype`="Sick leave"'
+mysqli_result::__set_state(array(
+   'current_field' => NULL,
+   'field_count' => NULL,
+   'lengths' => NULL,
+   'num_rows' => NULL,
+   'type' => NULL,
+))
+'SELECT SUM(`c_count`) FROM `t_leave` WHERE `c_id`="TST" AND `c_leavetype`="Paid leave"'
+mysqli_result::__set_state(array(
+   'current_field' => NULL,
+   'field_count' => NULL,
+   'lengths' => NULL,
+   'num_rows' => NULL,
+   'type' => NULL,
+))
+'SELECT SUM(`c_count`) FROM `t_leave` WHERE `c_id`="TST" AND `c_leavetype`="Sick leave"'
+mysqli_result::__set_state(array(
+   'current_field' => NULL,
+   'field_count' => NULL,
+   'lengths' => NULL,
+   'num_rows' => NULL,
+   'type' => NULL,
+))
+'SELECT SUM(`c_count`) FROM `t_leave` WHERE `c_id`="TST" AND `c_leavetype`="Paid leave"'
+mysqli_result::__set_state(array(
+   'current_field' => NULL,
+   'field_count' => NULL,
+   'lengths' => NULL,
+   'num_rows' => NULL,
+   'type' => NULL,
+))
+'SELECT SUM(`c_count`) FROM `t_leave` WHERE `c_id`="TST" AND `c_leavetype`="Sick leave"'
+mysqli_result::__set_state(array(
+   'current_field' => NULL,
+   'field_count' => NULL,
+   'lengths' => NULL,
+   'num_rows' => NULL,
+   'type' => NULL,
+))
+'SELECT SUM(`c_count`) FROM `t_leave` WHERE `c_id`="TST" AND `c_leavetype`="Paid leave"'
+mysqli_result::__set_state(array(
+   'current_field' => NULL,
+   'field_count' => NULL,
+   'lengths' => NULL,
+   'num_rows' => NULL,
+   'type' => NULL,
+))
+'SELECT SUM(`c_count`) FROM `t_leave` WHERE `c_id`="TST" AND `c_leavetype`="Sick leave"'
+mysqli_result::__set_state(array(
+   'current_field' => NULL,
+   'field_count' => NULL,
+   'lengths' => NULL,
+   'num_rows' => NULL,
+   'type' => NULL,
+))
+'SELECT SUM(`c_count`) FROM `t_leave` WHERE `c_id`="XM" AND `c_leavetype`="Paid leave"'
+mysqli_result::__set_state(array(
+   'current_field' => NULL,
+   'field_count' => NULL,
+   'lengths' => NULL,
+   'num_rows' => NULL,
+   'type' => NULL,
+))
+'SELECT SUM(`c_count`) FROM `t_leave` WHERE `c_id`="XM" AND `c_leavetype`="Sick leave"'
+mysqli_result::__set_state(array(
+   'current_field' => NULL,
+   'field_count' => NULL,
+   'lengths' => NULL,
+   'num_rows' => NULL,
+   'type' => NULL,
+))
+'SELECT SUM(`c_count`) FROM `t_leave` WHERE `c_id`="TST" AND `c_leavetype`="Paid leave"'
+mysqli_result::__set_state(array(
+   'current_field' => NULL,
+   'field_count' => NULL,
+   'lengths' => NULL,
+   'num_rows' => NULL,
+   'type' => NULL,
+))
+'SELECT SUM(`c_count`) FROM `t_leave` WHERE `c_id`="TST" AND `c_leavetype`="Sick leave"'
+mysqli_result::__set_state(array(
+   'current_field' => NULL,
+   'field_count' => NULL,
+   'lengths' => NULL,
+   'num_rows' => NULL,
+   'type' => NULL,
+))
+'SELECT SUM(`c_count`) FROM `t_leave` WHERE `c_id`="TST" AND `c_leavetype`="Paid leave"'
+mysqli_result::__set_state(array(
+   'current_field' => NULL,
+   'field_count' => NULL,
+   'lengths' => NULL,
+   'num_rows' => NULL,
+   'type' => NULL,
+))
+'SELECT SUM(`c_count`) FROM `t_leave` WHERE `c_id`="TST" AND `c_leavetype`="Sick leave"'
+mysqli_result::__set_state(array(
+   'current_field' => NULL,
+   'field_count' => NULL,
+   'lengths' => NULL,
+   'num_rows' => NULL,
+   'type' => NULL,
+))
+'SELECT SUM(`c_count`) FROM `t_leave` WHERE `c_id`="XM" AND `c_leavetype`="Paid leave"'
+mysqli_result::__set_state(array(
+   'current_field' => NULL,
+   'field_count' => NULL,
+   'lengths' => NULL,
+   'num_rows' => NULL,
+   'type' => NULL,
+))
+'SELECT SUM(`c_count`) FROM `t_leave` WHERE `c_id`="XM" AND `c_leavetype`="Sick leave"'
+mysqli_result::__set_state(array(
+   'current_field' => NULL,
+   'field_count' => NULL,
+   'lengths' => NULL,
+   'num_rows' => NULL,
+   'type' => NULL,
+))
+'SELECT SUM(`c_count`) FROM `t_leave` WHERE `c_id`="TST" AND `c_leavetype`="Paid leave"'
+mysqli_result::__set_state(array(
+   'current_field' => NULL,
+   'field_count' => NULL,
+   'lengths' => NULL,
+   'num_rows' => NULL,
+   'type' => NULL,
+))
+'SELECT SUM(`c_count`) FROM `t_leave` WHERE `c_id`="TST" AND `c_leavetype`="Sick leave"'
+mysqli_result::__set_state(array(
+   'current_field' => NULL,
+   'field_count' => NULL,
+   'lengths' => NULL,
+   'num_rows' => NULL,
+   'type' => NULL,
+))
+'SELECT SUM(`c_count`) FROM `t_leave` WHERE `c_id`="TST" AND `c_leavetype`="Paid leave"'
+mysqli_result::__set_state(array(
+   'current_field' => NULL,
+   'field_count' => NULL,
+   'lengths' => NULL,
+   'num_rows' => NULL,
+   'type' => NULL,
+))
+'SELECT SUM(`c_count`) FROM `t_leave` WHERE `c_id`="TST" AND `c_leavetype`="Sick leave"'
+mysqli_result::__set_state(array(
+   'current_field' => NULL,
+   'field_count' => NULL,
+   'lengths' => NULL,
+   'num_rows' => NULL,
+   'type' => NULL,
+))
+'SELECT SUM(`c_count`) FROM `t_leave` WHERE `c_id`="TST" AND `c_leavetype`="Paid leave"'
+mysqli_result::__set_state(array(
+   'current_field' => NULL,
+   'field_count' => NULL,
+   'lengths' => NULL,
+   'num_rows' => NULL,
+   'type' => NULL,
+))
+'SELECT SUM(`c_count`) FROM `t_leave` WHERE `c_id`="TST" AND `c_leavetype`="Sick leave"'
+mysqli_result::__set_state(array(
+   'current_field' => NULL,
+   'field_count' => NULL,
+   'lengths' => NULL,
+   'num_rows' => NULL,
+   'type' => NULL,
+))
+'SELECT SUM(`c_count`) FROM `t_leave` WHERE `c_id`="TST" AND `c_leavetype`="Paid leave"'
+mysqli_result::__set_state(array(
+   'current_field' => NULL,
+   'field_count' => NULL,
+   'lengths' => NULL,
+   'num_rows' => NULL,
+   'type' => NULL,
+))
+'SELECT SUM(`c_count`) FROM `t_leave` WHERE `c_id`="TST" AND `c_leavetype`="Sick leave"'
+mysqli_result::__set_state(array(
+   'current_field' => NULL,
+   'field_count' => NULL,
+   'lengths' => NULL,
+   'num_rows' => NULL,
+   'type' => NULL,
+))
+'SELECT SUM(`c_count`) FROM `t_leave` WHERE `c_id`="TST" AND `c_leavetype`="Paid leave"'
+mysqli_result::__set_state(array(
+   'current_field' => NULL,
+   'field_count' => NULL,
+   'lengths' => NULL,
+   'num_rows' => NULL,
+   'type' => NULL,
+))
+'SELECT SUM(`c_count`) FROM `t_leave` WHERE `c_id`="TST" AND `c_leavetype`="Sick leave"'
+mysqli_result::__set_state(array(
+   'current_field' => NULL,
+   'field_count' => NULL,
+   'lengths' => NULL,
+   'num_rows' => NULL,
+   'type' => NULL,
+))
+'SELECT SUM(`c_count`) FROM `t_leave` WHERE `c_id`="TST" AND `c_leavetype`="Paid leave"'
+mysqli_result::__set_state(array(
+   'current_field' => NULL,
+   'field_count' => NULL,
+   'lengths' => NULL,
+   'num_rows' => NULL,
+   'type' => NULL,
+))
+'SELECT SUM(`c_count`) FROM `t_leave` WHERE `c_id`="TST" AND `c_leavetype`="Sick leave"'
+mysqli_result::__set_state(array(
+   'current_field' => NULL,
+   'field_count' => NULL,
+   'lengths' => NULL,
+   'num_rows' => NULL,
+   'type' => NULL,
+))
+'SELECT SUM(`c_count`) FROM `t_leave` WHERE `c_id`="XM" AND `c_leavetype`="Paid leave"'
+mysqli_result::__set_state(array(
+   'current_field' => NULL,
+   'field_count' => NULL,
+   'lengths' => NULL,
+   'num_rows' => NULL,
+   'type' => NULL,
+))
+'SELECT SUM(`c_count`) FROM `t_leave` WHERE `c_id`="XM" AND `c_leavetype`="Sick leave"'
+mysqli_result::__set_state(array(
+   'current_field' => NULL,
+   'field_count' => NULL,
+   'lengths' => NULL,
+   'num_rows' => NULL,
+   'type' => NULL,
+))
+'SELECT SUM(`c_count`) FROM `t_leave` WHERE `c_id`="XM" AND `c_leavetype`="Paid leave"'
+mysqli_result::__set_state(array(
+   'current_field' => NULL,
+   'field_count' => NULL,
+   'lengths' => NULL,
+   'num_rows' => NULL,
+   'type' => NULL,
+))
+'SELECT SUM(`c_count`) FROM `t_leave` WHERE `c_id`="XM" AND `c_leavetype`="Sick leave"'
+mysqli_result::__set_state(array(
+   'current_field' => NULL,
+   'field_count' => NULL,
+   'lengths' => NULL,
+   'num_rows' => NULL,
+   'type' => NULL,
+))
+'SELECT SUM(`c_count`) FROM `t_leave` WHERE `c_id`="XM" AND `c_leavetype`="Paid leave"'
+mysqli_result::__set_state(array(
+   'current_field' => NULL,
+   'field_count' => NULL,
+   'lengths' => NULL,
+   'num_rows' => NULL,
+   'type' => NULL,
+))
+'SELECT SUM(`c_count`) FROM `t_leave` WHERE `c_id`="XM" AND `c_leavetype`="Sick leave"'
+mysqli_result::__set_state(array(
+   'current_field' => NULL,
+   'field_count' => NULL,
+   'lengths' => NULL,
+   'num_rows' => NULL,
+   'type' => NULL,
+))
+'SELECT SUM(`c_count`) FROM `t_leave` WHERE `c_id`="KO" AND `c_leavetype`="Paid leave"'
+mysqli_result::__set_state(array(
+   'current_field' => NULL,
+   'field_count' => NULL,
+   'lengths' => NULL,
+   'num_rows' => NULL,
+   'type' => NULL,
+))
+'SELECT SUM(`c_count`) FROM `t_leave` WHERE `c_id`="KO" AND `c_leavetype`="Sick leave"'
+mysqli_result::__set_state(array(
+   'current_field' => NULL,
+   'field_count' => NULL,
+   'lengths' => NULL,
+   'num_rows' => NULL,
+   'type' => NULL,
+))
+'SELECT SUM(`c_count`) FROM `t_leave` WHERE `c_id`="KO" AND `c_leavetype`="Paid leave"'
+mysqli_result::__set_state(array(
+   'current_field' => NULL,
+   'field_count' => NULL,
+   'lengths' => NULL,
+   'num_rows' => NULL,
+   'type' => NULL,
+))
+'SELECT SUM(`c_count`) FROM `t_leave` WHERE `c_id`="KO" AND `c_leavetype`="Sick leave"'
+mysqli_result::__set_state(array(
+   'current_field' => NULL,
+   'field_count' => NULL,
+   'lengths' => NULL,
+   'num_rows' => NULL,
+   'type' => NULL,
+))
