@@ -103,9 +103,7 @@ while($row = $result->fetch_assoc()) {
                             $totalType = count($arrLeaveType);
                             for ($idxType = 0; $idxType < $totalType; $idxType++){
                                 $sql = "SELECT SUM(`c_count`) FROM `t_leave` WHERE `c_id`=\"".$selectedUser."\" AND `c_leavetype`=\"".$arrLeaveType[$idxType]."\"";
-                                myLOG($sql);
                                 $result = $conn->query($sql);
-                                myLOG($result);
                                 if ($result->num_rows > 0) {
                                     $row = $result->fetch_assoc();
                                     $c_count = $row["SUM(`c_count`)"];
