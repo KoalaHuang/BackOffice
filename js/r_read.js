@@ -10,7 +10,7 @@ const objGlobal = {
 	version: 0,
 	recipe: 0,
 	cat: "",
-    qty: 1 //recipe quantity, default is 1kg
+    qty: 1 //recipe quantity, default size by product
   };
 
 window.addEventListener("DOMContentLoaded", function() {
@@ -23,6 +23,10 @@ window.addEventListener("DOMContentLoaded", function() {
 	elmTxtComment = document.getElementById('txtComment');
 
 	elmIptPlanQty = document.getElementById('iptPlanQty');//planned quantity
+
+	objGlobal.product = elmIptProduct.value;
+	objGlobal.cat = elmSltCat.value;
+	objGlobal.version = elmSltVer.value;
 
     const totalProduct = elmUlProduct.childElementCount;
     for (idx = 0; idx < totalProduct; idx++){
@@ -188,12 +192,13 @@ function f_kg(plannedQty){
     elmIptPlanQty.value = objGlobal.qty;
 }
 
-//key in planned quantity
-function f_planQty(){
-    const plannedQty = elmIptPlanQty.value;
-    if (isNaN(plannedQty) || (Number(plannedQty) <= 0)){
+//change planned quantity
+function f_planQty(intChangVal){
+    var plannedQty = Number(elmIptPlanQty.value);
+    if ((Number(intChangVal) < 0) && (plannedQty == 1)){
         return;
     }else{
+		plannedQty = plannedQty + Number(intChangVal);
         f_kg(plannedQty);
     }
 }
@@ -203,3 +208,44 @@ function f_refresh() {
 	window.location.href = "r_read.php";
 }
   
+//Cook and add into inventory
+function f_cook(){
+	if (objGlobal.product == ""){
+		alert("Select product and recipe first!");
+	}else{
+		objGlobal.qty = Number(elmIptPlanQty.value);
+		strUnit = (objGlobal.cat=='Batter')?'Tub':'Kg';
+		strAct = "<strong>" + objGlobal.qty + " </strong> " + strUnit + "&nbspof&nbsp&nbsp<strong>" + objGlobal.product + "</strong>";	
+		console.log(objGlobal);
+		console.log(strAct);
+		document.getElementById("modal_body").innerHTML = strAct;
+		document.getElementById("btn_ok").disabled = false;
+		document.getElementById("modal_status").innerHTML = "";
+		modal_Popup.show();  
+	}
+}
+
+//submit data change
+function f_submit() {
+	const xhttp = new XMLHttpRequest();
+	xhttp.onload = function() {
+	  document.getElementById("modal_status").innerHTML = "";
+	  if (this.responseText == "true") {
+		document.getElementById("modal_body").innerHTML  = "Submit successfully!<br>Press OK to return";
+		document.getElementById("btn_ok").setAttribute("onclick","f_refresh()");
+		document.getElementById("btn_ok").disabled = false;
+		document.getElementById("btn_cancel").disabled = true;
+	  }else{
+		document.getElementById("modal_body").innerHTML  = "<p class=\"text-danger\">Update failed!</p>Return code: "+ this.responseText + "<br>Press Cancel to return";
+		document.getElementById("btn_ok").disabled = true;
+		document.getElementById("btn_cancel").disabled = false;
+	  }
+	}
+	const strJson = JSON.stringify(objGlobal);
+	xhttp.open("POST", "r_read_update.php");
+	xhttp.setRequestHeader("Accept", "application/json");
+	xhttp.setRequestHeader("Content-Type", "application/json");
+	xhttp.send(strJson);
+	document.getElementById("modal_status").innerHTML = "Submitting...";
+	document.getElementById("btn_cancel").disabled =  document.getElementById("btn_ok").disabled = true;
+  }//f_submit

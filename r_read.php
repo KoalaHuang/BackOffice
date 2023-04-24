@@ -134,89 +134,119 @@ if (f_shouldDie("P")) {
             <h5 class="card-header bg-dark text-white">Recipe</h5>
             <div class="card-body">
                 <div class="row mb-3">
-                    <div class="col-2">
-						<input type="radio" class="btn-check" id="rdoQty1" name="rdoQty" onclick="f_kg(1)" checked>
-						<label class="btn btn-outline-primary" for="rdoQty1">&nbsp;1&nbsp;</label>
+					<?
+					if ($getProduct!=NULL){
+						switch ($strCat){
+							case 'Batter':
+								$defaultProductionMsg = "Batter size by tub(bucket)";
+								break;
+							case 'Gelato':
+							case 'Sorbet':
+								$defaultProductionMsg = "Ice Cream tub size: big - 3.5kg, small - 2kg";
+								break;
+							case 'BASE':
+								$defaultProductionMsg = "Pasteurized base size: 6kg";
+								break;
+							default:
+								$defaultProductionMsg = "";
+						}
+						echo "<p><em>".$defaultProductionMsg."</em></p>";
+					}
+					?>
+				</div>
+                <div class="row mb-3">
+					<?
+					if ($getProduct!=NULL){
+						$sql = "SELECT `c_default` FROM `t_product` WHERE `c_product`='".$getProduct."'";
+						$result = $conn->query($sql);
+						if ($result) {
+							$row = $result->fetch_assoc();
+							$defaultSize = $row['c_default'];
+						}else{
+							echo "Error reading product default size!";
+							die;
+						}
+					}
+					?>
+					<div class="col-3">
+						<input type="text" class="form-control text-center" id="iptPlanQty" value="<?echo $defaultSize?>">
 					</div>
                     <div class="col-2">
-						<input type="radio" class="btn-check" id="rdoQty2" name="rdoQty" onclick="f_kg(2)">
-						<label class="btn btn-outline-primary" for="rdoQty2">&nbsp;2&nbsp;</label>
+						<span class="align-text-bottom"><?echo ($strCat=='Batter')?"Tub":"Kg"?></span>
 					</div>
                     <div class="col-2">
-						<input type="radio" class="btn-check" id="rdoQty35" name="rdoQty" onclick="f_kg(3.5)">
-						<label class="btn btn-outline-primary" for="rdoQty35">3.5</label>
+						<button type="button" class="btn btn-primary" onclick="f_planQty(0.5)">+</button>					
 					</div>
                     <div class="col-2">
-						<input type="radio" class="btn-check" id="rdoQty4" name="rdoQty" onclick="f_kg(4)">
-						<label class="btn btn-outline-primary" for="rdoQty4">&nbsp;4&nbsp;</label>
+						<button type="button" class="btn btn-primary" onclick="f_planQty(-0.5)">-</button>					
 					</div>
-                    <div class="col-2">
-						<input type="radio" class="btn-check" id="rdoQty6" name="rdoQty" onclick="f_kg(6)">
-						<label class="btn btn-outline-primary" for="rdoQty6">&nbsp;6&nbsp;</label>
+                    <div class="col-3">
+						<button type="button" class="btn btn-primary" onclick="f_cook()">Cook!</button>
 					</div>
-					<div class="col-2"><input type="text" placeholder="<?echo ($strCat=='Batter')?"Tub":"Kg"?>" class="form-control" id="iptPlanQty" onchange="f_planQty()"></div>
                 </div>
 				<hr><!--list recipe items-->
                 <ul class="list-group" id="ulRecipe">
 				<?
-				$sql = "SELECT `c_material`, `c_quantity`,`c_unit`,`c_base` FROM `t_recipelib` WHERE `c_recipe`=".$recipeNum." ORDER BY `c_base` DESC";//decendent so that base can be display on top
-				$result = $conn->query($sql);
-				$totalRows = $result->num_rows ;
-				$idx = 0;
-				if ($totalRows > 0) {
-					while($row = $result->fetch_assoc()) {
-						$c_material = $row['c_material'];
-						$c_qty = $row['c_quantity'];
-						$c_unit = $row['c_unit'];
-						$c_base = $row['c_base'];
-						if ($c_base>0){//raw materail is 0. otherwise c_base is recipe number of Base
-						?>
-						<button class="btn btn-primary text-start" type="button" data-bs-toggle="collapse" data-bs-target="#collapseBase">							
-							<div class="row">
-								<div class="col-7"><?echo $c_material?></div>
-								<div class="col-3 text-end" name="divQty"><?echo $c_qty?></div>
-								<div class="col-2"><?echo $c_unit?></div>
-							</div>							
-						</button>
-						<div class="collapse my-3" id="collapseBase">
-							<div class="card card-body">
-							<?
-								$sqlBase = "SELECT `c_material`, `c_quantity`,`c_unit` FROM `t_recipelib` WHERE `c_recipe`=".$c_base." ORDER BY `c_base` DESC";
-								$resultBase = $conn->query($sqlBase);
-								$totalRowsBase = $resultBase->num_rows ;
-								if ($totalRowsBase > 0) {
-									while($rowBase = $resultBase->fetch_assoc()) {
-										$c_materialBase = $rowBase['c_material'];
-										$c_qtyBase = $rowBase['c_quantity'];
-										$c_unitBase = $rowBase['c_unit'];
+				if ($getProduct!=NULL){				
+					$sql = "SELECT `c_material`, `c_quantity`,`c_unit`,`c_base` FROM `t_recipelib` WHERE `c_recipe`=".$recipeNum." ORDER BY `c_base` DESC";//decendent so that base can be display on top
+					$result = $conn->query($sql);
+					$totalRows = $result->num_rows ;
+					$idx = 0;
+					if ($totalRows > 0) {
+						while($row = $result->fetch_assoc()) {
+							$c_material = $row['c_material'];
+							$c_qty = $row['c_quantity'];
+							$c_unit = $row['c_unit'];
+							$c_base = $row['c_base'];
+							if ($c_base>0){//raw materail is 0. otherwise c_base is recipe number of Base
 							?>
-										<li class="list-group-item">
-											<div class="row">
-												<div class="col-7"><?echo $c_materialBase?></div>
-												<div class="col-3 text-end" name="divQty"><?echo $c_qtyBase?></div>
-												<div class="col-2"><?echo $c_unitBase?></div>
-											</div>
-										</li>
-							<?
-									}
-								}
-							?>
-							</div>
-						</div><!--collapse-->
-						<?
-						}else{
-						?>
-							<li class="list-group-item">
+							<button class="btn btn-primary text-start" type="button" data-bs-toggle="collapse" data-bs-target="#collapseBase">							
 								<div class="row">
 									<div class="col-7"><?echo $c_material?></div>
-									<div class="col-3 text-end" name="divQty"><?echo $c_qty?></div>
+									<div class="col-3 text-end" name="divQty"><?echo $c_qty * $defaultSize?></div>
 									<div class="col-2"><?echo $c_unit?></div>
+								</div>							
+							</button>
+							<div class="collapse my-3" id="collapseBase">
+								<div class="card card-body">
+								<?
+									$sqlBase = "SELECT `c_material`, `c_quantity`,`c_unit` FROM `t_recipelib` WHERE `c_recipe`=".$c_base." ORDER BY `c_base` DESC";
+									$resultBase = $conn->query($sqlBase);
+									$totalRowsBase = $resultBase->num_rows ;
+									if ($totalRowsBase > 0) {
+										while($rowBase = $resultBase->fetch_assoc()) {
+											$c_materialBase = $rowBase['c_material'];
+											$c_qtyBase = $rowBase['c_quantity'];
+											$c_unitBase = $rowBase['c_unit'];
+								?>
+											<li class="list-group-item">
+												<div class="row">
+													<div class="col-7"><?echo $c_materialBase?></div>
+													<div class="col-3 text-end" name="divQty"><?echo $c_qtyBase * $defaultSize?></div>
+													<div class="col-2"><?echo $c_unitBase?></div>
+												</div>
+											</li>
+								<?
+										}
+									}
+								?>
 								</div>
-							</li>
-						<?							
-						}
-					}
-				}
+							</div><!--collapse-->
+							<?
+							}else{
+							?>
+								<li class="list-group-item">
+									<div class="row">
+										<div class="col-7"><?echo $c_material?></div>
+										<div class="col-3 text-end" name="divQty"><?echo $c_qty * $defaultSize?></div>
+										<div class="col-2"><?echo $c_unit?></div>
+									</div>
+								</li>
+							<?							
+							}//base or non-base
+						}//recipe itemloop
+					}//when reading recipe sucessfully
+				}//when product is selected
 				?>
                 </ul>
             </div>
@@ -228,7 +258,7 @@ if (f_shouldDie("P")) {
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h5 class="modal-title" id="modal_title">Confirm to submit below request?</h5>
+					<h5 class="modal-title" id="modal_title">Add below production record?</h5>
 				</div>
 				<div class="modal-body fs-6" id="modal_body"></div>
 				<div class="row modal-footer">
