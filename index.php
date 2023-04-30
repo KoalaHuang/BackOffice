@@ -39,38 +39,20 @@ $access = $_SESSION["access"];
       ?>
     </div>
     <?}?>
-     <?
-      if (strstr($access,"R") || (strstr($access,"F")) || (strstr($access,"S")) || (strstr($access,"T"))) {//stock
-    ?>
-    <div class="d-grid gap-2 col-6 border border-primary mx-auto p-2 mb-3">
-      <h5 class="text-center text-muted">Stock</h5>
-      <?
-      if (strstr($access,"R")) {
-        echo "<a href=\"request.php\" class=\"btn btn-primary mb-1\" role=\"button\">Request</a>";
-      }
-      if (strstr($access,"F")) {
-        echo "<a href=\"fulfil.php\" class=\"btn btn-primary mb-1\" role=\"button\">Fulfill</a>";
-      }
-      if (strstr($access,"S")) {
-        echo "<a href=\"stock.php\" class=\"btn btn-primary mb-1\" role=\"button\">Stock</a>";
-      }
-      if (strstr($access,"T")) {
-        echo "<a href=\"report.php\" class=\"btn btn-primary mb-1\" role=\"button\">Report</a>";
-      }
-      ?>
-    </div>
-    <?}?>
     <?
-      if (strstr($access,"P") || (strstr($access,"D")) || (strstr($access,"I")) || (strstr($access,"G"))) {//stock
+      if (strstr($access,"P") || (strstr($access,"Q")) || (strstr($access,"I")) || (strstr($access,"G"))) {//Production
     ?>
     <div class="d-grid gap-2 col-6 border border-primary mx-auto p-2 mb-3">
-      <h5 class="text-center text-muted">Recipe</h5>
+      <h5 class="text-center text-muted">Production</h5>
       <?
       if (strstr($access,"P")) {
-        echo "<a href=\"r_read.php\" class=\"btn btn-primary mb-1\" role=\"button\">Read Recipe</a>";
+        echo "<a href=\"r_read.php\" class=\"btn btn-primary mb-1\" role=\"button\">Cook</a>";
+      }
+      if (strstr($access,"Q")) {
+        echo "<a href=\"r_inventory.php\" class=\"btn btn-primary mb-1\" role=\"button\">Inventory</a>";
       }
       if (strstr($access,"G")) {
-        echo "<a href=\"r_edit.php\" class=\"btn btn-primary mb-1\" role=\"button\">Edit Recipe</a>";
+        echo "<a href=\"r_edit.php\" class=\"btn btn-primary mb-1\" role=\"button\">Recipe</a>";
       }
       if (strstr($access,"I")) {
         echo "<a href=\"r_material.php\" class=\"btn btn-primary mb-1\" role=\"button\">Material</a>";

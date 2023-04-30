@@ -32,7 +32,7 @@
   try{
     $conn->autocommit(false);
     $conn->begin_transaction();
-    $sql = "INSERT INTO `t_production` (`c_recipe`,`c_size`,`c_date`,`c_user`) VALUES (".$c_recipe.",".$c_qty.",\"".$c_date."\",\"".$c_user."\")";
+    $sql = "INSERT INTO `t_production` (`c_recipe`,`c_size`,`c_indate`,`c_inuser`) VALUES (".$c_recipe.",".$c_qty.",\"".$c_date."\",\"".$c_user."\")";
     $result = $conn->query($sql);
     if (!$result) throw new Exception('Error insert production record!');
     if ($conn->commit()){

@@ -43,6 +43,7 @@ window.addEventListener("DOMContentLoaded", function() {
         arrayRecipe[idx][0] = elmLi.getAttribute("data-bo-product"); //product
         arrayRecipe[idx][1] = elmLi.innerText; //version
         arrayRecipe[idx][2] = elmLi.getAttribute("data-bo-recipe"); //recipe num
+		if ((arrayRecipe[idx][0]==objGlobal.product) && (arrayRecipe[idx][1] == objGlobal.version)) objGlobal.recipe = arrayRecipe[idx][2]; //recipe num for selected product version
     }
 
 	elmIptProduct.addEventListener('keyup', searchHandler);
@@ -71,8 +72,9 @@ function searchHandler(e) {
         elmSltVer.value = "";
         elmSltVer.disabled = true;
 		elmTxtComment.innerText = "";
-}
-    showSuggestedProduct(results, inputVal);
+	}
+	document.getElementById("btnQtyUp").disabled = document.getElementById("btnQtyDown").disabled = document.getElementById("btnCook").disabled = true;
+	showSuggestedProduct(results, inputVal);
 }
 
 /*show input box drop down with filtered product*/
@@ -113,6 +115,8 @@ function f_filterVersion(){
 			elmSltVer.add(elmVerOption);
 		}
 	}
+	objGlobal.recipe = elmVerOption.getAttribute("data-bo-recipe");
+	objGlobal.version = elmVerOption.innerText;
 	elmSltVer.selectedIndex = elmSltVer.length - 1;
 }
 
@@ -210,14 +214,12 @@ function f_refresh() {
   
 //Cook and add into inventory
 function f_cook(){
-	if (objGlobal.product == ""){
+	objGlobal.qty = Number(elmIptPlanQty.value);
+	if ((objGlobal.product == "") || (objGlobal.version == 0) || (objGlobal.qty == 0)){
 		alert("Select product and recipe first!");
 	}else{
-		objGlobal.qty = Number(elmIptPlanQty.value);
 		strUnit = (objGlobal.cat=='Batter')?'Tub':'Kg';
 		strAct = "<strong>" + objGlobal.qty + " </strong> " + strUnit + "&nbspof&nbsp&nbsp<strong>" + objGlobal.product + "</strong>";	
-		console.log(objGlobal);
-		console.log(strAct);
 		document.getElementById("modal_body").innerHTML = strAct;
 		document.getElementById("btn_ok").disabled = false;
 		document.getElementById("modal_status").innerHTML = "";

@@ -28,7 +28,7 @@ if (f_shouldDie("P")) {
 </head>
 <body>
 	<div class="container">
-		<h1 id="section_home" class="text-center mb-2">Recipe</h1>
+		<h1 id="section_home" class="text-center mb-2">Cook</h1>
         <div class="card mb-3">
             <h5 class="card-header bg-dark text-white">Product</h5>
             <div class="card-body">
@@ -123,38 +123,7 @@ if (f_shouldDie("P")) {
 				<div>
 					<textarea class="form-control" rows="2" id="txtComment" disabled><?echo ($getProduct!=NULL)?$strComment:"Recipe comment..."?></textarea>
 				</div>
-			</div> <!--2nd row-->
-			<div class="row gap-2 mb-2">
-				<button type="button" class="btn btn-primary col-4 mx-4" onclick="f_getRecipe()">Read</button>
-				<button type="button" class="btn btn-secondary col-3" onclick="f_refresh()">Clean</button>
-			</div>
-		</div><!--product card-->
-
-        <div class="card mb-3">
-            <h5 class="card-header bg-dark text-white">Recipe</h5>
-            <div class="card-body">
-                <div class="row mb-3">
-					<?
-					if ($getProduct!=NULL){
-						switch ($strCat){
-							case 'Batter':
-								$defaultProductionMsg = "Batter size by tub(bucket)";
-								break;
-							case 'Gelato':
-							case 'Sorbet':
-								$defaultProductionMsg = "Ice Cream tub size: big - 3.5kg, small - 2kg";
-								break;
-							case 'BASE':
-								$defaultProductionMsg = "Pasteurized base size: 6kg";
-								break;
-							default:
-								$defaultProductionMsg = "";
-						}
-						echo "<p><em>".$defaultProductionMsg."</em></p>";
-					}
-					?>
-				</div>
-                <div class="row mb-3">
+				<div class="row my-3">
 					<?
 					if ($getProduct!=NULL){
 						$sql = "SELECT `c_default` FROM `t_product` WHERE `c_product`='".$getProduct."'";
@@ -171,20 +140,32 @@ if (f_shouldDie("P")) {
 					<div class="col-3">
 						<input type="text" class="form-control text-center" id="iptPlanQty" value="<?echo $defaultSize?>">
 					</div>
-                    <div class="col-2">
-						<span class="align-text-bottom"><?echo ($strCat=='Batter')?"Tub":"Kg"?></span>
+					<div class="col-1 d-flex align-items-center">
+						<span class="form-text"><?echo ($strCat=='Batter')?"Tub":"Kg"?></span>
 					</div>
-                    <div class="col-2">
-						<button type="button" class="btn btn-primary" onclick="f_planQty(0.5)">+</button>					
+					<div class="col-2">
+						<button type="button" id="btnQtyUp" class="btn btn-primary" onclick="f_planQty(0.5)" <?echo ($getProduct!=NULL)?"":"disabled"?>>&nbsp;+&nbsp;</button>					
 					</div>
-                    <div class="col-2">
-						<button type="button" class="btn btn-primary" onclick="f_planQty(-0.5)">-</button>					
+					<div class="col-2">
+						<button type="button" id="btnQtyDown" class="btn btn-primary" onclick="f_planQty(-0.5)" <?echo ($getProduct!=NULL)?"":"disabled"?>>&nbsp;-&nbsp;</button>					
 					</div>
-                    <div class="col-3">
-						<button type="button" class="btn btn-primary" onclick="f_cook()">Cook!</button>
+					<div class="col-4 text- d-flex align-items-center">
+						<span class="form-text"><abbr title="<Gelato> Full: 3.5kg Haf: 2kg  <Base> 6kg  <Batter> by tub">by stock qty</abbr></span>
 					</div>
-                </div>
-				<hr><!--list recipe items-->
+				</div><!--Cook quantity-->
+				<div class="row mb-2 mt-2">
+					<button type="button" class="btn btn-primary col-3 ms-3" onclick="f_getRecipe()">Load</button>
+					<button type="button" class="btn btn-primary col-3 mx-2" id="btnCook" onclick="f_cook()" <?echo ($getProduct!=NULL)?"":"disabled"?>>Cook!</button>
+					<button type="button" class="btn btn-secondary col-3 ms-5" onclick="f_refresh()">Clean</button>
+				</div>
+			</div> <!--card body-->
+		</div><!--product card-->
+
+        <div class="card mb-3">
+            <h5 class="card-header bg-dark text-white">Recipe</h5>
+            <div class="card-body">
+
+				<!--list recipe items-->
                 <ul class="list-group" id="ulRecipe">
 				<?
 				if ($getProduct!=NULL){				

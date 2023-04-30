@@ -31,33 +31,18 @@
             echo "<a class=\"nav-link\" href=\"shift_report.php\">Team Shift Report</a>";
             echo "</li>";
           }
-          if  (strstr($access,"R") || (strstr($access,"F")) || (strstr($access,"S")) || (strstr($access,"T"))) {
+          if  ((strstr($access,"Q")) || (strstr($access,"I")) || (strstr($access,"G")) || (strstr($access,"P"))) {
             echo "<li class=\"nav-item dropdown\">";
-            echo "<a class=\"nav-link dropdown-toggle\" href=\"#\" id=\"stockdropdown\" role=\"button\" data-bs-toggle=\"dropdown\">Stock</a>";
-            echo "<ul class=\"dropdown-menu\">";
-            if (strstr($access,"R")) {
-              echo "<li><a class=\"dropdown-item\" href=\"request.php\">Request</a></li>";
-            }
-            if (strstr($access,"F")) {
-              echo "<li><a class=\"dropdown-item\" href=\"fulfil.php\">Fufill</a></li>";
-            }
-            if (strstr($access,"S")) {
-              echo "<li><a class=\"dropdown-item\" href=\"stock.php\">Stock</a></li>";
-            }
-            if (strstr($access,"T")) {
-              echo "<li><a class=\"dropdown-item\" href=\"report.php\">Report</a></li>";
-            }
-            echo "</ul>";
-          }
-          if  ((strstr($access,"D")) || (strstr($access,"I")) || (strstr($access,"G"))) {
-            echo "<li class=\"nav-item dropdown\">";
-            echo "<a class=\"nav-link dropdown-toggle\" href=\"#\" id=\"recipedropdown\" role=\"button\" data-bs-toggle=\"dropdown\">Recipe</a>";
+            echo "<a class=\"nav-link dropdown-toggle\" href=\"#\" id=\"recipedropdown\" role=\"button\" data-bs-toggle=\"dropdown\">Production</a>";
             echo "<ul class=\"dropdown-menu\">";
             if (strstr($access,"P")) {
-              echo "<li><a class=\"dropdown-item\" href=\"r_read.php\">Read Recipe</a></li>";
+              echo "<li><a class=\"dropdown-item\" href=\"r_read.php\">Cook</a></li>";
+            }
+            if (strstr($access,"Q")) {
+              echo "<li><a class=\"dropdown-item\" href=\"r_inventory.php\">Inventory</a></li>";
             }
             if (strstr($access,"G")) {
-              echo "<li><a class=\"dropdown-item\" href=\"r_edit.php\">Edit Recipe</a></li>";
+              echo "<li><a class=\"dropdown-item\" href=\"r_edit.php\">Recipe</a></li>";
             }
             if (strstr($access,"I")) {
               echo "<li><a class=\"dropdown-item\" href=\"r_material.php\">Material</a></li>";
