@@ -47,8 +47,10 @@ if (f_shouldDie("Q")) {
 			$arrayInDate = array(); //array for productioin date, use product as index
 			$arraySize = array(); //product size, use product as index
 
+			//read inventory that has not been consumed
 			include "connect_db.php";
-			$sql = "SELECT t_recipe.c_product, c_size, c_indate, c_inuser FROM `t_production` INNER JOIN t_recipe ON t_production.c_recipe = t_recipe.c_recipe WHERE t_recipe.c_cat = \'".$selectedCat."\' ORDER BY t_recipe.c_product";
+			$sql = "SELECT t_recipe.c_product, c_size, c_indate, c_inuser FROM `t_production` INNER JOIN t_recipe ON t_production.c_recipe = t_recipe.c_recipe WHERE c_outdate IS  NULL AND t_recipe.c_cat = \'".$selectedCat."\' ORDER BY t_recipe.c_product";
+			$sql = "SELECT t_recipe.c_product, c_size, c_indate, c_inuser FROM `t_production` INNER JOIN t_recipe ON t_production.c_recipe = t_recipe.c_recipe WHERE c_outdate IS  NULL AND t_recipe.c_cat = \'Gelato\'  UNION SELECT c_product, 0, NULL, NULL FROM t_product WHERE c_plan = 1 AND c_cat = \'Gelato\'";
 			$result = $conn->query($sql);
 			$idx = 0;
 			if ($row = $result->fetch_assoc()){
@@ -74,7 +76,7 @@ if (f_shouldDie("Q")) {
 		<div class="row px-3 col mb-2">
 		<?
 		$ySum = array(); //store sum of working days for each store
-		for ($idxPpl = 0; $idxPpl<$countUserID; $idxPpl++) {
+		for ($idxProd = 0; $idxProd < ; $idxPpl++) {
 			$c_id = $arrayUserID[$idxPpl];
 			$c_name = $arrayUserName[$c_id];
 			$ySum = array_fill(0,count($ySum),0);
