@@ -40,15 +40,15 @@ $access = $_SESSION["access"];
     </div>
     <?}?>
     <?
-      if (strstr($access,"P") || (strstr($access,"Q")) || (strstr($access,"I")) || (strstr($access,"G"))) {//Production
+      if (strstr($access,"P") || (strstr($access,"C")) || (strstr($access,"I")) || (strstr($access,"G"))) {//Production
     ?>
     <div class="d-grid gap-2 col-6 border border-primary mx-auto p-2 mb-3">
       <h5 class="text-center text-muted">Production</h5>
       <?
       if (strstr($access,"P")) {
-        echo "<a href=\"r_read.php\" class=\"btn btn-primary mb-1\" role=\"button\">Cook</a>";
+        echo "<a href=\"r_read.php\" class=\"btn btn-primary mb-1\" role=\"button\">Production</a>";
       }
-      if (strstr($access,"Q")) {
+      if (strstr($access,"C")) {
         echo "<a href=\"r_inventory.php\" class=\"btn btn-primary mb-1\" role=\"button\">Inventory</a>";
       }
       if (strstr($access,"G")) {

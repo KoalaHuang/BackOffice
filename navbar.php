@@ -31,12 +31,12 @@
             echo "<a class=\"nav-link\" href=\"shift_report.php\">Team Shift Report</a>";
             echo "</li>";
           }
-          if  ((strstr($access,"Q")) || (strstr($access,"I")) || (strstr($access,"G")) || (strstr($access,"P"))) {
+          if  ((strstr($access,"C")) || (strstr($access,"I")) || (strstr($access,"G")) || (strstr($access,"P"))) {
             echo "<li class=\"nav-item dropdown\">";
             echo "<a class=\"nav-link dropdown-toggle\" href=\"#\" id=\"recipedropdown\" role=\"button\" data-bs-toggle=\"dropdown\">Production</a>";
             echo "<ul class=\"dropdown-menu\">";
             if (strstr($access,"P")) {
-              echo "<li><a class=\"dropdown-item\" href=\"r_read.php\">Cook</a></li>";
+              echo "<li><a class=\"dropdown-item\" href=\"r_read.php\">Production</a></li>";
             }
             if (strstr($access,"Q")) {
               echo "<li><a class=\"dropdown-item\" href=\"r_inventory.php\">Inventory</a></li>";

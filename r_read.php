@@ -28,7 +28,7 @@ if (f_shouldDie("P")) {
 </head>
 <body>
 	<div class="container">
-		<h1 id="section_home" class="text-center mb-2">Cook</h1>
+		<h1 id="section_home" class="text-center mb-2">Production</h1>
         <div class="card mb-3">
             <h5 class="card-header bg-dark text-white">Product</h5>
             <div class="card-body">
