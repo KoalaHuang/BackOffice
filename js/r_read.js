@@ -1,4 +1,4 @@
-/* Receipe - edit recipe 
+/* Production - production and reading recipe
 */
 
 const arrayProduct = [];
