@@ -28,15 +28,15 @@ if ($selectedCat == NULL){
 		<form class="row g-3 align-items-center my-3 border bg-light" method="post" action="<?php echo $_SERVER["PHP_SELF"];?>">
             <div class="mb-3">
 				<div class="form-check form-check-inline">
-					<input <?echo ($selectedCat=="Gelato")?"checked":""?> type="radio" class="form-check-input" name="reportBy" onclick="f_selectCat('Gelato')" id="radioByGelato">
+					<input <?echo ($selectedCat=="Gelato")?"checked":""?> type="radio" class="form-check-input" name="reportBy" onclick="f_selectCat('Gelato')" value='Gelato' id="radioByGelato">
 					<label class="form-check-label" for="radioByGelato">Gelato</label>
 				</div>
 				<div class="form-check form-check-inline">
-					<input type="radio" <?echo ($selectedCat=="Sorbet")?"checked":""?> class="form-check-input" name="reportBy" onclick="f_selectCat('Sorbet')"  id="radioBySorbet">
+					<input type="radio" <?echo ($selectedCat=="Sorbet")?"checked":""?> class="form-check-input" name="reportBy" onclick="f_selectCat('Sorbet')" value='Sorbet' id="radioBySorbet">
 					<label class="form-check-label" for="radioBySorbet">Sorbet</label>
 				</div>
 				<div class="form-check form-check-inline">
-					<input type="radio" <?echo ($selectedCat=="Batter")?"checked":""?> class="form-check-input" name="reportBy" onclick="f_selectCat('Batter')" id="radioByBatter">
+					<input type="radio" <?echo ($selectedCat=="Batter")?"checked":""?> class="form-check-input" name="reportBy" onclick="f_selectCat('Batter')" value='Batter' id="radioByBatter">
 					<label class="form-check-label" for="radioByBatter">Batter</label>
 				</div>
             </div>        
@@ -58,13 +58,13 @@ if ($selectedCat == NULL){
 		?>
 		<!--Current Inventory-->
         <div class="card mb-3">
-            <h5 class="card-header bg-dark text-white">Current</h5>
+            <h5 class="card-header bg-secondary text-white">Current</h5>
             <div class="card-body">
 				<div class="d-grid gap-2">
 					<?
 						for ($idx = 0; $idx < $idxProd; $idx++){
 							$c_product = $arrayProductCurrent[$idx][0];
-							echo "<button class=\"btn btn-primary\" type=\"button\" onclick=\"f_checkOut('".$c_product."')>".$c_product." ( ".$arrayProductCurrent[$idx][1]." )</button>";
+							echo "<button class=\"btn btn-primary\" type=\"button\" onclick=\"f_checkOut('".$c_product."')\">".$c_product." ( ".$arrayProductCurrent[$idx][1]." )</button>";
 						}
 					?>
   				</div>
@@ -87,7 +87,7 @@ if ($selectedCat == NULL){
 		?>
 		<!--Request card-->
         <div class="card mb-3">
-            <h5 class="card-header bg-dark text-white">Request</h5>
+            <h5 class="card-header bg-secondary text-white">Request</h5>
             <div class="card-body">
 				<div class="row mb-3">
 					<div class="col-8 search-container">
@@ -117,7 +117,7 @@ if ($selectedCat == NULL){
 					<?
 						for ($idx = 0; $idx < $idxProd; $idx++){
 							if ($arrayProductRequest[$idx][1] == 1){ //display planned product
-								echo "<button class=\"btn btn-outline-primary\" type=\"button\">".$arrayProductRequest[$idx][0]."</button>";
+								echo "<button class=\"btn btn-outline-primary\" type=\"button\" onclick=\"f_removeRequest('".$arrayProductRequest[$idx][0]."')\">".$arrayProductRequest[$idx][0]."</button>";
 							}
 						}
 					?>
@@ -131,7 +131,7 @@ if ($selectedCat == NULL){
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h5 class="modal-title" id="modal_title">Confirm to submit below request?</h5>
+					<h5 class="modal-title" id="modal_title">Confirm</h5>
 				</div>
 				<div class="modal-body fs-6" id="modal_body"></div>
 				<div class="row modal-footer">

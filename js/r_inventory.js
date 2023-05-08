@@ -107,12 +107,14 @@ function f_selectCat(strCat){
     window.location.href = "r_inventory.php?cat=" + encodeURIComponent(strCat);
 }
 
-//ok button to refresh the page when failed
+//ok button to refresh the page
 function f_refresh() {
     const elmCats = document.getElementsByName("reportBy");
     const totalItem = elmCats.length;
 	for (var idx = 0; idx < totalItem; idx++){
-        if (elmCats[idx].checked) strCat =  elmCats[idx].innerText;
+        if (elmCats[idx].checked){
+            strCat =  elmCats[idx].value;//get current product category selection
+        }
     }
 	f_selectCat(strCat);
 }
@@ -122,6 +124,28 @@ function f_checkOut(strProd){
 	objGlobal.product = strProd;
     objGlobal.act = 1; //check out inventory
     strAct = "Confirm to check out one pcs of <strong>" + objGlobal.product + "</strong> ?";	
+    document.getElementById("modal_body").innerHTML = strAct;
+    document.getElementById("btn_ok").disabled = false;
+    document.getElementById("modal_status").innerHTML = "";
+    modal_Popup.show();  
+}
+
+//Add request
+function f_addRequest(){
+	objGlobal.product = elmIptProduct.value;
+    objGlobal.act = 2; //add request
+    strAct = "Confirm to add request for <strong>" + objGlobal.product + "</strong> ?";	
+    document.getElementById("modal_body").innerHTML = strAct;
+    document.getElementById("btn_ok").disabled = false;
+    document.getElementById("modal_status").innerHTML = "";
+    modal_Popup.show();  
+}
+
+//Remove request
+function f_removeRequest(strProd){
+	objGlobal.product = strProd;
+    objGlobal.act = 3; //remove request
+    strAct = "Confirm to remove request for <strong>" + objGlobal.product + "</strong> ?";	
     document.getElementById("modal_body").innerHTML = strAct;
     document.getElementById("btn_ok").disabled = false;
     document.getElementById("modal_status").innerHTML = "";
