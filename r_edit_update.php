@@ -46,7 +46,7 @@
       if (!$result) throw new Exception('Error updating new recipe number!');
       $sql = "INSERT INTO `t_recipe` (`c_recipe`,`c_product`,`c_cat`,`c_version`,`c_comment`) VALUES (".$c_recipe.",\"".$c_product."\",'".$c_cat."',".$c_version.",'".$c_comment."')";
       $result = $conn->query($sql);
-      if (!$result) throw new Exception('Error creating new product!');
+      if (!$result) throw new Exception('Error creating new recipe!');
       $totalRow = count($obj->arrayItemM);
       for ($i = 0; $i < $totalRow; $i++){
         $c_material = $obj->arrayItemM[$i];
@@ -63,6 +63,25 @@
         $sql = "INSERT INTO `t_recipelib` (`c_recipe`,`c_material`,`c_quantity`,`c_unit`,`c_base`) VALUES (".$c_recipe.",\"".$c_material."\",".$c_quantity.",'".$c_unit."',".$c_base.")";
         $result = $conn->query($sql);
         if (!$result) throw new Exception('Error creating new recipe item!');
+      }
+      if ($c_version == 1) { //new product. insert new product in t_product table
+        switch ($c_cat){
+          case 'Gelato':
+          case 'Sorbet':
+            $c_default = 2;
+            break;
+          case 'Batter':
+            $c_default = 1;
+            break;
+          case 'BASE':
+            $c_default = 6;
+            break;
+          default:
+            $c_default = 1;
+        }
+        $sql = "INSERT INTO `t_product` (`c_product`, `c_default`, `c_plan`,`c_warn`,`c_cat`) VALUES (\"".$c_product."\",".$c_default.",0,0,'".$c_cat."')";
+        $result = $conn->query($sql);
+        if (!$result) throw new Exception('Error creating new product!');
       }
     }else{//update existing recipe
       //update comment field
