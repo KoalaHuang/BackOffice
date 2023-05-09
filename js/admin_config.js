@@ -96,8 +96,6 @@ function f_toConfirm() {
         listChild = listChild.nextElementSibling;
     }
 
-    console.log(arrayObj);
-
     listGroup = document.getElementById("ul_wa");
     c_setup = "notice_stocking";
     c_subsetup = "WA";

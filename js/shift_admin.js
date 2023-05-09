@@ -31,7 +31,6 @@ window.addEventListener("DOMContentLoaded", function() {
   
 //return button to return to month calendar displayed
 function f_return() {
-  console.log(elmCell.getAttribute("data-stocking-calendaruser"));
     strURL = "shift.php?year=" + objGlobal.cyear + "&mon=" + objGlobal.cmon + "&user=" + elmCell.getAttribute("data-stocking-calendaruser") + "&store=" + elmCell.getAttribute("data-stocking-calendarstore");
     window.location.href = strURL;
 }

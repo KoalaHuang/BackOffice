@@ -322,7 +322,6 @@ function f_toConfirmSaveTemplate() {
   }
   document.getElementById("lbl_modal").innerHTML = "Confirm";
   document.getElementById("body_modal").innerHTML = "Save shift tempaltes?";
-  console.log(arrayToSubmit);
   document.getElementById("btn_ok").disabled = false;
   modal_Popup.show();
 }
