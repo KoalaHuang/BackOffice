@@ -147,7 +147,8 @@ if (f_shouldDie("C")) {
                 echo "<div class=\"row row-cols-8 g-0 mb-1\">";
 				$rowEmployee = $arrayEmployee[$idxEmployee];
                 $rowEmployeeID = $arrayEmployeeID[$idxEmployee];
-				echo "<div class=\"col border-top border-start border-bottom\">".$rowEmployee."</div>";
+				echo "<div class=\"d-none d-sm-block col text-center border-top border-start border-bottom\">".$rowEmployee."</div>";
+				echo "<div class=\"d-sm-none d-md-none d-lg-none d-xl-none d-xxl-none text-center col border-top border-start border-bottom\">".$rowEmployeeID."</div>";
 				$objDay = clone $objWeek1stDay; //counting day for store/ppl rows
 				for ($idxWD = 1; $idxWD < 8; $idxWD++) {
 					$mday = date('j',date_timestamp_get($objDay));
