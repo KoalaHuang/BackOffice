@@ -12,6 +12,7 @@ if (f_shouldDie("L")) {
 <html>
 <head>
 	<? include "header.php"; ?>
+	<? include "mylog.php"; ?>
 	<title>BackOffice</title>
 	<script src="js/shift_report.js"></script>
 </head>
@@ -33,7 +34,7 @@ if (f_shouldDie("L")) {
 				$hideResult = false;
 			}
 		}
-		$isReportByDay = ($_POST["reportBy"] == "day");
+		//$isReportByDay = ($_POST["reportBy"] == "day"); FT by day, PT by hours. no para required
 	}
 	?>
 
@@ -153,16 +154,6 @@ if (f_shouldDie("L")) {
 				?>
 				</select>
 			</div>
-			<div class="ps-1 mb-3">
-				<div class="form-check form-check-inline me-5">
-					<input <?if ($isReportByDay){echo "checked";}?> type="radio" class="form-check-input" name="reportBy" value="day" id="radioByDay">
-					<label class="form-check-label" for="radioByDay">Count by day</label>
-				</div>
-				<div class="form-check form-check-inline">
-					<input type="radio" <?if (!$isReportByDay){echo "checked";}?> class="form-check-input" name="reportBy" value="hour" id="radioByMins">
-					<label class="form-check-label" for="radioByMins">Count by hour</label>
-				</div>
-			</div>
 			<div class="mb-3 ps-1">
 				<button type="button" class="btn btn-outline-primary me-2" onclick="f_changeMonth(-1)"> << </button>
 				<button type="button" class="btn btn-outline-primary me-5" onclick="f_changeMonth(1)"> >> </button>
@@ -177,10 +168,10 @@ if (f_shouldDie("L")) {
 			$arrayUserType = array();
 			$arrayUserID = array();
 			$arrayStore = array();
-			$arrayWorkType = ["WW","HW"];
 			$arrayPeople = array(array(),array(),array());
 
 			include "connect_db.php";
+			//employee data
 			$sql = "SELECT `c_name`,`c_id`,`c_employee` FROM `t_user` WHERE (NOT ((`c_store`='NONE') OR (`c_employee`='D')))";
 			$result = $conn->query($sql);
 			$idx = 0;
@@ -190,6 +181,7 @@ if (f_shouldDie("L")) {
 				$arrayUserType[$arrayUserID[$idx]] = $row["c_employee"];
 				$idx++;
 			}
+			//store data
 			$sql = "SELECT `c_name` FROM `t_store`";
 			$result = $conn->query($sql);
 			$idx = 0;
@@ -197,27 +189,65 @@ if (f_shouldDie("L")) {
 				$arrayStore[$idx] = $row["c_name"];
 				$idx++;
 			}
-			if ($isReportByDay){
-				$fieldTotal = "count(`c_date`)";
-			}else{
-				$fieldTotal = "sum(`c_totalmins`)";
-			}
-			$sql = "SELECT ".$fieldTotal.",`c_id`,`c_store`,`c_type` FROM `t_calendar` WHERE `c_date`>='".date_format($fromDate,"Y-m-d")."' AND `c_date`<='".date_format($toDate,"Y-m-d")."' GROUP BY `c_id`,`c_store`, `c_type`;";
-			$result = $conn->query($sql);
+
+			//count shift data
 			$idx = 0;
+			//Count by days for full time
+			$sql = "SELECT count(`t_calendar`.`c_date`) AS c_COUNT,`t_calendar`.`c_id`,`t_calendar`.`c_store`,`t_calendar`.`c_type` FROM `t_calendar` JOIN `t_user` WHERE `t_user`.`c_employee` = 'F' AND `t_user`.`c_id`=`t_calendar`.`c_id` AND `t_calendar`.`c_date`>='".date_format($fromDate,"Y-m-d")."' AND `t_calendar`.`c_date`<='".date_format($toDate,"Y-m-d")."' GROUP BY `t_calendar`.`c_id`, `t_calendar`.`c_store`, `t_calendar`.`c_type`;";
+			$result = $conn->query($sql);
+
 			while($row = $result->fetch_assoc()) {
 				$c_id = $row['c_id'];
 				$c_name = $arrayUserName[$c_id];
-				$c_count = $row[$fieldTotal];
+				$c_count = $row['c_COUNT'];
 				$c_store = $row['c_store'];
 				$c_type = $row['c_type'];
-				if ($isReportByDay){
-					$arrayPeople[$c_id][$c_store][$c_type] = $c_count; //count the days
-				}else{
-					$arrayPeople[$c_id][$c_store][$c_type] = round($c_count/60,1); //count the hours
-				}
+				myLOG("id: ".$c_id." count: ".$c_count." store: ".$c_store." type: ".$c_type);
+				$arrayPeople[$c_id][$c_store][$c_type] = $c_count; //count the days by Id by store, by HW and WW
 				$idx++;
 			}
+
+			myLOG($arrayPeople);
+
+			//count by hours for part time, split by before 5pm and after 5pm
+			//count hours by before 5pm and after 5pm due to different pay rate
+			//need to cosider hours may fall all into before or after 5pm scenarios
+			//if it's full day, before5pm counted as 5 hours, after5pm counted as 4 hours (total 9 hours)
+
+			$sql = "SELECT `t_calendar`.`c_id`, `t_calendar`.`c_store`,
+			SUM(CASE
+				WHEN `t_calendar`.`c_fullday` = 1 THEN 5
+				WHEN timediff(`t_calendar`.`c_timeend`,'17:00')<0 THEN hour(timediff(`t_calendar`.`c_timeend`,`t_calendar`.`c_timestart`))
+				WHEN timediff(`t_calendar`.`c_timeend`,'17:00')>=0 AND timediff(`t_calendar`.`c_timestart`,'17:00')>=0 THEN 0
+				ELSE hour(timediff('17:00',`t_calendar`.`c_timestart`))
+			END) AS c_BEFORE5PM,
+			
+			SUM(CASE
+				WHEN `t_calendar`.`c_fullday` = 1 THEN 4
+				WHEN timediff(`t_calendar`.`c_timestart`,'17:00')>0 THEN hour(timediff(`t_calendar`.`c_timeend`,`t_calendar`.`c_timestart`))
+				WHEN timediff(`t_calendar`.`c_timestart`,'17:00')<=0 AND timediff(`t_calendar`.`c_timeend`,'17:00')<=0 THEN 0
+				ELSE hour(timediff(`t_calendar`.`c_timeend`,'17:00'))
+			END) AS c_AFTER5PM
+			FROM `t_calendar`
+			JOIN `t_user` WHERE `t_user`.`c_employee` = 'P' AND `t_user`.`c_id`=`t_calendar`.`c_id` AND
+			`t_calendar`.`c_date`>='".date_format($fromDate,"Y-m-d")."' AND `t_calendar`.`c_date`<='".date_format($toDate,"Y-m-d")."' GROUP BY `t_calendar`.`c_id`,`t_calendar`.`c_store`";
+
+			$result = $conn->query($sql);
+
+			while($row = $result->fetch_assoc()) {
+				$c_id = $row['c_id'];
+				$c_name = $arrayUserName[$c_id];
+				$before5pm = $row['c_BEFORE5PM'];
+				$after5pm = $row['c_AFTER5PM'];
+				$c_store = $row['c_store'];
+				myLOG("id: ".$c_id." store: ".$c_store." b5: ".$before5pm." a5: ".$after5pm);
+				$arrayPeople[$c_id][$c_store]['B5'] = $before5pm;//store before 5pm hours count by ID by store
+				$arrayPeople[$c_id][$c_store]['A5'] = $after5pm; //store after 5pm hours count by ID by store
+				$idx++;
+			}
+
+			myLOG($arrayPeople);
+
 			$conn->close();
 			//OFF Day working count
 			//count working days in given period
@@ -270,6 +300,12 @@ if (f_shouldDie("L")) {
 			}
 			echo "<th class=\"table-secondary\" scope=\"col\">SUM</th>"; //work type sum
 			echo "</tr></thead><tbody>";
+			if ($arrayUserType[$c_id]=="F") {
+				$arrayWorkType = ["WW","HW"];//full time display by days of working in working (WW) or holiday (HW)
+			}else{
+				$arrayWorkType = ["B5","A5"];//part time display by before 5pm and after 5pm hours counting
+			}
+
 			for ($idxType = 0; $idxType<count($arrayWorkType); $idxType++) {
 				$c_type = $arrayWorkType[$idxType];
 				echo "<tr>";

@@ -1,6 +1,6 @@
 <?
 /*
- Admin - System Configuration
+ Leave - leave report and application. Team lead (M access) can access team leave
 */ 
 include_once "sessioncheck.php";
 if (f_shouldDie("V")) {
@@ -21,7 +21,7 @@ $result = $conn->query($sql);
 if ($row = $result->fetch_assoc()) {
     $UserID = $row["c_id"];
     $UserName = $row["c_name"];
-    $isTeamLead = strpos($row["c_access"],"M");//"M" - shift template access or team lead access
+    $isTeamLead = strpos($row["c_access"],"M");//"M" - team lead access (same access code as shift template)
 }else{
     echo "User data error!";
     die;
@@ -39,7 +39,7 @@ $result = $conn->query($sql);
 $idxType = 0;
 while($row = $result->fetch_assoc()) {
     $arrLeaveType[$idxType] = $row['c_leavetype'];
-    $arrLeaveQuota[$idxType] = $row['c_quota'];
+    $arrLeaveQuota[$idxType] = $row['c_quota'];//leave quota counted in half day
     $idxType++;
 }
 
@@ -112,7 +112,7 @@ while($row = $result->fetch_assoc()) {
                                 }
                                 echo "<tr>";
                                 echo "<th scope=\"row\">".$arrLeaveType[$idxType]."</th>";
-                                echo "<td>".($c_count/2)."</td>";
+                                echo "<td>".($c_count/2)."</td>";//leave counts saved as counting by half days. display in days
                                 echo "<td>".(($arrLeaveQuota[$idxType] - $c_count)/2)."</td>";
                                 echo "</tr>";
                             }

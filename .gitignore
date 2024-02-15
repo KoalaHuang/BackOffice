@@ -2,3 +2,6 @@
 /.DS_Store
 /connect_db.php
 /mylog.txt
+.vscode/sftp.json
+.gitignore
+test//mylog.txt

@@ -1,3 +1,298 @@
-'<button class="btn btn-primary" type="button" onclick="f_checkOut(\'Almond Pistachio\')>Almond Pistachio ( 1 )</button>'
-'<button class="btn btn-primary" type="button" onclick="f_checkOut(\'Blood Orange\')>Blood Orange ( 1 )</button>'
-'<button class="btn btn-primary" type="button" onclick="f_checkOut(\'Caramel Salt\')>Caramel Salt ( 1 )</button>'
+'id: ED count: 11 store: P-C type: WW'
+'id: ED count: 6 store: P-G type: WW'
+'id: EVA count: 15 store: GB-M type: WW'
+'id: JE count: 1 store: P-G type: WW'
+'id: JIE count: 1 store: GB-M type: HW'
+'id: JIE count: 10 store: GB-M type: WW'
+'id: JIE count: 1 store: GB-N type: WW'
+'id: JIE count: 3 store: P-C type: WW'
+'id: JY count: 10 store: P-C type: WW'
+'id: JY count: 2 store: P-G type: WW'
+'id: VEN count: 2 store: GB-N type: WW'
+'id: VEN count: 5 store: P-G type: WW'
+'id: VEN count: 9 store: PROD type: WW'
+'id: XM count: 4 store: GB-M type: WW'
+'id: XM count: 1 store: GB-N type: HW'
+'id: XM count: 3 store: GB-N type: WW'
+'id: XM count: 1 store: P-C type: WW'
+'id: XM count: 2 store: P-G type: WW'
+'id: XM count: 6 store: PROD type: WW'
+array (
+  0 => 
+  array (
+  ),
+  1 => 
+  array (
+  ),
+  2 => 
+  array (
+  ),
+  'ED' => 
+  array (
+    'P-C' => 
+    array (
+      'WW' => '11',
+    ),
+    'P-G' => 
+    array (
+      'WW' => '6',
+    ),
+  ),
+  'EVA' => 
+  array (
+    'GB-M' => 
+    array (
+      'WW' => '15',
+    ),
+  ),
+  'JE' => 
+  array (
+    'P-G' => 
+    array (
+      'WW' => '1',
+    ),
+  ),
+  'JIE' => 
+  array (
+    'GB-M' => 
+    array (
+      'HW' => '1',
+      'WW' => '10',
+    ),
+    'GB-N' => 
+    array (
+      'WW' => '1',
+    ),
+    'P-C' => 
+    array (
+      'WW' => '3',
+    ),
+  ),
+  'JY' => 
+  array (
+    'P-C' => 
+    array (
+      'WW' => '10',
+    ),
+    'P-G' => 
+    array (
+      'WW' => '2',
+    ),
+  ),
+  'VEN' => 
+  array (
+    'GB-N' => 
+    array (
+      'WW' => '2',
+    ),
+    'P-G' => 
+    array (
+      'WW' => '5',
+    ),
+    'PROD' => 
+    array (
+      'WW' => '9',
+    ),
+  ),
+  'XM' => 
+  array (
+    'GB-M' => 
+    array (
+      'WW' => '4',
+    ),
+    'GB-N' => 
+    array (
+      'HW' => '1',
+      'WW' => '3',
+    ),
+    'P-C' => 
+    array (
+      'WW' => '1',
+    ),
+    'P-G' => 
+    array (
+      'WW' => '2',
+    ),
+    'PROD' => 
+    array (
+      'WW' => '6',
+    ),
+  ),
+)
+'id: BEN store: P-G b5: 5 a5: 4'
+'id: EDA store: P-G b5: 15 a5: 12'
+'id: EZ store: GB-M b5: 5 a5: 4'
+'id: EZ store: P-C b5: 5 a5: 4'
+'id: JN store: P-C b5: 5 a5: 0'
+'id: JNA store: GB-N b5: 10 a5: 8'
+'id: JQ store: GB-N b5: 15 a5: 12'
+'id: JQ store: P-G b5: 10 a5: 8'
+'id: RHE store: GB-N b5: 54 a5: 44'
+array (
+  0 => 
+  array (
+  ),
+  1 => 
+  array (
+  ),
+  2 => 
+  array (
+  ),
+  'ED' => 
+  array (
+    'P-C' => 
+    array (
+      'WW' => '11',
+    ),
+    'P-G' => 
+    array (
+      'WW' => '6',
+    ),
+  ),
+  'EVA' => 
+  array (
+    'GB-M' => 
+    array (
+      'WW' => '15',
+    ),
+  ),
+  'JE' => 
+  array (
+    'P-G' => 
+    array (
+      'WW' => '1',
+    ),
+  ),
+  'JIE' => 
+  array (
+    'GB-M' => 
+    array (
+      'HW' => '1',
+      'WW' => '10',
+    ),
+    'GB-N' => 
+    array (
+      'WW' => '1',
+    ),
+    'P-C' => 
+    array (
+      'WW' => '3',
+    ),
+  ),
+  'JY' => 
+  array (
+    'P-C' => 
+    array (
+      'WW' => '10',
+    ),
+    'P-G' => 
+    array (
+      'WW' => '2',
+    ),
+  ),
+  'VEN' => 
+  array (
+    'GB-N' => 
+    array (
+      'WW' => '2',
+    ),
+    'P-G' => 
+    array (
+      'WW' => '5',
+    ),
+    'PROD' => 
+    array (
+      'WW' => '9',
+    ),
+  ),
+  'XM' => 
+  array (
+    'GB-M' => 
+    array (
+      'WW' => '4',
+    ),
+    'GB-N' => 
+    array (
+      'HW' => '1',
+      'WW' => '3',
+    ),
+    'P-C' => 
+    array (
+      'WW' => '1',
+    ),
+    'P-G' => 
+    array (
+      'WW' => '2',
+    ),
+    'PROD' => 
+    array (
+      'WW' => '6',
+    ),
+  ),
+  'BEN' => 
+  array (
+    'P-G' => 
+    array (
+      'B5' => '5',
+      'A5' => '4',
+    ),
+  ),
+  'EDA' => 
+  array (
+    'P-G' => 
+    array (
+      'B5' => '15',
+      'A5' => '12',
+    ),
+  ),
+  'EZ' => 
+  array (
+    'GB-M' => 
+    array (
+      'B5' => '5',
+      'A5' => '4',
+    ),
+    'P-C' => 
+    array (
+      'B5' => '5',
+      'A5' => '4',
+    ),
+  ),
+  'JN' => 
+  array (
+    'P-C' => 
+    array (
+      'B5' => '5',
+      'A5' => '0',
+    ),
+  ),
+  'JNA' => 
+  array (
+    'GB-N' => 
+    array (
+      'B5' => '10',
+      'A5' => '8',
+    ),
+  ),
+  'JQ' => 
+  array (
+    'GB-N' => 
+    array (
+      'B5' => '15',
+      'A5' => '12',
+    ),
+    'P-G' => 
+    array (
+      'B5' => '10',
+      'A5' => '8',
+    ),
+  ),
+  'RHE' => 
+  array (
+    'GB-N' => 
+    array (
+      'B5' => '54',
+      'A5' => '44',
+    ),
+  ),
+)
