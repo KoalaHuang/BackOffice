@@ -12,7 +12,6 @@ if (f_shouldDie("L")) {
 <html>
 <head>
 	<? include "header.php"; ?>
-	<? include "mylog.php"; ?>
 	<title>BackOffice</title>
 	<script src="js/shift_report.js"></script>
 </head>
@@ -48,9 +47,9 @@ if (f_shouldDie("L")) {
 			$thisMonth = $mydate['mon'];
 			$thisDate = $mydate['mday'];
 			if ($inputError) {
-				echo "<div class=\"text-danger fst-italic fs-6 mb-1\">Date value error!</div>";
+				echo "<div class=\"text-danger fst-italic fs-6 ms-1 mb-1\">Date value error!</div>";
 			}else{
-				echo "<div class=\"text-muted fst-italic fs-6 mb-1\">Report date range:</div>";
+				echo "<div class=\"text-muted fst-italic fs-6 ms-1 mb-1\">Report date range:</div>";
 			}
 			?>
 			<div class="input-group ps-1 pe-1">
@@ -160,6 +159,7 @@ if (f_shouldDie("L")) {
 				<button type="submit" class="btn btn-primary me-2">Submit</button>
 				<button type="reset" class="btn btn-secondary">Reset</button>
 			</div><!-- Apply -->
+			<div class="text-secondary fw-semibold fs-6 ms-1 mb-1">Full time by days, Part time by hours</div>			
 		</form>
 		<?
 		//retrive date into Arrays
@@ -202,12 +202,9 @@ if (f_shouldDie("L")) {
 				$c_count = $row['c_COUNT'];
 				$c_store = $row['c_store'];
 				$c_type = $row['c_type'];
-				myLOG("id: ".$c_id." count: ".$c_count." store: ".$c_store." type: ".$c_type);
 				$arrayPeople[$c_id][$c_store][$c_type] = $c_count; //count the days by Id by store, by HW and WW
 				$idx++;
 			}
-
-			myLOG($arrayPeople);
 
 			//count by hours for part time, split by before 5pm and after 5pm
 			//count hours by before 5pm and after 5pm due to different pay rate
@@ -240,13 +237,10 @@ if (f_shouldDie("L")) {
 				$before5pm = $row['c_BEFORE5PM'];
 				$after5pm = $row['c_AFTER5PM'];
 				$c_store = $row['c_store'];
-				myLOG("id: ".$c_id." store: ".$c_store." b5: ".$before5pm." a5: ".$after5pm);
 				$arrayPeople[$c_id][$c_store]['B5'] = $before5pm;//store before 5pm hours count by ID by store
 				$arrayPeople[$c_id][$c_store]['A5'] = $after5pm; //store after 5pm hours count by ID by store
 				$idx++;
 			}
-
-			myLOG($arrayPeople);
 
 			$conn->close();
 			//OFF Day working count
