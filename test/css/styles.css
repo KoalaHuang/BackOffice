@@ -1,0 +1,48 @@
+/*
+style for recipe search box
+*/
+  .search-container {
+    position: relative;
+  }
+  .search-container input,
+  .search-container .suggestions {
+    text-align: left;
+  }
+  .search-container :focus{
+    outline: var(--bs-primary) auto;
+  }
+  .search-container .suggestions {
+    background: #fff;
+    position: absolute;
+  }
+  
+  .search-container ul {
+    display: none;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2);
+    max-height: 200px;
+    overflow-y: auto;
+  }
+  .search-container ul.has-suggestions {
+    display: block;
+  }
+  .search-container ul li {
+    padding: 10px;
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.2);
+  }
+  .search-container ul li:hover {
+    background-color: rgba(0, 0, 255, 0.2);
+  }
+  img.avatar {
+    width: 80;
+    height: 80;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.bluePara {
+color: red;
+}
